@@ -1,66 +1,66 @@
-vCard - Personal Portfolio
+vCard - Portafolio personal
 
-# sidebar
+# barra lateral
 
 alt = Richard hanrick
 Richard hanrick
 Web developer
 
-Show Contacts
+Mostrar contactos
 
-Email
+Correo
 richard@example.com
 
-Phone
+Teléfono
 +1 (213) 352-2795
 
-Birthday
+Cumpleaños
 June 23, 1982
 
-Location
+Ubicación
 Sacramento, California, USA
 
-# navbar
+# barra de navegación
 
-About
-Resume
-Portfolio
+Sobre mí
+Currículum
+Portafolio
 Blog
-Contact
+Contacto
 
-# about
+# sobre
 
-About me
+Sobre mí
 
 I'm Creative Director and UI/UX Designer from Sydney, Australia, working in web development and print media. I enjoy turning complex problems into simple, beautiful and intuitive designs.
 
 My job is to build your website so that it is functional and user-friendly but at the same time attractive. Moreover, I add personal touch to your product and make sure that is eye-catching and easy to use. My aim is to bring across your message and identity in the most creative way. I created web design for many famous brand companies.
 
 
-## service
+## servicios
 
-What i'm doing
+Qué hago
 
 alt = design icon
-Web design
+Diseño web
 The most modern and high-quality design made at a professional level.
 
 alt = Web development icon
-Web development
+Desarrollo web
 High-quality development of sites at the professional level.
 
 alt = mobile app icon
-Mobile apps
+Aplicaciones móviles
 Professional development of applications for iOS and Android.
 
 alt = camera icon
-Photography
+Fotografía
 I make high-quality photos of any category at a professional level.
 
 
-## testimonials
+## testimonios
 
-Testimonials
+Testimonios
 
 alt = Daniel lewis
 Daniel lewis
@@ -87,11 +87,11 @@ alt = client logo
 
 
 
-# resume
+# currículum
 
-Resume
+Currículum
 
-Education
+Educación
 
 University school of the arts
 2007 — 2008
@@ -105,7 +105,7 @@ High school of art and design
 2002 — 2004
 Duis aute irure dolor in reprehenderit in voluptate, quila voluptas mag odit aut fugit, sed consequuntur magni dolores eos.
 
-Experience
+Experiencia
 
 Creative director
 2015 — Present
@@ -119,69 +119,69 @@ Web designer
 2010 — 2013
 Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur.
 
-My skills
+Mis habilidades
 
-Web design
+Diseño web
 80%
-Graphic design
+Diseño gráfico
 70%
-Branding
+Identidad de marca
 90%
 WordPress
 50%
 
 
 
-# portfolio
+# portafolio
 
-Portfolio
+Portafolio
 
-All
-Web design
-Applications
-Web development
+Todos
+Diseño web
+Aplicaciones
+Desarrollo web
 
-Select category
-All
-Web design
-Applications
-Web development
+Seleccionar categoría
+Todos
+Diseño web
+Aplicaciones
+Desarrollo web
 
 alt = finance
 Finance
-Web development
+Desarrollo web
 
 alt = orizon
 Orizon
-Web development
+Desarrollo web
 
 alt = fundo
 Fundo
-Web design
+Diseño web
 
 alt = brawlhalla
 Brawlhalla
-Applications
+Aplicaciones
 
 alt = dsm.
 DSM.
-Web design
+Diseño web
 
 alt = metaspark
 MetaSpark
-Web design
+Diseño web
 
 alt = summary
 Summary
-Web development
+Desarrollo web
 
 alt = task manager
 Task Manager
-Applications
+Aplicaciones
 
 alt = arrival
 Arrival
-Web development
+Desarrollo web
 
 
 
@@ -190,7 +190,7 @@ Web development
 Blog
 
 alt = Design conferences in 2022
-Design
+Diseño
 Fab 23, 2022
 Design conferences in 2022
 Veritatis et quasi architecto beatae vitae dicta sunt, explicabo.
@@ -227,14 +227,14 @@ Optio cumque nihil impedit uo minus quod maxime placeat, velit esse cillum.
 
 
 
-# contact
+# contacto
 
-Contact
+Contacto
 
-Contact Form
+Formulario de contacto
 
-Full name
-Email address
-Your Message
+Nombre completo
+Correo electrónico
+Tu mensaje
 
-Send Message
+Enviar mensaje
