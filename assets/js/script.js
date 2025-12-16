@@ -147,25 +147,30 @@ const pages = document.querySelectorAll("[data-page]");
 // add event to all nav link
 for (let i = 0; i < navigationLinks.length; i++) {
   navigationLinks[i].addEventListener("click", function () {
+    try {
+      const target = this.dataset.target;
+      console.log('NAV CLICK target=', target);
 
-    const target = this.dataset.target;
-
-    // show/hide pages
-    for (let j = 0; j < pages.length; j++) {
-      if (pages[j].dataset.page === target) {
-        pages[j].classList.add("active");
-      } else {
-        pages[j].classList.remove("active");
+      // show/hide pages
+      for (let j = 0; j < pages.length; j++) {
+        if (pages[j].dataset.page === target) {
+          pages[j].classList.add("active");
+          console.log('Activated page=', pages[j].dataset.page);
+        } else {
+          pages[j].classList.remove("active");
+        }
       }
-    }
 
-    // update nav active state
-    for (let k = 0; k < navigationLinks.length; k++) {
-      navigationLinks[k].classList.remove("active");
-    }
+      // update nav active state
+      for (let k = 0; k < navigationLinks.length; k++) {
+        navigationLinks[k].classList.remove("active");
+      }
 
-    this.classList.add("active");
-    window.scrollTo(0, 0);
+      this.classList.add("active");
+      window.scrollTo(0, 0);
+    } catch (err) {
+      console.error('Navigation error:', err);
+    }
 
   });
 }
