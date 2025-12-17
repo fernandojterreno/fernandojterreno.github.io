@@ -138,6 +138,40 @@ for (let i = 0; i < formInputs.length; i++) {
   });
 }
 
+// on submit - open mail client with prefilled email to Fernando
+if (form) {
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // gather fields
+    const name = (form.querySelector('[name="fullname"]') || {}).value || '';
+    const email = (form.querySelector('[name="email"]') || {}).value || '';
+    const message = (form.querySelector('[name="message"]') || {}).value || '';
+
+    const to = 'fernandojoseterreno@gmail.com';
+    const subject = `Contacto desde sitio: ${name}`;
+    const bodyLines = [
+      `Nombre: ${name}`,
+      `Correo: ${email}`,
+      '',
+      `Mensaje:`,
+      message
+    ];
+    const body = encodeURIComponent(bodyLines.join('\n'));
+    const mailto = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+    // open mail client
+    window.location.href = mailto;
+
+    // optionally disable button briefly
+    if (formBtn) {
+      formBtn.setAttribute('disabled', '');
+      setTimeout(() => formBtn.removeAttribute('disabled'), 1000);
+    }
+
+  });
+}
+
 
 
 // page navigation variables
