@@ -2,89 +2,56 @@ vCard - Portafolio personal
 
 # barra lateral
 
-alt = Richard hanrick
-Richard hanrick
-Web developer
+alt = Fernando Terreno
+Fernando Terreno
+Analista de datos - Metrólogo
 
 Mostrar contactos
 
 Correo
-richard@example.com
+fernandojoseterreno@gmail.com
 
 Teléfono
-+1 (213) 352-2795
-
-Cumpleaños
-June 23, 1982
++54 351 225 1452
 
 Ubicación
-Sacramento, California, USA
+Córdoba Capital, Córdoba, Argentina
 
 # barra de navegación
 
 Sobre mí
 Currículum
 Portafolio
-Blog
 Contacto
 
 # sobre
 
 Sobre mí
 
-I'm Creative Director and UI/UX Designer from Sydney, Australia, working in web development and print media. I enjoy turning complex problems into simple, beautiful and intuitive designs.
+Soy un profesional con sólida formación técnica en metrología y más de diez años de experiencia trabajando con datos de medición en entornos industriales. A lo largo de mi carrera me he especializado en la adquisición, validación y análisis de datos, asegurando su trazabilidad, calidad y confiabilidad para la toma de decisiones técnicas.
 
-My job is to build your website so that it is functional and user-friendly but at the same time attractive. Moreover, I add personal touch to your product and make sure that is eye-catching and easy to use. My aim is to bring across your message and identity in the most creative way. I created web design for many famous brand companies.
+Actualmente, complemento mi experiencia industrial con formación en ciencia de datos y aprendizaje automático, enfocándome en limpieza de datos, modelado estadístico, automatización de procesos y mejora continua de la calidad de la información. Mi interés profesional está orientado a roles de ciencia de datos e ingeniería de datos aplicados a contextos productivos, donde el análisis riguroso de los datos permite optimizar procesos, reducir incertidumbre y generar valor real para la industria.
 
 
 ## servicios
 
 Qué hago
 
-alt = design icon
-Diseño web
-The most modern and high-quality design made at a professional level.
+alt = analisis icon
+Análisis y validación de datos
+Trabajo con datos de medición y procesos, asegurando su calidad, coherencia y trazabilidad mediante análisis estadístico y criterios técnicos orientados a la confiabilidad de la información.
 
-alt = Web development icon
-Desarrollo web
-High-quality development of sites at the professional level.
+alt = ciencia de datos icon
+Ciencia de datos aplicada
+Aplico técnicas de limpieza, exploración y modelado de datos para identificar patrones, reducir incertidumbre y generar conocimiento útil para la toma de decisiones en distintos contextos productivos y técnicos.
 
-alt = mobile app icon
-Aplicaciones móviles
-Professional development of applications for iOS and Android.
+alt = pipelines icon
+Automatización y pipelines de datos
+Diseño y desarrollo de flujos de adquisición, procesamiento y transformación de datos, integrando programación y automatización para mejorar eficiencia, escalabilidad y repetibilidad.
 
-alt = camera icon
-Fotografía
-I make high-quality photos of any category at a professional level.
-
-
-## testimonios
-
-Testimonios
-
-alt = Daniel lewis
-Daniel lewis
-Richard was hired to create a corporate identity. We were very pleased with the work done. She has a lot of experience and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-
-alt = Jessica miller
-Jessica miller
-Richard was hired to create a corporate identity. We were very pleased with the work done. She has a lot of experience and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-
-alt = Emily evans
-Emily evans
-Richard was hired to create a corporate identity. We were very pleased with the work done. She has a lot of experience and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-
-alt = Henry william
-Henry william
-Richard was hired to create a corporate identity. We were very pleased with the work done. She has a lot of experience and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt consectetur adipiscing elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-
-
-## clients
-
-Clients
-
-alt = client logo
-
+alt = mejora procesos icon
+Mejora de procesos y calidad de la información
+Utilizo el análisis de datos como herramienta para optimizar procesos, detectar desvíos, prevenir errores y elevar la calidad de la información en organizaciones y proyectos tecnológicos.
 
 
 # currículum
@@ -93,43 +60,46 @@ Currículum
 
 Educación
 
-University school of the arts
-2007 — 2008
-Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur.
+Universidad Nacional de Córdoba – FAMAF
+2025
+Diplomatura en Ciencia de Datos, Aprendizaje Automático y sus Aplicaciones
 
-New york academy of art
-2006 — 2007
-Ratione voluptatem sequi nesciunt, facere quisquams facere menda ossimus, omnis voluptas assumenda est omnis..
-
-High school of art and design
-2002 — 2004
-Duis aute irure dolor in reprehenderit in voluptate, quila voluptas mag odit aut fugit, sed consequuntur magni dolores eos.
+Instituto Técnico Renault
+2010
+Técnico Superior en Motores
 
 Experiencia
 
-Creative director
-2015 — Present
-Nemo enim ipsam voluptatem blanditiis praesentium voluptum delenit atque corrupti, quos dolores et qvuas molestias exceptur.
+Técnico Metrólogo (INTI)
+Junio 2011 – Presente
+Lidero la adquisición, validación y análisis de grandes volúmenes de datos metrológicos (par torsional, presión, temperatura, masa y fuerza) a nivel nacional. Redacto, reviso y actualizo procedimientos de calibración conforme a la norma ISO/IEC 17025. Desarrollo, implemento y mantengo soluciones en Python para automatizar la adquisición, limpieza, procesamiento y trazabilidad de datos metrológicos. Coordino flujos de datos desde la medición hasta la generación de informes técnicos, asegurando consistencia, trazabilidad y reproducibilidad de resultados. Capacito a personal técnico en buenas prácticas de medición, análisis de datos y documentación técnica.
 
-Art director
-2013 — 2015
-Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur.
+Vendedor Técnico (Dimotec S.A.)
+Octubre 2008 – Junio 2011
+Brindé asesoramiento técnico-comercial sobre motores eléctricos, bombas y reductores industriales. Gestioné el ciclo completo de ventas: relevamiento de necesidades, cotización, seguimiento y posventa. Optimicé procesos logísticos de entrega, reduciendo tiempos y errores operativos. Desarrollé y mantuve cartera de clientes mediante visitas técnicas y demostraciones de producto.
 
-Web designer
-2010 — 2013
-Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et quas molestias exceptur.
+Habilidades técnicas
 
-Mis habilidades
+Lenguajes y análisis de datos
+Python: Pandas, NumPy, SciPy, Scikit-learn
 
-Diseño web
-80%
-Diseño gráfico
-70%
-Identidad de marca
-90%
-WordPress
-50%
+Modelado estadístico y machine learning
+Modelos de series temporales: ARMA / GARCH, Machine Learning: Scikit-learn, XGBoost, Deep Learning: Keras
 
+Visualización y análisis exploratorio
+Matplotlib, Seaborn, Visualización de modelos y flujos: Graphviz
+
+Data engineering y pipelines
+Diseño de pipelines de datos: adquisición, limpieza, transformación y validación. Procesamiento de datos estructurados y semi-estructurados. Manejo de formatos científicos: HDF5 (h5py)
+
+Entornos y herramientas
+JupyterLab, Apache Spark, Zeppelin
+
+Bases de datos
+SQL (modelado, consultas y análisis)
+
+Herramientas técnicas y de apoyo
+QGIS, SolidWorks, Autodesk Revit, Microsoft Office
 
 
 # portafolio
@@ -137,95 +107,15 @@ WordPress
 Portafolio
 
 Todos
-Diseño web
-Aplicaciones
-Desarrollo web
+Análisis de datos
 
 Seleccionar categoría
 Todos
-Diseño web
-Aplicaciones
-Desarrollo web
+Análisis de datos
 
-alt = finance
-Finance
-Desarrollo web
-
-alt = orizon
-Orizon
-Desarrollo web
-
-alt = fundo
-Fundo
-Diseño web
-
-alt = brawlhalla
-Brawlhalla
-Aplicaciones
-
-alt = dsm.
-DSM.
-Diseño web
-
-alt = metaspark
-MetaSpark
-Diseño web
-
-alt = summary
-Summary
-Desarrollo web
-
-alt = task manager
-Task Manager
-Aplicaciones
-
-alt = arrival
-Arrival
-Desarrollo web
-
-
-
-# blog
-
-Blog
-
-alt = Design conferences in 2022
-Diseño
-Fab 23, 2022
-Design conferences in 2022
-Veritatis et quasi architecto beatae vitae dicta sunt, explicabo.
-
-alt = Best fonts every designer
-Design
-Fab 23, 2022
-Best fonts every designer
-Sed ut perspiciatis, nam libero tempore, cum soluta nobis est eligendi.
-
-alt = Design digest #80
-Design
-Fab 23, 2022
-Design digest #80
-Excepteur sint occaecat cupidatat no proident, quis nostrum exercitationem ullam corporis suscipit.
-
-alt = UI interactions of the week
-Design
-Fab 23, 2022
-UI interactions of the week
-Enim ad minim veniam, consectetur adipiscing elit, quis nostrud exercitation ullamco laboris nisi.
-
-alt = The forgotten art of spacing
-Design
-Fab 23, 2022
-The Forgotten Art Of Spacing
-Maxime placeat, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-alt = Design digest #79
-Design
-Fab 23, 2022
-Design Digest #79
-Optio cumque nihil impedit uo minus quod maxime placeat, velit esse cillum.
-
-
+alt = Series de tiempo
+Series de tiempo
+Análisis de datos
 
 # contacto
 

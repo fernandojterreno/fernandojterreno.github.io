@@ -1,44 +1,33 @@
-# vCard - Portafolio personal
+# Portafolio Personal - Fernando Terreno
 
-![GitHub repo size](https://img.shields.io/github/repo-size/codewithsadee/vcard-personal-portfolio)
-![GitHub stars](https://img.shields.io/github/stars/codewithsadee/vcard-personal-portfolio?style=social)
-![GitHub forks](https://img.shields.io/github/forks/codewithsadee/vcard-personal-portfolio?style=social)
-[![Twitter Follow](https://img.shields.io/twitter/follow/codewithsadee_?style=social)](https://twitter.com/intent/follow?screen_name=codewithsadee_)
-[![YouTube Video Views](https://img.shields.io/youtube/views/SoxmIlgf2zM?style=social)](https://youtu.be/SoxmIlgf2zM)
+Portafolio profesional de Fernando Terreno, Analista de Datos y Metrólogo.
+Aquí encontrarás información sobre mi experiencia, educación, habilidades y proyectos realizados.
 
-vCard is a fully responsive personal portfolio website, responsive for all devices, built using HTML, CSS, and JavaScript.
+Puedes ver el sitio en vivo aquí: [https://fernandojterreno.github.io/](https://fernandojterreno.github.io/)
 
-## Demo
+## Tecnologías
 
-![vCard Desktop Demo](./website-demo-image/desktop.png "Desktop Demo")
-![vCard Mobile Demo](./website-demo-image/mobile.png "Mobile Demo")
+*   HTML5
+*   CSS3
+*   JavaScript
 
-## Requisitos
+## Instalación y Uso Local
 
-Before you begin, ensure you have met the following requirements:
+Si deseas ejecutar este proyecto localmente:
 
-* [Git](https://git-scm.com/downloads "Download Git") must be installed on your operating system.
+1.  Clona el repositorio:
+    ```bash
+    git clone https://github.com/fernandojterreno/fernandojterreno.github.io.git
+    ```
 
-## Instalación de vCard
-
-To install **vCard**, follow these steps:
-
-Linux and macOS:
-
-```bash
-sudo git clone https://github.com/codewithsadee/vcard-personal-portfolio.git
-```
-
-Windows:
-
-```bash
-git clone https://github.com/codewithsadee/vcard-personal-portfolio.git
-```
+2.  Abre el archivo `index.html` en tu navegador web.
 
 ## Contacto
 
-Si quieres contactarme puedes localizarme en [Twitter](https://www.x.com/codewithsadee_).
+*   **Email:** fernandojoseterreno@gmail.com
+*   **Ubicación:** Córdoba, Argentina
+*   **Sitio Web:** https://fernandojterreno.github.io/
 
 ## Licencia
 
-MIT
+Este proyecto está bajo la Licencia MIT.
