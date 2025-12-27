@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <meta name="author" content="Fernando J. Terreno">
+  <meta name="dcterms.date" content="2026-01-02">
+
+  <title>Análisis de Series de Tiempo en Finanzas</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    div.columns {
+      display: flex;
+      gap: min(4vw, 1.5em);
+    }
+
+    div.column {
+      flex: auto;
+      overflow-x: auto;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em;
+      /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */
+      vertical-align: middle;
+    }
+  </style>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
+    integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+    crossorigin="anonymous"></script>
+  <script src="reporte_files/libs/clipboard/clipboard.min.js"></script>
+  <script src="reporte_files/libs/quarto-html/quarto.js" type="module"></script>
+  <script src="reporte_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+  <script src="reporte_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+  <script src="reporte_files/libs/quarto-html/popper.min.js"></script>
+  <script src="reporte_files/libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="reporte_files/libs/quarto-html/anchor.min.js"></script>
+  <link href="reporte_files/libs/quarto-html/tippy.css" rel="stylesheet">
+  <link href="reporte_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css"
+    rel="stylesheet" id="quarto-text-highlighting-styles">
+  <script src="reporte_files/libs/bootstrap/bootstrap.min.js"></script>
+  <link href="reporte_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link href="reporte_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet"
+    append-hash="true" id="quarto-bootstrap" data-mode="light">
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js"
+    integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx"
+    crossorigin="anonymous"></script>
+
+  <script type="application/javascript">define('jquery', [], function () { return window.jQuery; })</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    window.Quarto = {
+      typesetMath
+    };
+  </script>
+
+</head>
+
+<body class="quarto-light">
+
+  <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+      <nav id="TOC" role="doc-toc" class="toc-active">
+        <h2 id="toc-title">Table of contents</h2>
+
+        <ul>
+          <li><a href="#simulación-de-modelos-arma" id="toc-simulación-de-modelos-arma" class="nav-link active"
+              data-scroll-target="#simulación-de-modelos-arma">1. Simulación de modelos ARMA</a>
+            <ul class="collapse">
+              <li><a href="#modelo-arn-autorregresivo-de-orden-n" id="toc-modelo-arn-autorregresivo-de-orden-n"
+                  class="nav-link" data-scroll-target="#modelo-arn-autorregresivo-de-orden-n">Modelo <span
+                    class="math inline">\(AR(n)\)</span> – Autorregresivo de orden <span
+                    class="math inline">\(n\)</span></a></li>
+              <li><a href="#modelo-maq-media-móvil-de-orden-q" id="toc-modelo-maq-media-móvil-de-orden-q"
+                  class="nav-link" data-scroll-target="#modelo-maq-media-móvil-de-orden-q">Modelo <span
+                    class="math inline">\(MA(q)\)</span> – Media Móvil de orden <span
+                    class="math inline">\(q\)</span></a></li>
+              <li><a href="#modelo-armapq-combinación-ar-y-ma" id="toc-modelo-armapq-combinación-ar-y-ma"
+                  class="nav-link" data-scroll-target="#modelo-armapq-combinación-ar-y-ma">Modelo <span
+                    class="math inline">\(ARMA(p,q)\)</span> – Combinación <span class="math inline">\(AR\)</span> y
+                  <span class="math inline">\(MA\)</span></a></li>
+              <li><a href="#resumen-rápido" id="toc-resumen-rápido" class="nav-link"
+                  data-scroll-target="#resumen-rápido">Resumen rápido</a></li>
+              <li><a href="#visualización-comparación-de-series-ar1" id="toc-visualización-comparación-de-series-ar1"
+                  class="nav-link" data-scroll-target="#visualización-comparación-de-series-ar1">Visualización:
+                  comparación de series AR(1)</a></li>
+              <li><a href="#acf-autocorrelation-function-función-de-autocorrelación"
+                  id="toc-acf-autocorrelation-function-función-de-autocorrelación" class="nav-link"
+                  data-scroll-target="#acf-autocorrelation-function-función-de-autocorrelación">ACF – Autocorrelation
+                  Function (Función de Autocorrelación)</a></li>
+              <li><a href="#ejemplo-generación-de-un-arma11" id="toc-ejemplo-generación-de-un-arma11" class="nav-link"
+                  data-scroll-target="#ejemplo-generación-de-un-arma11">Ejemplo: Generación de un ARMA(1,1)</a></li>
+              <li><a href="#modelo-ma2" id="toc-modelo-ma2" class="nav-link" data-scroll-target="#modelo-ma2">Modelo
+                  MA(2)</a></li>
+              <li><a href="#modelo-arma21" id="toc-modelo-arma21" class="nav-link"
+                  data-scroll-target="#modelo-arma21">Modelo ARMA(2,1)</a></li>
+            </ul>
+          </li>
+          <li><a href="#acf-y-pacf" id="toc-acf-y-pacf" class="nav-link" data-scroll-target="#acf-y-pacf">2. ACF y
+              PACF</a></li>
+          <li><a href="#ajuste-de-modelos-arima" id="toc-ajuste-de-modelos-arima" class="nav-link"
+              data-scroll-target="#ajuste-de-modelos-arima">4. Ajuste de modelos ARIMA</a>
+            <ul class="collapse">
+              <li><a href="#descarga-de-datos-y-cálculo-de-log-retornos"
+                  id="toc-descarga-de-datos-y-cálculo-de-log-retornos" class="nav-link"
+                  data-scroll-target="#descarga-de-datos-y-cálculo-de-log-retornos">Descarga de datos y cálculo de
+                  log-retornos</a></li>
+              <li><a href="#selección-de-modelo-arma" id="toc-selección-de-modelo-arma" class="nav-link"
+                  data-scroll-target="#selección-de-modelo-arma">Selección de modelo ARMA</a></li>
+            </ul>
+          </li>
+          <li><a href="#análisis-de-residuos" id="toc-análisis-de-residuos" class="nav-link"
+              data-scroll-target="#análisis-de-residuos">5. Análisis de residuos</a></li>
+          <li><a href="#modelo-garch" id="toc-modelo-garch" class="nav-link" data-scroll-target="#modelo-garch">6.
+              Modelo GARCH</a>
+            <ul class="collapse">
+              <li><a href="#por-qué-garch" id="toc-por-qué-garch" class="nav-link"
+                  data-scroll-target="#por-qué-garch">¿Por qué GARCH?</a></li>
+              <li><a href="#elección-del-modelo-garch21" id="toc-elección-del-modelo-garch21" class="nav-link"
+                  data-scroll-target="#elección-del-modelo-garch21">Elección del Modelo GARCH(2,1)</a></li>
+            </ul>
+          </li>
+          <li><a href="#conclusiones-y-resumen-del-análisis" id="toc-conclusiones-y-resumen-del-análisis"
+              class="nav-link" data-scroll-target="#conclusiones-y-resumen-del-análisis">7. Conclusiones y Resumen del
+              Análisis</a>
+            <ul class="collapse">
+              <li><a href="#hallazgos-principales" id="toc-hallazgos-principales" class="nav-link"
+                  data-scroll-target="#hallazgos-principales">Hallazgos Principales</a></li>
+              <li><a href="#limitaciones-y-consideraciones" id="toc-limitaciones-y-consideraciones" class="nav-link"
+                  data-scroll-target="#limitaciones-y-consideraciones">Limitaciones y Consideraciones</a></li>
+              <li><a href="#aplicaciones-prácticas" id="toc-aplicaciones-prácticas" class="nav-link"
+                  data-scroll-target="#aplicaciones-prácticas">Aplicaciones Prácticas</a></li>
+              <li><a href="#habilidades-demostradas" id="toc-habilidades-demostradas" class="nav-link"
+                  data-scroll-target="#habilidades-demostradas">Habilidades Demostradas</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <main class="content" id="quarto-document-content">
+
+      <header id="title-block-header" class="quarto-title-block default">
+        <div class="quarto-title">
+          <h1 class="title">Análisis de Series de Tiempo en Finanzas</h1>
+        </div>
+
+
+
+        <div class="quarto-title-meta">
+
+          <div>
+            <div class="quarto-title-meta-heading">Author</div>
+            <div class="quarto-title-meta-contents">
+              <p>Fernando J. Terreno </p>
+            </div>
+          </div>
+
+          <div>
+            <div class="quarto-title-meta-heading">Published</div>
+            <div class="quarto-title-meta-contents">
+              <p class="date">January 5, 2025</p>
+            </div>
+          </div>
+
+
+        </div>
+
+
+
+      </header>
+
+
+      <p><strong>Resumen:</strong> En este notebook presento un análisis reproducible de series de tiempo aplicado a
+        datos financieros. Incluye descarga de datos desde Yahoo Finance, cálculo de log-retornos, ajuste y selección de
+        modelos ARMA/ARIMA, y modelado de volatilidad con GARCH. El objetivo es mostrar técnicas de modelado, evaluación
+        y visualización que pueda incluir en mi portfolio técnico.</p>
+      <p><strong>Habilidades demostradas:</strong> Data wrangling, visualización, modelado ARMA/ARIMA, selección de
+        modelos, modelado de volatilidad (GARCH), y reproducibilidad de análisis.</p>
+      <section id="simulación-de-modelos-arma" class="level2">
+        <h2 class="anchored" data-anchor-id="simulación-de-modelos-arma">1. Simulación de modelos ARMA</h2>
+        <p>Los modelos de análisis de series temporales <span class="math inline">\(AR(n)\)</span>, <span
+            class="math inline">\(MA(q)\)</span> y <span class="math inline">\(ARMA(n,q)\)</span> contienen la
+          estructura básica para predecir valores de una serie.</p>
+        <section id="modelo-arn-autorregresivo-de-orden-n" class="level3">
+          <h3 class="anchored" data-anchor-id="modelo-arn-autorregresivo-de-orden-n">Modelo <span
+              class="math inline">\(AR(n)\)</span> – Autorregresivo de orden <span class="math inline">\(n\)</span></h3>
+          <p><strong>Definición:</strong> Un modelo <strong><span class="math inline">\(AR(n)\)</span></strong> predice
+            el valor actual de una serie temporal como una combinación lineal de sus <span
+              class="math inline">\(n\)</span> valores pasados más un término de error aleatorio.</p>
+          <p><strong>Ecuación general:</strong></p>
+          <p><span class="math display">\[
+              X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + \dots + \phi_n X_{t-n} + \epsilon_t
+              \]</span></p>
+          <p>Donde:<br>
+            - <span class="math inline">\(X_t\)</span> → valor actual de la serie.<br>
+            - <span class="math inline">\(\phi_1, \dots, \phi_n\)</span> → coeficientes del modelo (a ajustar con
+            datos).<br>
+            - <span class="math inline">\(n\)</span> → orden del modelo (cuántos valores pasados se usan).<br>
+            - <span class="math inline">\(\epsilon_t\)</span> → ruido blanco (error aleatorio con media cero y varianza
+            constante).</p>
+          <p><strong>Características:</strong> - Solo depende de valores pasados.<br>
+            - Requiere que la serie sea <strong>estacionaria</strong> (media y varianza constantes).<br>
+            - Se usa para capturar correlaciones a corto plazo.</p>
+          <p><strong>Ejemplo práctico:</strong> Si <span class="math inline">\(n=1\)</span> (<span
+              class="math inline">\(AR(1)\)</span>):</p>
+          <p><span class="math display">\[
+              X_t = \phi_1 X_{t-1} + \epsilon_t
+              \]</span></p>
+          <p>Aquí el valor actual depende solo del valor anterior más un ruido aleatorio.</p>
+        </section>
+        <section id="modelo-maq-media-móvil-de-orden-q" class="level3">
+          <h3 class="anchored" data-anchor-id="modelo-maq-media-móvil-de-orden-q">Modelo <span
+              class="math inline">\(MA(q)\)</span> – Media Móvil de orden <span class="math inline">\(q\)</span></h3>
+          <p><strong>Definición:</strong> Un modelo <strong>MA(q)</strong> representa el valor actual como una
+            combinación lineal de errores pasados.</p>
+          <p><span class="math display">\[
+              X_t = \epsilon_t + \theta_1 \epsilon_{t-1} + \dots + \theta_q \epsilon_{t-q}
+              \]</span></p>
+          <p>Donde:<br>
+            - <span class="math inline">\(\theta_1, \dots, \theta_q\)</span> → coeficientes de los errores pasados.<br>
+            - <span class="math inline">\(\epsilon_t\)</span> → ruido blanco.</p>
+          <p><strong>Característica clave:</strong><br>
+            - Captura la dependencia en los errores pasados en lugar de los valores pasados.</p>
+        </section>
+        <section id="modelo-armapq-combinación-ar-y-ma" class="level3">
+          <h3 class="anchored" data-anchor-id="modelo-armapq-combinación-ar-y-ma">Modelo <span
+              class="math inline">\(ARMA(p,q)\)</span> – Combinación <span class="math inline">\(AR\)</span> y <span
+              class="math inline">\(MA\)</span></h3>
+          <p><strong><em>Definición:</em></strong> El modelo <strong>ARMA(p, q)</strong> combina ambos enfoques:
+            autorregresivo (AR) y media móvil (MA). Se usa para series estacionarias que tienen dependencias tanto en
+            valores pasados como en errores pasados.</p>
+          <p><strong><em>Ecuación general:</em></strong></p>
+          <p><span class="math display">\[
+              X_t = \phi_1 X_{t-1} + \dots + \phi_p X_{t-p} + \epsilon_t + \theta_1 \epsilon_{t-1} + \dots + \theta_q
+              \epsilon_{t-q}
+              \]</span></p>
+          <p>Donde:<br>
+            - <span class="math inline">\(p\)</span> → orden de la parte <span class="math inline">\(AR\)</span>.<br>
+            - <span class="math inline">\(q\)</span> → orden de la parte <span class="math inline">\(MA\)</span>.</p>
+          <p><strong>Características:</strong> - Muy flexible para modelar series estacionarias.<br>
+            - Requiere elegir correctamente los órdenes <span class="math inline">\(p\)</span> y <span
+              class="math inline">\(q\)</span> (por AIC, BIC o autocorrelaciones).</p>
+        </section>
+        <section id="resumen-rápido" class="level3">
+          <h3 class="anchored" data-anchor-id="resumen-rápido">Resumen rápido</h3>
+          <table class="caption-top table">
+            <colgroup>
+              <col style="width: 22%">
+              <col style="width: 34%">
+              <col style="width: 42%">
+            </colgroup>
+            <thead>
+              <tr class="header">
+                <th>Modelo</th>
+                <th>Depende de</th>
+                <th>Uso principal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="odd">
+                <td><span class="math inline">\(AR(n)\)</span></td>
+                <td>Valores pasados de la serie</td>
+                <td>Capturar autocorrelación temporal</td>
+              </tr>
+              <tr class="even">
+                <td><span class="math inline">\(MA(q)\)</span></td>
+                <td>Errores pasados</td>
+                <td>Capturar dependencia en los shocks</td>
+              </tr>
+              <tr class="odd">
+                <td><span class="math inline">\(ARMA(p,q)\)</span></td>
+                <td>Valores pasados + errores pasados</td>
+                <td>Modelar series estacionarias con patrones complejos</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Veamos el siguiente código que implementa un modelo <span class="math inline">\(AR(1)\)</span>.</p>
+          <div id="10b84819" class="cell" data-execution_count="142">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="visualización-comparación-de-series-ar1" class="level3">
+          <h3 class="anchored" data-anchor-id="visualización-comparación-de-series-ar1">Visualización: comparación de
+            series AR(1)</h3>
+          <p>En la siguiente celda se generan múltiples realizaciones de un proceso AR(1) variando el parámetro <span
+              class="math inline">\(a_1\)</span>. Se muestran los gráficos para comparar visualmente el efecto de la
+            persistencia temporal sobre la apariencia de la serie.</p>
+          <p>Observación: valores de <span class="math inline">\(|a_1|\)</span> cercanos a 1 incrementan la memoria
+            temporal y la persistencia; valores cercanos a 0 producen series más parecidas a ruido blanco.</p>
+          <div id="bd363045" class="cell" data-execution_count="143">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p>¿Cuál parece más estacionaria? - La serie con <strong><em><span class="math inline">\(a_{1}\)</span> =
+                0.3</em></strong> es la que aparenta ser más estacionaria, ya que muestra menor dependencia temporal. -
+            Aunque todas son teóricamente estacionarias porque <span class="math inline">\(|a_{1}|&lt;1\)</span>,
+            visualmente <strong><em><span class="math inline">\(a_{1}\)</span> = 0.8</em></strong> y <strong><em><span
+                  class="math inline">\(a_{1}\)</span> = -0.9</em></strong> son teóricamente estacionarias, pero
+            muestran alta persistencia (especialmente −0.9 con oscilaciones marcadas), por lo que parecen menos
+            estacionarias a simple vista.</p>
+          <table class="caption-top table">
+            <colgroup>
+              <col style="width: 12%">
+              <col style="width: 87%">
+            </colgroup>
+            <thead>
+              <tr class="header">
+                <th>Valor (<span class="math inline">\(a_1\)</span>)</th>
+                <th>Comportamiento observado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="odd">
+                <td>0.8</td>
+                <td>Alta persistencia, cambios suaves, rachas largas del mismo signo.</td>
+              </tr>
+              <tr class="even">
+                <td>0.3</td>
+                <td>Menor dependencia temporal, rápida pérdida de memoria, apariencia más ruidosa.</td>
+              </tr>
+              <tr class="odd">
+                <td>-0.9</td>
+                <td>Persistencia alta pero <strong>oscilatoria</strong>, cambia de signo con mucha frecuencia.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Para analizar las series temporales, también es conveniente utilizar <strong><em>ACF</em></strong> y
+            <strong><em>PACF</em></strong>.</p>
+        </section>
+        <section id="acf-autocorrelation-function-función-de-autocorrelación" class="level3">
+          <h3 class="anchored" data-anchor-id="acf-autocorrelation-function-función-de-autocorrelación">ACF –
+            Autocorrelation Function (Función de Autocorrelación)</h3>
+          <p><strong>Definición:</strong> La ACF mide la <strong>correlación entre una serie temporal y sus valores
+              rezagados (lags)</strong>. - Es útil para identificar patrones de dependencia temporal en la serie. - Nos
+            dice hasta qué punto los valores pasados influyen en los valores presentes.</p>
+          <p><strong>Fórmula matemática (lag k):</strong></p>
+          <p><span class="math display">\[
+              \rho_k = \frac{\text{Cov}(X_t, X_{t-k})}{\text{Var}(X_t)}
+              \]</span></p>
+          <p>donde: - <span class="math inline">\(\rho_k\)</span> → autocorrelación en el lag <span
+              class="math inline">\(k\)</span></p>
+          <div id="f611e706" class="cell" data-execution_count="144">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p>Luego, analicemos la función de autocorrelacion parcial.</p>
+          <div id="c0185448" class="cell" data-execution_count="145">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p><strong><em>Análisis de los resultados obtenidos</em></strong></p>
+          <section id="comportamiento-de-las-series-según-el-parámetro-a_1" class="level4">
+            <h4 class="anchored" data-anchor-id="comportamiento-de-las-series-según-el-parámetro-a_1">Comportamiento de
+              las series según el parámetro <span class="math inline">\(a_{1}\)</span></h4>
+            <p>Los valores de <span class="math inline">\(a_{1}\)</span> elegidos van desde -0.95 a 0.95, lo cual nos
+              permite observar el comportamiento de la serie en toda la zona permitida para estacionariedad de un <span
+                class="math inline">\(AR(1)\)</span>, que es:</p>
+            <p><span class="math display">\[
+                |a_{1}|&lt;1
+                \]</span></p>
+            <p>Todas las series generadas son estacionarias en teoría, pero muestran grados diferentes de persistencia,
+              es decir, qué tanto el pasado determina el presente:</p>
+            <ul>
+              <li>Si <span class="math inline">\(a_{1}\sim 0\)</span>, la serie se comporta casi como ruido blanco: las
+                observaciones son poco dependientes unas de otras y parecen aleatorias.</li>
+              <li>Si <span class="math inline">\(a_{1}\)</span> es positivo y grande (0.7, 0.8, 0.95), la serie exhibe
+                persistencia positiva, lo que significa que si un valor sube o baja, los siguientes tienden a seguir la
+                misma dirección. Se observan tramos largos ascendentes o descendentes; la serie parece más “suave” y
+                menos ruidosa.</li>
+              <li>Si <span class="math inline">\(a_{1}\)</span> es negativo y grande en magnitud (-0.7, -0.8, -0.95), la
+                serie muestra alternancia marcada, es decir, cambia de signo rápidamente: si un dato es alto, el
+                siguiente será bajo y viceversa. Esto genera un patrón similar a vibraciones u oscilaciones.</li>
+              <li>Cuanto más cercano a <span class="math inline">\(+1\)</span> o <span
+                  class="math inline">\(-1\)</span>, mayor es la memoria del proceso, es decir, el pasado influye por
+                más tiempo. La serie tarda más en volver a valores promedio, lo que visualmente se traduce en tendencias
+                aparentes, aunque el proceso siga siendo estacionario.</li>
+            </ul>
+          </section>
+          <section id="análisis-del-panel-acf" class="level4">
+            <h4 class="anchored" data-anchor-id="análisis-del-panel-acf">Análisis del panel ACF</h4>
+            <p>La ACF mide correlación entre la serie y sus rezagos, por lo que nos indica pérdida de memoria temporal.
+              Resultados observados:</p>
+            <ul>
+              <li>Valores altos positivos de <span class="math inline">\(a_{1}\)</span> (0.7, 0.8, 0.95): La ACF decayó
+                lentamente y de forma positiva, lo que confirma una fuerte dependencia temporal.</li>
+              <li>Valores cercanos a cero (−0.1, 0, 0.1): La ACF cayó rápidamente, aproximadamente en el primer o
+                segundo rezago, lo que es consistente con procesos de baja memoria.</li>
+              <li>Valores negativos grandes (−0.7, −0.8, −0.95): La ACF mostró alternancia de signos, típica de procesos
+                con inversión de dirección entre observaciones consecutivas.</li>
+            </ul>
+            <p>En lenguaje visual:</p>
+            <table class="caption-top table">
+              <colgroup>
+                <col style="width: 21%">
+                <col style="width: 35%">
+                <col style="width: 42%">
+              </colgroup>
+              <thead>
+                <tr class="header">
+                  <th>Valor de (a_1)</th>
+                  <th>Forma de la ACF</th>
+                  <th>Interpretación</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd">
+                  <td>cercano a 0</td>
+                  <td>cae abruptamente</td>
+                  <td>memoria corta</td>
+                </tr>
+                <tr class="even">
+                  <td>positivo alto</td>
+                  <td>caída lenta positiva</td>
+                  <td>memoria larga y suavidad</td>
+                </tr>
+                <tr class="odd">
+                  <td>negativo alto</td>
+                  <td>alternancia oscilatoria</td>
+                  <td>memoria larga con reversión</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="conclusión-sobre-estacionariedad-visual" class="level4">
+            <h4 class="anchored" data-anchor-id="conclusión-sobre-estacionariedad-visual">Conclusión sobre
+              estacionariedad visual</h4>
+            <p>Aunque todos los valores cumplen con la condición teórica <span
+                class="math inline">\(|a_{1}|&lt;1\)</span>, en términos prácticos o visuales: - Los valores muy
+              cercanos a 1 o -1 muestran una estacionariedad débil, ya que la serie tarda mucho en retornar al nivel
+              central. - Los valores cercanos a 0 muestran estacionariedad más evidente, pues la memoria se pierde
+              rápidamente.</p>
+            <blockquote class="blockquote">
+              <p>La serie parece más claramente estacionaria cuando <span class="math inline">\(a_{1}\)</span> está
+                entre −0.4 y 0.4.</p>
+            </blockquote>
+          </section>
+          <section id="conclusión-final" class="level4">
+            <h4 class="anchored" data-anchor-id="conclusión-final">Conclusión final</h4>
+            <table class="caption-top table">
+              <colgroup>
+                <col style="width: 31%">
+                <col style="width: 20%">
+                <col style="width: 48%">
+              </colgroup>
+              <thead>
+                <tr class="header">
+                  <th>Tipo de comportamiento</th>
+                  <th>Valores de ( a_1 )</th>
+                  <th>Observación</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd">
+                  <td>Estacionaria fuerte (visual)</td>
+                  <td>entre -0.4 y 0.4</td>
+                  <td>ruido moderado, memoria corta</td>
+                </tr>
+                <tr class="even">
+                  <td>Estacionaria débil</td>
+                  <td>cerca de ±0.95</td>
+                  <td>memoria larga, apariencia “no estacionaria”</td>
+                </tr>
+                <tr class="odd">
+                  <td>Oscilatoria</td>
+                  <td>negativo alto</td>
+                  <td>alternancia visible en la serie</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+        <section id="ejemplo-generación-de-un-arma11" class="level3">
+          <h3 class="anchored" data-anchor-id="ejemplo-generación-de-un-arma11">Ejemplo: Generación de un ARMA(1,1)</h3>
+          <p>A continuación se muestra la generación y análisis de una realización de un modelo ARMA(1,1) con parámetros
+            representativos. Este ejemplo ilustra cómo se comportan ACF y PACF en presencia de componentes AR y MA.</p>
+          <div id="5494b3ba" class="cell" data-execution_count="146">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p>Partiendo del código anterior:</p>
+          <ul>
+            <li>Generar y graficar una serie <strong>ARMA(2,1)</strong> y otra <strong>MA(2)</strong>.<br>
+            </li>
+            <li>Comparar sus ACF y PACF.</li>
+          </ul>
+          <p>Primero empecemos analizando un modelo de <strong><em>MA(2)</em></strong>, con sus respectivos análisis de
+            ACF y PACF.</p>
+        </section>
+        <section id="modelo-ma2" class="level3">
+          <h3 class="anchored" data-anchor-id="modelo-ma2">Modelo MA(2)</h3>
+          <p>En lo que sigue, analizaremos la serie temporal <strong><em>MA(2)</em></strong> graficamente. Para este
+            modelo se requiere dos parámetros, dados por <span class="math inline">\(\theta_{1}\)</span> y <span
+              class="math inline">\(\theta_{2}\)</span>. Para empezar, fijaremos <span
+              class="math inline">\(\theta_{2}\)</span>.</p>
+          <div id="930a183d" class="cell" data-execution_count="147">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p>Veamos ahora la función de autocorrelación de <span class="math inline">\(MA(2)\)</span> correspondiente a
+            las figuras anteriores.</p>
+          <div id="932eec41-ecf4-4173-88eb-3ae539758a6c" class="cell"
+            data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}"
+            data-outputid="bed3b187-e994-4f29-eeb4-95ceeef30857" data-execution_count="13">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p>De igual forma, analicemos la función de autocorrelación parcial de <span
+              class="math inline">\(MA(2)\)</span>.</p>
+          <div id="7301411c-fe81-46d0-9c64-692ae6bbcebb" class="cell"
+            data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}"
+            data-outputid="8f291a9a-917b-4273-980d-a9f9b0a56964" data-execution_count="14">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <section id="análisis-e-interpretación" class="level4">
+            <h4 class="anchored" data-anchor-id="análisis-e-interpretación">Análisis e interpretación</h4>
+            <p><strong><em>Estacionariedad</em></strong> - <em>Teóricamente</em>: cualquier <span
+                class="math inline">\(MA(q)\)</span> es siempre estacionario (la condición de estacionariedad para AR es
+              distinta y no aplica aquí). Por lo tanto, todas las series <span class="math inline">\(MA(2)\)</span>
+              generadas son estacionarias en sentido estricto. - <em>Visualmente</em>: series con coeficientes <span
+                class="math inline">\(\theta\)</span> grandes en magnitud (por ejemplo <span
+                class="math inline">\(±0.9\)</span>, <span class="math inline">\(±0.95\)</span>) pueden mostrar patrones
+              aparentes de dependencia a corto plazo o picos más marcados y de mayor magnitud. Sin embargo, esto no
+              significa no estacionariedad.</p>
+            <p><strong><em>ACF (Autocorrelación)</em></strong> - Para un <span class="math inline">\(MA(2)\)</span>
+              ideal, la ACF debe cortar bruscamente después del lag 2. Es decir: ACF significativa en lags 1 y 2 y
+              aproximadamente nula (fuera de bandas) para lags &gt; 2. - En las realizaciones finitas simuladas vemos
+              ruido muestral: a veces aparecen lags fuera de las bandas por azar, especialmente cuando <span
+                class="math inline">\(|\theta|\)</span> es grande (aumento de varianza muestral). - La ACF muestra
+              mayoritariamente significancia solo en los dos primeros rezagos y luego cae dentro de bandas, eso confirma
+              la estructura <span class="math inline">\(MA(2)\)</span>.</p>
+            <p><strong><em>PACF (Autocorrelación parcial)</em></strong> - En contraste con la ACF, la PACF de un <span
+                class="math inline">\(MA(2)\)</span> no corta de forma nítida en lag 2; en general decae gradualmente
+              (comportamiento típico de un MA es PACF con decaimiento). Es decir: ACF corta en <span
+                class="math inline">\(q\)</span>, PACF decae — regla práctica para identificar <span
+                class="math inline">\(MA(q)\)</span>.</p>
+            <p><strong><em>Efecto del signo y magnitud de <span class="math inline">\(\theta_{1}\)</span> (con <span
+                    class="math inline">\(\theta_{2}\)</span> fijo = 0.3)</em></strong> - <span
+                class="math inline">\(\theta_{1}\)</span> positivo: contribuye a correlaciones positivas en rezagos 1 y
+              (a través de combinaciones) en rezago 2. En la serie, puede observarse una leve suavidad a escala pequeña.
+              - <span class="math inline">\(\theta_{1}\)</span> negativo: tiende a producir correlaciones negativas en
+              el rezago 1; dependiendo del signo y magnitud de <span class="math inline">\(\theta_{2}\)</span>, pueden
+              aparecer oscilaciones a muy corto plazo. - Magnitud grande (<span
+                class="math inline">\(|\theta_{1}|\)</span> cercano a 1): aumenta la varianza de la serie y la
+              influencia de los choques recientes; la ACF en los primeros dos lags es más pronunciada.</p>
+            <p><strong><em>Conclusiones</em></strong> - Confirmación estructural: los ACF muestran corte aproximadamente
+              en lag 2 y PACF decaimiento, entonces los gráficos coinciden con un <span
+                class="math inline">\(MA(2)\)</span>. - Dependencia de parámetros: al aumentar <span
+                class="math inline">\(\theta_{1}\)</span> la ACF en lags 1 y 2 se hace más evidente; con <span
+                class="math inline">\(\theta_{1}\)</span> negativo debemos controlar el signo de lag 1. -
+              Estacionariedad práctica: todas estacionarias por construcción, pero las de mayor magnitud pueden
+              aparentar “dependencia” fuerte.</p>
+            <p>En lo que sigue, repite la simulación muchas veces para cada par (<span
+                class="math inline">\(\theta_{1}\)</span>,<span class="math inline">\(\theta_{2}\)</span>), calcula
+              promedios y medidas de variabilidad (desvío estándar) de estadísticas relevantes (media, varianza, ACF y
+              PACF por rezago).</p>
+            <div id="87f27305" class="cell" data-message="false" data-execution_count="16">
+              <div class="cell-output cell-output-display" data-execution_count="16">
+                <div>
+
+
+                  <table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+                    <thead>
+                      <tr class="header">
+                        <th data-quarto-table-cell-role="th"></th>
+                        <th data-quarto-table-cell-role="th">theta1</th>
+                        <th data-quarto-table-cell-role="th">theta2</th>
+                        <th data-quarto-table-cell-role="th">n_sims</th>
+                        <th data-quarto-table-cell-role="th">mean_of_means</th>
+                        <th data-quarto-table-cell-role="th">std_of_means</th>
+                        <th data-quarto-table-cell-role="th">mean_of_vars</th>
+                        <th data-quarto-table-cell-role="th">std_of_vars</th>
+                        <th data-quarto-table-cell-role="th">mean_adf_stat</th>
+                        <th data-quarto-table-cell-role="th">mean_adf_pval</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="odd">
+                        <th data-quarto-table-cell-role="th">0</th>
+                        <td>-0.95</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>0.000119</td>
+                        <td>0.004415</td>
+                        <td>1.902363</td>
+                        <td>0.187671</td>
+                        <td>-8.832698</td>
+                        <td>3.310854e-08</td>
+                      </tr>
+                      <tr class="even">
+                        <th data-quarto-table-cell-role="th">1</th>
+                        <td>-0.90</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>0.000020</td>
+                        <td>0.006205</td>
+                        <td>1.793740</td>
+                        <td>0.204662</td>
+                        <td>-9.228208</td>
+                        <td>2.277945e-08</td>
+                      </tr>
+                      <tr class="odd">
+                        <th data-quarto-table-cell-role="th">2</th>
+                        <td>-0.80</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>-0.000594</td>
+                        <td>0.010937</td>
+                        <td>1.642853</td>
+                        <td>0.163576</td>
+                        <td>-9.953918</td>
+                        <td>6.598384e-07</td>
+                      </tr>
+                      <tr class="even">
+                        <th data-quarto-table-cell-role="th">3</th>
+                        <td>-0.70</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>-0.000463</td>
+                        <td>0.017858</td>
+                        <td>1.488838</td>
+                        <td>0.141471</td>
+                        <td>-11.221103</td>
+                        <td>1.932433e-06</td>
+                      </tr>
+                      <tr class="odd">
+                        <th data-quarto-table-cell-role="th">4</th>
+                        <td>-0.60</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>-0.001020</td>
+                        <td>0.024043</td>
+                        <td>1.376416</td>
+                        <td>0.136761</td>
+                        <td>-12.637291</td>
+                        <td>1.420207e-06</td>
+                      </tr>
+                      <tr class="even">
+                        <th data-quarto-table-cell-role="th">5</th>
+                        <td>-0.50</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>0.001708</td>
+                        <td>0.029715</td>
+                        <td>1.262560</td>
+                        <td>0.116593</td>
+                        <td>-13.649931</td>
+                        <td>1.155604e-04</td>
+                      </tr>
+                      <tr class="odd">
+                        <th data-quarto-table-cell-role="th">6</th>
+                        <td>-0.40</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>-0.003034</td>
+                        <td>0.034613</td>
+                        <td>1.174939</td>
+                        <td>0.107974</td>
+                        <td>-15.012551</td>
+                        <td>1.541491e-08</td>
+                      </tr>
+                      <tr class="even">
+                        <th data-quarto-table-cell-role="th">7</th>
+                        <td>-0.30</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>-0.005058</td>
+                        <td>0.043765</td>
+                        <td>1.099349</td>
+                        <td>0.094162</td>
+                        <td>-16.100777</td>
+                        <td>8.552719e-06</td>
+                      </tr>
+                      <tr class="odd">
+                        <th data-quarto-table-cell-role="th">8</th>
+                        <td>-0.20</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>-0.000149</td>
+                        <td>0.045664</td>
+                        <td>1.043163</td>
+                        <td>0.092950</td>
+                        <td>-17.419750</td>
+                        <td>2.387407e-05</td>
+                      </tr>
+                      <tr class="even">
+                        <th data-quarto-table-cell-role="th">9</th>
+                        <td>-0.10</td>
+                        <td>0.0</td>
+                        <td>200</td>
+                        <td>0.000248</td>
+                        <td>0.056209</td>
+                        <td>1.008716</td>
+                        <td>0.076811</td>
+                        <td>-16.869172</td>
+                        <td>3.442620e-06</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+            <p>Veamos algunas gráficas de los datos obtenidos</p>
+            <div id="46c07a64-2386-4785-9896-522053a63a33" class="cell"
+              data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}"
+              data-outputid="9ec24e1c-737a-48e7-d185-2347b0b9503d" data-execution_count="17">
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="análisis-estadístico-de-los-resultados-obtenidos" class="level4">
+            <h4 class="anchored" data-anchor-id="análisis-estadístico-de-los-resultados-obtenidos">Análisis estadístico
+              de los resultados obtenidos</h4>
+            <p>La simulación repitió 200 veces cada proceso <span class="math inline">\(MA(2)\)</span> con <span
+                class="math inline">\(n=300\)</span> observaciones por serie, para los siguientes pares de parámetros:
+            </p>
+            <p>En cada repetición se calculó: * la media muestral * la varianza muestral</p>
+            <p>Luego se promediaron estos valores a lo largo de las 200 simulaciones.</p>
+            <p>Los resultados finales fueron:</p>
+            <table class="caption-top table">
+              <thead>
+                <tr class="header">
+                  <th>θ₁</th>
+                  <th>θ₂</th>
+                  <th>mean(mean)</th>
+                  <th>std(mean)</th>
+                  <th>mean(var)</th>
+                  <th>std(var)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd">
+                  <td>-0.5</td>
+                  <td>-0.3</td>
+                  <td>-0.000409</td>
+                  <td>0.012632</td>
+                  <td>1.343997</td>
+                  <td>0.120501</td>
+                </tr>
+                <tr class="even">
+                  <td>-0.5</td>
+                  <td>0.3</td>
+                  <td>0.002494</td>
+                  <td>0.043904</td>
+                  <td>1.325075</td>
+                  <td>0.132814</td>
+                </tr>
+                <tr class="odd">
+                  <td>0.5</td>
+                  <td>-0.3</td>
+                  <td>0.001605</td>
+                  <td>0.063878</td>
+                  <td>1.328939</td>
+                  <td>0.127068</td>
+                </tr>
+                <tr class="even">
+                  <td>0.5</td>
+                  <td>0.3</td>
+                  <td>-0.008006</td>
+                  <td>0.108349</td>
+                  <td>1.322943</td>
+                  <td>0.132141</td>
+                </tr>
+              </tbody>
+            </table>
+            <ol type="1">
+              <li><strong><em>Comportamiento de las medias</em></strong></li>
+            </ol>
+            <p>Recordemos que para un proceso MA(2) sin término constante:</p>
+            <p><span class="math display">\[
+                X_{t} = \epsilon_{t} + \theta_{1}\epsilon_{t-1} + \theta_{2}\epsilon_{t-2}
+                \]</span></p>
+            <p>con <span class="math inline">\(\epsilon_{t} \sim N(0,1)\)</span>, la media teórica es cero.</p>
+            <ul>
+              <li>Resultados observados
+                <ul>
+                  <li>En todos los casos, el promedio de las medias simuladas está extremadamente cerca de 0 (entre
+                    −0.008 y +0.002).</li>
+                  <li>Esto indica que el estimador de la media es insesgado, como se esperaba.</li>
+                </ul>
+              </li>
+              <li>Variabilidad de las medias (<code>std(mean)</code>)
+                <ul>
+                  <li>La variabilidad es más baja cuando (<span class="math inline">\(\theta_{1}\)</span>,<span
+                      class="math inline">\(\theta_{2}\)</span>) son ambos negativos → <span class="math inline">\(\sim
+                      0.013\)</span>.</li>
+                  <li>La variabilidad aumenta al introducir signos diferentes o valores positivos.</li>
+                  <li>El caso más variable es <span class="math inline">\((0.5,0.3)\)</span> → <code>std(mean)</code>
+                    <span class="math inline">\(≈ 0.108\)</span>.</li>
+                </ul>
+              </li>
+            </ul>
+            <p>Interpretación: Ciertos parámetros producen procesos con más persistencia en la dependencia a corto
+              plazo, lo que genera series con mayor variabilidad en sus medias entre simulaciones.</p>
+            <ol start="2" type="1">
+              <li><strong><em>Comportamiento de la varianza</em></strong></li>
+            </ol>
+            <p>La varianza teórica del proceso <span class="math inline">\(MA(2)\)</span> es:</p>
+            <p><span class="math display">\[
+                Var(X_{t}) = 1 + \theta_{1}^{2} + \theta_{2}^{2}
+                \]</span></p>
+            <p>Para todos los casos:</p>
+            <p><span class="math display">\[
+                1 + 0.5^{2} + 0.3^{2} = 1 + 0.25 + 0.09 = 1.34
+                \]</span></p>
+            <p>Resultados observados:</p>
+            <table class="caption-top table">
+              <thead>
+                <tr class="header">
+                  <th>θ₁</th>
+                  <th>θ₂</th>
+                  <th>var teórica</th>
+                  <th>mean(var) simulada</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd">
+                  <td>cualquiera</td>
+                  <td>cualquiera</td>
+                  <td>1.34</td>
+                  <td>entre 1.322 y 1.344</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>La coincidencia es excelente, con desviaciones de menos del 2%.</p>
+            <ul>
+              <li>Esto confirma:
+                <ul>
+                  <li>la simulación está bien implementada,</li>
+                  <li>el proceso estimado converge correctamente a la teoría,</li>
+                  <li>el tamaño de muestra <span class="math inline">\(n=300\)</span> es suficiente para estimar bien la
+                    varianza.</li>
+                </ul>
+              </li>
+              <li>Variabilidad de la varianza (<code>std(var)</code>)
+                <ul>
+                  <li>Los valores están entre 0.12 y 0.13, todos muy similares.</li>
+                </ul>
+              </li>
+            </ul>
+            <p>Interpretación: La estimación de la varianza es relativamente estable entre simulaciones, sin depender
+              fuertemente de los signos o valores de <span class="math inline">\(\theta_{1}\)</span>, <span
+                class="math inline">\(\theta_{2}\)</span>.</p>
+            <ol start="3" type="1">
+              <li><strong><em>Efecto del signo de los parámetros</em></strong></li>
+            </ol>
+            <p>El cambio más claro aparece en la variabilidad de la media (<code>std(mean)</code>): * Cuando ambos
+              parámetros son negativos, la serie parece más “equilibrada”, con poca persistencia → menor varianza en las
+              medias entre simulaciones. * Cuando ambos parámetros son positivos → mayor acumulación de efectos → mayor
+              variabilidad.</p>
+            <p>Esto es intuitivo: La estructura MA puede generar valores más extremados cuando los efectos de shocks
+              previos se suman en el mismo sentido.</p>
+            <ol start="4" type="1">
+              <li><strong><em>Conclusiones generales</em></strong></li>
+            </ol>
+            <ul>
+              <li>Los resultados concuerdan perfectamente con la teoría <span class="math inline">\(MA(2)\)</span>.</li>
+              <li>Las medias son aproximadamente cero, como debe ser.</li>
+              <li>La varianza simulada coincide con la varianza teórica: <span class="math display">\[
+                  Var(X_{t}) = 1 + \theta_{1}^{2} + \theta_{2}^{2} = 1.34
+                  \]</span></li>
+              <li>Las diferencias más notables entre configuraciones se observan en:
+                <ul>
+                  <li>la variabilidad en las medias, que es menor cuando los coeficientes son negativos,</li>
+                  <li>ligeras diferencias en la variabilidad de la varianza, aunque mucho menores.</li>
+                </ul>
+              </li>
+              <li>En términos de estabilidad: El caso <span
+                  class="math inline">\((\theta_{1},\theta_{2})=(-0.5,-0.3)\)</span> produce las series más estables
+                (menor variación entre simulaciones).El caso <span class="math inline">\((-0.5,-0.3)\)</span> produce la
+                mayor variabilidad en las medias → proceso más sensible a los shocks.</li>
+            </ul>
+          </section>
+          <section id="analisis-gráficos-de-promedios" class="level4">
+            <h4 class="anchored" data-anchor-id="analisis-gráficos-de-promedios">Analisis gráficos de promedios</h4>
+            <p>En lo que sigue, realizaremos un último análisis del modelo <span class="math inline">\(MA(2)\)</span> *
+              ACF promedio por <span class="math inline">\(\theta_{2}\)</span>: figura con muchas curvas (una por cada
+              <span class="math inline">\(\theta_{1}\)</span>). - Para un <span class="math inline">\(MA(2)\)</span>
+              esperado, la ACF debe ser significativa en los lags 1 y 2 y cercana a 0 para lags &gt; 2. - En las curvas
+              promedio debe notarse esa caída brusca después del lag 2; la intensidad en lags 1 y 2 variará con <span
+                class="math inline">\(\theta_{1}\)</span>. * PACF promedio por <span
+                class="math inline">\(\theta_{2}\)</span>: decaimiento gradual (no corte nítido), típico de <span
+                class="math inline">\(MA(q)\)</span>. * Boxplots de medias por <span
+                class="math inline">\(\theta_{1}\)</span> (para cada <span class="math inline">\(\theta_{2}\)</span>):
+              muestran la variabilidad entre réplicas de la media muestral. - Deben agruparse alrededor de 0. * Boxplots
+              de varianzas por <span class="math inline">\(\theta_{1}\)</span>: muestran la variabilidad entre réplicas
+              de la varianza. - La varianza teórica es $1 + <em>{1}^{2} + </em>{2}^{2} $.</p>
+            <div id="a12cee1f" class="cell" data-execution_count="20">
+              <div class="cell-output cell-output-display" data-execution_count="20">
+                <style type="text/css">
+                </style>
+
+                <div id="T_20580" class="quarto-float quarto-figure quarto-figure-center anchored"
+                  data-quarto-postprocess="true">
+                  <figure class="quarto-float quarto-float-tbl figure">
+                    <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl"
+                      id="T_20580-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+                      Table&nbsp;1: Resumen de simulaciones MA(2) – primeras 10 combinaciones
+                    </figcaption>
+                    <div aria-describedby="T_20580-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+                      <table id="T_20580" class="caption-top table table-sm table-striped small">
+                        <thead>
+                          <tr class="header">
+                            <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+                            <th id="T_20580_level0_col0" class="col_heading level0 col0"
+                              data-quarto-table-cell-role="th">theta2</th>
+                            <th id="T_20580_level0_col1" class="col_heading level0 col1"
+                              data-quarto-table-cell-role="th">theta1</th>
+                            <th id="T_20580_level0_col2" class="col_heading level0 col2"
+                              data-quarto-table-cell-role="th">mean_of_means</th>
+                            <th id="T_20580_level0_col3" class="col_heading level0 col3"
+                              data-quarto-table-cell-role="th">std_of_means</th>
+                            <th id="T_20580_level0_col4" class="col_heading level0 col4"
+                              data-quarto-table-cell-role="th">mean_of_vars</th>
+                            <th id="T_20580_level0_col5" class="col_heading level0 col5"
+                              data-quarto-table-cell-role="th">std_of_vars</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="odd">
+                            <th id="T_20580_level0_row0" class="row_heading level0 row0"
+                              data-quarto-table-cell-role="th">0</th>
+                            <td id="T_20580_row0_col0" class="data row0 col0">0.0000</td>
+                            <td id="T_20580_row0_col1" class="data row0 col1">-0.9500</td>
+                            <td id="T_20580_row0_col2" class="data row0 col2">-0.0004</td>
+                            <td id="T_20580_row0_col3" class="data row0 col3">0.0042</td>
+                            <td id="T_20580_row0_col4" class="data row0 col4">1.9152</td>
+                            <td id="T_20580_row0_col5" class="data row0 col5">0.1898</td>
+                          </tr>
+                          <tr class="even">
+                            <th id="T_20580_level0_row1" class="row_heading level0 row1"
+                              data-quarto-table-cell-role="th">1</th>
+                            <td id="T_20580_row1_col0" class="data row1 col0">0.0000</td>
+                            <td id="T_20580_row1_col1" class="data row1 col1">-0.9000</td>
+                            <td id="T_20580_row1_col2" class="data row1 col2">0.0004</td>
+                            <td id="T_20580_row1_col3" class="data row1 col3">0.0064</td>
+                            <td id="T_20580_row1_col4" class="data row1 col4">1.8007</td>
+                            <td id="T_20580_row1_col5" class="data row1 col5">0.1871</td>
+                          </tr>
+                          <tr class="odd">
+                            <th id="T_20580_level0_row2" class="row_heading level0 row2"
+                              data-quarto-table-cell-role="th">2</th>
+                            <td id="T_20580_row2_col0" class="data row2 col0">0.0000</td>
+                            <td id="T_20580_row2_col1" class="data row2 col1">-0.8000</td>
+                            <td id="T_20580_row2_col2" class="data row2 col2">0.0001</td>
+                            <td id="T_20580_row2_col3" class="data row2 col3">0.0112</td>
+                            <td id="T_20580_row2_col4" class="data row2 col4">1.6277</td>
+                            <td id="T_20580_row2_col5" class="data row2 col5">0.1736</td>
+                          </tr>
+                          <tr class="even">
+                            <th id="T_20580_level0_row3" class="row_heading level0 row3"
+                              data-quarto-table-cell-role="th">3</th>
+                            <td id="T_20580_row3_col0" class="data row3 col0">0.0000</td>
+                            <td id="T_20580_row3_col1" class="data row3 col1">-0.7000</td>
+                            <td id="T_20580_row3_col2" class="data row3 col2">-0.0007</td>
+                            <td id="T_20580_row3_col3" class="data row3 col3">0.0172</td>
+                            <td id="T_20580_row3_col4" class="data row3 col4">1.4962</td>
+                            <td id="T_20580_row3_col5" class="data row3 col5">0.1494</td>
+                          </tr>
+                          <tr class="odd">
+                            <th id="T_20580_level0_row4" class="row_heading level0 row4"
+                              data-quarto-table-cell-role="th">4</th>
+                            <td id="T_20580_row4_col0" class="data row4 col0">0.0000</td>
+                            <td id="T_20580_row4_col1" class="data row4 col1">-0.6000</td>
+                            <td id="T_20580_row4_col2" class="data row4 col2">-0.0011</td>
+                            <td id="T_20580_row4_col3" class="data row4 col3">0.0240</td>
+                            <td id="T_20580_row4_col4" class="data row4 col4">1.3633</td>
+                            <td id="T_20580_row4_col5" class="data row4 col5">0.1298</td>
+                          </tr>
+                          <tr class="even">
+                            <th id="T_20580_level0_row5" class="row_heading level0 row5"
+                              data-quarto-table-cell-role="th">5</th>
+                            <td id="T_20580_row5_col0" class="data row5 col0">0.0000</td>
+                            <td id="T_20580_row5_col1" class="data row5 col1">-0.5000</td>
+                            <td id="T_20580_row5_col2" class="data row5 col2">-0.0023</td>
+                            <td id="T_20580_row5_col3" class="data row5 col3">0.0294</td>
+                            <td id="T_20580_row5_col4" class="data row5 col4">1.2701</td>
+                            <td id="T_20580_row5_col5" class="data row5 col5">0.1217</td>
+                          </tr>
+                          <tr class="odd">
+                            <th id="T_20580_level0_row6" class="row_heading level0 row6"
+                              data-quarto-table-cell-role="th">6</th>
+                            <td id="T_20580_row6_col0" class="data row6 col0">0.0000</td>
+                            <td id="T_20580_row6_col1" class="data row6 col1">-0.4000</td>
+                            <td id="T_20580_row6_col2" class="data row6 col2">0.0005</td>
+                            <td id="T_20580_row6_col3" class="data row6 col3">0.0335</td>
+                            <td id="T_20580_row6_col4" class="data row6 col4">1.1713</td>
+                            <td id="T_20580_row6_col5" class="data row6 col5">0.1053</td>
+                          </tr>
+                          <tr class="even">
+                            <th id="T_20580_level0_row7" class="row_heading level0 row7"
+                              data-quarto-table-cell-role="th">7</th>
+                            <td id="T_20580_row7_col0" class="data row7 col0">0.0000</td>
+                            <td id="T_20580_row7_col1" class="data row7 col1">-0.3000</td>
+                            <td id="T_20580_row7_col2" class="data row7 col2">-0.0049</td>
+                            <td id="T_20580_row7_col3" class="data row7 col3">0.0420</td>
+                            <td id="T_20580_row7_col4" class="data row7 col4">1.0967</td>
+                            <td id="T_20580_row7_col5" class="data row7 col5">0.0954</td>
+                          </tr>
+                          <tr class="odd">
+                            <th id="T_20580_level0_row8" class="row_heading level0 row8"
+                              data-quarto-table-cell-role="th">8</th>
+                            <td id="T_20580_row8_col0" class="data row8 col0">0.0000</td>
+                            <td id="T_20580_row8_col1" class="data row8 col1">-0.2000</td>
+                            <td id="T_20580_row8_col2" class="data row8 col2">-0.0021</td>
+                            <td id="T_20580_row8_col3" class="data row8 col3">0.0490</td>
+                            <td id="T_20580_row8_col4" class="data row8 col4">1.0429</td>
+                            <td id="T_20580_row8_col5" class="data row8 col5">0.0887</td>
+                          </tr>
+                          <tr class="even">
+                            <th id="T_20580_level0_row9" class="row_heading level0 row9"
+                              data-quarto-table-cell-role="th">9</th>
+                            <td id="T_20580_row9_col0" class="data row9 col0">0.0000</td>
+                            <td id="T_20580_row9_col1" class="data row9 col1">-0.1000</td>
+                            <td id="T_20580_row9_col2" class="data row9 col2">-0.0012</td>
+                            <td id="T_20580_row9_col3" class="data row9 col3">0.0533</td>
+                            <td id="T_20580_row9_col4" class="data row9 col4">1.0175</td>
+                            <td id="T_20580_row9_col5" class="data row9 col5">0.0842</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <p>Veamos las gráficas. Primero analicemos el ACF promedio.</p>
+            <div id="d713ae75-8387-4c4a-9ad1-31e5cb73c88f" class="cell"
+              data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}"
+              data-outputid="c2d7c2b8-3e96-427e-c862-402ee5ae0158" data-execution_count="21">
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-20-output-2.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-20-output-3.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <p>Luego, grafiquemos el PCAF promedio.</p>
+            <div id="c4ae734d-99c4-4146-bc3f-b3167b93a539" class="cell"
+              data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}"
+              data-outputid="fdaf9460-dde2-48c8-b9e1-89906251ea4f" data-execution_count="22">
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-21-output-2.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-21-output-3.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <p>Por último, las distribuciones de las medias y las variancias.</p>
+            <div id="b514dca9-43d3-4a9b-896c-a76742cca994" class="cell"
+              data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}"
+              data-outputid="428de70c-2a3f-415e-e404-133e33cad7e5" data-execution_count="23">
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-22-output-2.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+              <div class="cell-output cell-output-display">
+                <div>
+                  <figure class="figure">
+                    <p><img src="reporte_files/figure-html/cell-22-output-3.png" class="img-fluid figure-img"></p>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+        <section id="modelo-arma21" class="level3">
+          <h3 class="anchored" data-anchor-id="modelo-arma21">Modelo ARMA(2,1)</h3>
+          <p>En lo que sigue, analizaremos la serie temporal <strong><em>ARMA(2,1)</em></strong> gráficamente y lo
+            compararemos con el modelo <span class="math inline">\(MA(2)\)</span>.</p>
+          <div id="f335c78b-fd85-4c0b-81ea-9d72415ebb9f" class="cell"
+            data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}"
+            data-outputid="29e90642-ae55-4d87-f499-baa30b6b7275" data-execution_count="24">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p>En lo que sigue, repasemos un ejemplo de modelo <span class="math inline">\(MA(2)\)</span></p>
+          <div id="7c7bce7d-e16d-448e-8d2e-9e08ede8ff50" class="cell"
+            data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:307}}"
+            data-outputid="65a4f502-01f1-444a-f79d-4863e7772154" data-execution_count="25">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p>Entonces, lo que podemos hacer a continuación es una comparación AFC y DAFC entre las diferentes series.
+          </p>
+          <div id="bdc335ad-1f2b-4bd2-8809-99779cbd1b4f" class="cell"
+            data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:707}}"
+            data-outputid="0fffa779-508e-40dc-8837-c95b99ee4f12" data-execution_count="26">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-25-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <section id="análisis-de-la-comparacion-entre-arma21-y-ma2" class="level4">
+            <h4 class="anchored" data-anchor-id="análisis-de-la-comparacion-entre-arma21-y-ma2">Análisis de la
+              comparacion entre ARMA(2,1) y MA(2)</h4>
+            <p>A continuación analizaremos las series generadas y la comparación ACF/PACF entre un <span
+                class="math inline">\(ARMA(2,1)\)</span> (con los parámetros elegidos) y un <span
+                class="math inline">\(MA(2)\)</span>.</p>
+            <ol type="1">
+              <li><strong><em>Comportamiento temporal de las series (visual)</em></strong></li>
+            </ol>
+            <ul>
+              <li><span class="math inline">\(ARMA(2,1)\)</span>:
+                <ul>
+                  <li>La componente <span class="math inline">\(AR(2)\)</span> (<span
+                      class="math inline">\(\phi_{1}\)</span>, <span class="math inline">\(\phi_{2}\)</span>) gobierna
+                    la memoria y las posibles oscilaciones o suavidad de la serie.</li>
+                  <li>Con <span class="math inline">\(\phi_{1}\)</span> positivo y <span
+                      class="math inline">\(\phi_{2}\)</span> negativo (como en el ejemplo <span
+                      class="math inline">\(\phi_{2}\)</span> = −0.3), es común obtener decaimiento con oscilaciones
+                    amortiguadas — es decir, alternancia de signos en la serie con amplitud que va decreciendo.</li>
+                  <li>El término <span class="math inline">\(MA(1)\)</span> (<span class="math inline">\(\theta_{1} =
+                      0.5\)</span>) añade respuesta inmediata a choques pasados (ruido), haciendo la serie algo menos
+                    “limpia” que un AR puro.</li>
+                </ul>
+              </li>
+              <li><span class="math inline">\(MA(2)\)</span>:
+                <ul>
+                  <li>Es una serie con dependencia a corto plazo: cada observación es combinación lineal de choques
+                    actuales y los dos anteriores.</li>
+                  <li>Visualmente suele verse más “localmente correlacionada” en lags cortos, pero sin la larga memoria
+                    que un AR con coeficientes cercanos a 1 puede mostrar.</li>
+                </ul>
+              </li>
+            </ul>
+            <ol start="2" type="1">
+              <li><strong><em>ACF (autocorrelación)</em></strong></li>
+            </ol>
+            <ul>
+              <li><span class="math inline">\(MA(2)\)</span>:(modelo puro MA con <span
+                  class="math inline">\(q=2\)</span>):
+                <ul>
+                  <li>ACF corta después del lag 2: es decir, en teoría la ACF será distinta de cero (significativa) para
+                    lags 1 y 2, y aproximadamente 0 para lags &gt; 2 (salvo ruido muestral).</li>
+                </ul>
+              </li>
+              <li><span class="math inline">\(ARMA(2,1)\)</span>:
+                <ul>
+                  <li>ACF no corta abruptamente: decae de forma gradual (exponencial o oscilatoria según los signos de
+                    <span class="math inline">\(\phi_{1}\)</span>/<span class="math inline">\(\phi_{2}\)</span>).</li>
+                  <li>La componente <span class="math inline">\(MA(1)\)</span> puede “distorsionar” la forma de la ACF
+                    en los primeros lags, pero la cola de la ACF la domina la parte AR.</li>
+                  <li>Por tanto, si vemos una ACF que decae pero NO corta en lag 2, debemos sospechar AR o ARMA.</li>
+                </ul>
+              </li>
+            </ul>
+            <ol start="3" type="1">
+              <li><strong><em>PACF (autocorrelación parcial)</em></strong></li>
+            </ol>
+            <ul>
+              <li><span class="math inline">\(MA(2)\)</span>:
+                <ul>
+                  <li>La PACF decae gradualmente; no corta en lag <span class="math inline">\(q\)</span> (esa propiedad
+                    es propia de ACF para MA). Por eso la PACF de un MA se ve como una cola decreciente/no nula.</li>
+                </ul>
+              </li>
+              <li><span class="math inline">\(ARMA(2,1)\)</span>:
+                <ul>
+                  <li>Para un <span class="math inline">\(AR(2)\)</span> puro la PACF corta en lag 2 (valores
+                    significativos en lags 1 y 2, luego aproximadamente 0).</li>
+                  <li>En <span class="math inline">\(ARMA(2,1)\)</span>, la PACF generalmente seguirá mostrando picos en
+                    los primeros dos rezagos (<span class="math inline">\(p=2\)</span>) porque la parte AR es de orden
+                    2; el componente <span class="math inline">\(MA(1)\)</span> altera ligeramente las alturas, pero no
+                    cambia el corte teórico en <span class="math inline">\(p\)</span> (en promedio).</li>
+                </ul>
+              </li>
+            </ul>
+            <ol start="4" type="1">
+              <li><strong><em>Identificación práctica (regla mnemotécnica)</em></strong></li>
+            </ol>
+            <ul>
+              <li>Si ACF corta en <span class="math inline">\(q\)</span> y PACF decae → <span
+                  class="math inline">\(MA(q)\)</span>.</li>
+              <li>Si PACF corta en <span class="math inline">\(p\)</span> y ACF decae → <span
+                  class="math inline">\(AR(p)\)</span>.</li>
+              <li>Si ninguna corta nítidamente → debemos probar <span class="math inline">\(ARMA(p,q)\)</span> o revisar
+                mezcla de términos.</li>
+            </ul>
+            <p>Aplicado a nuestras simulaciones concretas:</p>
+            <ul>
+              <li>La serie <span class="math inline">\(MA(2)\)</span> que generamos (<code>theta1_ma2=0.5</code>,
+                <code>theta2_ma2=0.3</code>) muestran ACF con picos en lags 1 y 2 y luego cerca de 0; la PACF muestra un
+                decaimiento.</li>
+              <li>La serie <span class="math inline">\(ARMA(2,1)\)</span> (ej. <span
+                  class="math inline">\(\phi_{1}=0.7\)</span>, <span class="math inline">\(\phi_{2}=-03\)</span>, <span
+                  class="math inline">\(\theta_{1} = 0.5\)</span>) muestra PACF con picos en lag 1 y 2 (corte teórico en
+                2) y ACF con decaimiento (posiblemente oscilatorio por <span class="math inline">\(\phi_{2}\)</span>
+                negativo), pero con alguna distorsión en lag 1 por el <span class="math inline">\(\theta_{1}\)</span>.
+              </li>
+            </ul>
+            <p>A continuación, analizaremos la diferencia cuantitativa entre ACF/PACF (por ejemplo, norma de la cola)
+              para decidir si una serie parece <span class="math inline">\(MA(2)\)</span> o <span
+                class="math inline">\(ARMA(2,1)\)</span>. Primero, debemos definir algunas funciones de utilidad.</p>
+            <p>Luego, realizamos la clasificación.</p>
+            <div id="0a207cbb" class="cell" data-execution_count="29">
+              <div class="cell-output cell-output-display" data-execution_count="29">
+                <style type="text/css">
+                </style>
+
+                <table id="T_a3baa" class="caption-top table table-sm table-striped small">
+                  <thead>
+                    <tr class="header">
+                      <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+                      <th id="T_a3baa_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">
+                        model</th>
+                      <th id="T_a3baa_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">
+                        n_sims</th>
+                      <th id="T_a3baa_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">
+                        mean_acf_tail_norm</th>
+                      <th id="T_a3baa_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">
+                        std_acf_tail_norm</th>
+                      <th id="T_a3baa_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">
+                        mean_pacf_tail_norm</th>
+                      <th id="T_a3baa_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">
+                        std_pacf_tail_norm</th>
+                      <th id="T_a3baa_level0_col6" class="col_heading level0 col6" data-quarto-table-cell-role="th">
+                        mean_ratio</th>
+                      <th id="T_a3baa_level0_col7" class="col_heading level0 col7" data-quarto-table-cell-role="th">
+                        std_ratio</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="odd">
+                      <th id="T_a3baa_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">0
+                      </th>
+                      <td id="T_a3baa_row0_col0" class="data row0 col0">ARMA(2,1)</td>
+                      <td id="T_a3baa_row0_col1" class="data row0 col1">80</td>
+                      <td id="T_a3baa_row0_col2" class="data row0 col2">0.4436</td>
+                      <td id="T_a3baa_row0_col3" class="data row0 col3">0.0898</td>
+                      <td id="T_a3baa_row0_col4" class="data row0 col4">0.4254</td>
+                      <td id="T_a3baa_row0_col5" class="data row0 col5">0.0469</td>
+                      <td id="T_a3baa_row0_col6" class="data row0 col6">1.0527</td>
+                      <td id="T_a3baa_row0_col7" class="data row0 col7">0.2367</td>
+                    </tr>
+                    <tr class="even">
+                      <th id="T_a3baa_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">1
+                      </th>
+                      <td id="T_a3baa_row1_col0" class="data row1 col0">MA(2)</td>
+                      <td id="T_a3baa_row1_col1" class="data row1 col1">80</td>
+                      <td id="T_a3baa_row1_col2" class="data row1 col2">0.3841</td>
+                      <td id="T_a3baa_row1_col3" class="data row1 col3">0.0759</td>
+                      <td id="T_a3baa_row1_col4" class="data row1 col4">0.3567</td>
+                      <td id="T_a3baa_row1_col5" class="data row1 col5">0.0415</td>
+                      <td id="T_a3baa_row1_col6" class="data row1 col6">1.0832</td>
+                      <td id="T_a3baa_row1_col7" class="data row1 col7">0.2096</td>
+                    </tr>
+                    <tr class="odd">
+                      <th id="T_a3baa_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">2
+                      </th>
+                      <td id="T_a3baa_row2_col0" class="data row2 col0">AR(2) control</td>
+                      <td id="T_a3baa_row2_col1" class="data row2 col1">80</td>
+                      <td id="T_a3baa_row2_col2" class="data row2 col2">0.3984</td>
+                      <td id="T_a3baa_row2_col3" class="data row2 col3">0.0864</td>
+                      <td id="T_a3baa_row2_col4" class="data row2 col4">0.3223</td>
+                      <td id="T_a3baa_row2_col5" class="data row2 col5">0.0421</td>
+                      <td id="T_a3baa_row2_col6" class="data row2 col6">1.2420</td>
+                      <td id="T_a3baa_row2_col7" class="data row2 col7">0.2435</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p><strong><em>Resultados numéricos (resumen)</em></strong></p>
+            <p>En la ejecución se obtuvo (valores redondeados): * <span class="math inline">\(ARMA(2,1)\)</span></p>
+            <pre><code>- `mean_acf_tail_norm ≈ 0.444`
+- `mean_pacf_tail_norm ≈ 0.425`
+- `mean_ratio ≈ 1.05`
+
+ clasificación mayoritaria: *ARMA-like* (ambiguous) 
+ (100% en mi corrida con umbrales actuales)</code></pre>
+            <ul>
+              <li>
+                <p><span class="math inline">\(MA(2)\)</span></p>
+                <ul>
+                  <li><code>mean_acf_tail_norm ≈ 0.384</code></li>
+                  <li><code>mean_pacf_tail_norm ≈ 0.357</code></li>
+                  <li><code>mean_ratio ≈ 1.08</code></li>
+                </ul>
+                <p>clasificación mayoritaria: <em>ARMA-like</em> (ambiguous)</p>
+              </li>
+              <li>
+                <p><span class="math inline">\(AR(2)\)</span> control</p>
+                <ul>
+                  <li><code>mean_acf_tail_norm ≈ 0.398</code></li>
+                  <li><code>mean_pacf_tail_norm ≈ 0.322</code></li>
+                  <li><code>mean_ratio ≈ 1.24</code></li>
+                </ul>
+                <p>clasificación mayoritaria: <em>ARMA-like</em> (ambiguous)</p>
+              </li>
+            </ul>
+            <p>En resumen: las normas de cola de ACF y PACF fueron de magnitud similar entre los modelos, y la regla
+              heurística con los umbrales estándar (<code>thresh_low=0.5</code>, <code>thresh_high=2.0</code>) etiquetó
+              la mayoría de las realizaciones como “ARMA-like (ambiguous)” — es decir, no hay una separación clara y
+              contundente con esta métrica simple.</p>
+            <p><strong><em>Interpretación</em></strong></p>
+            <ul>
+              <li>
+                <p>Finite-sample &amp; ruido muestral</p>
+                <ul>
+                  <li>En muestras de longitud n=300, la estimación empírica de ACF/PACF tiene variabilidad. Aunque
+                    teóricamente <span class="math inline">\(MA(2)\)</span> y <span
+                      class="math inline">\(ARMA(2,1)\)</span> tienen estructuras distintas, en realizaciones finitas la
+                    energía en las colas puede quedar parecida, especialmente cuando los parámetros (<span
+                      class="math inline">\(\theta\)</span> y <span class="math inline">\(\phi\)</span>) no son
+                    extremos.</li>
+                </ul>
+              </li>
+              <li>
+                <p>Elección de métricas</p>
+                <ul>
+                  <li>Usar la norma L2 de la cola es razonable pero no siempre discriminante. Si la energía de la cola
+                    (lags &gt; 2) es similar en ambos tipos de modelo, la ratio estará cerca de 1 ⇒ ambigüedad.</li>
+                  <li>Además, la componente <span class="math inline">\(MA(1)\)</span> en <span
+                      class="math inline">\(ARMA(2,1)\)</span> altera la ACF en los primeros lags, lo que puede
+                    compensar en parte la cola, haciéndola parecida a la de un <span
+                      class="math inline">\(MA(2)\)</span> en magnitud.</li>
+                </ul>
+              </li>
+              <li>
+                <p>Umbrales heurísticos</p>
+                <ul>
+                  <li>Los umbrales 0.5 y 2.0 son relativamente amplios; si la ratio ronda 1, la decisión cae en el rango
+                    intermedio (ambiguous). Ajustar umbrales podría forzar decisiones, pero aumentaría riesgo de falsos
+                    positivos.</li>
+                </ul>
+              </li>
+            </ul>
+            <p><strong><em>Conclusiones prácticas</em></strong></p>
+            <ul>
+              <li>La heurística <span class="math inline">\(L2\)</span>-tail es útil como indicador rápido, pero no es
+                suficiente por sí sola para decidir entre <span class="math inline">\(MA(2)\)</span> y <span
+                  class="math inline">\(ARMA(2,1)\)</span> en muestras típicas (<span class="math inline">\(n ≈
+                  300\)</span>), al menos con parámetros moderados.</li>
+              <li>Todas las series resultaron ambiguas con la regla por defecto, lo que es una señal honesta de que la
+                separación no es trivial con este enfoque.</li>
+            </ul>
+          </section>
+        </section>
+      </section>
+      <section id="acf-y-pacf" class="level2">
+        <h2 class="anchored" data-anchor-id="acf-y-pacf">2. ACF y PACF</h2>
+        <p>En lo que sigue, consideremos el siguiente código de la función autocorrelación y la función de
+          autocorrelación parcial.</p>
+        <div id="03809b83" class="cell"
+          data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:314}}"
+          data-outputid="2957b6ba-3caf-4b20-ca8e-4b570e4ae1a5" data-execution_count="30">
+          <div class="cell-output cell-output-display">
+            <div>
+              <figure class="figure">
+                <p><img src="reporte_files/figure-html/cell-29-output-1.png" class="img-fluid figure-img"></p>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <section id="interpretación-de-acf-y-pacf" class="level4">
+          <h4 class="anchored" data-anchor-id="interpretación-de-acf-y-pacf">Interpretación de ACF y PACF</h4>
+          <p>En la simulación ARMA(1,1) realizada anteriormente, la ACF muestra un decaimiento gradual mientras que la
+            PACF presenta un corte pronunciado en el primer rezago. Este patrón es consistente con un proceso con
+            componente AR dominante y es coherente con un modelo ARMA(1,1).</p>
+          <p>A continuación retomamos el flujo del análisis aplicado a series financieras reales.</p>
+        </section>
+      </section>
+      <section id="ajuste-de-modelos-arima" class="level2">
+        <h2 class="anchored" data-anchor-id="ajuste-de-modelos-arima">4. Ajuste de modelos ARIMA</h2>
+        <section id="descarga-de-datos-y-cálculo-de-log-retornos" class="level3">
+          <h3 class="anchored" data-anchor-id="descarga-de-datos-y-cálculo-de-log-retornos">Descarga de datos y cálculo
+            de log-retornos</h3>
+          <p>El siguiente bloque se descargara la series desde Yahoo Finance (SPY), calcula los log-retornos diarios y
+            presenta visualizaciones para inspección rápida.</p>
+          <div id="42ab1de1" class="cell" data-execution_count="109">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-33-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <p><strong><em>Yahoo Finance</em></strong></p>
+          <ul>
+            <li>Es un portal financiero que provee datos bursátiles, históricos y en tiempo real de acciones, ETFs,
+              índices, bonos, divisas y más.</li>
+            <li>Permite acceder a información como precios de apertura, cierre, máximos, mínimos, volumen de
+              negociación, dividendos y splits.</li>
+            <li>Es ampliamente usado por investigadores, analistas y traders, y su API es accesible mediante librerías
+              como yfinance en Python.</li>
+            <li><strong><em>Limitaciones</em></strong>: la API gratuita tiene restricciones de frecuencia de solicitudes
+              (rate limits).</li>
+          </ul>
+          <p><strong><em>SPY (SPDR S&amp;P 500 ETF Trust)</em></strong></p>
+          <ul>
+            <li>Es un ETF que replica el índice S&amp;P 500, compuesto por las 500 mayores empresas de EE.UU.</li>
+            <li>Objetivo: reflejar el rendimiento del mercado estadounidense de gran capitalización.</li>
+            <li>Es uno de los ETFs más líquidos y populares del mundo.</li>
+            <li>Ideal para invertir en diversificación de mercado sin comprar acciones individuales.</li>
+          </ul>
+        </section>
+        <section id="selección-de-modelo-arma" class="level3">
+          <h3 class="anchored" data-anchor-id="selección-de-modelo-arma">Selección de modelo ARMA</h3>
+          <p>Se evaluaron modelos ARMA(p,q) para p,q en {0,1,2} y se seleccionó el mejor modelo según AIC y BIC. A
+            continuación se ajusta el modelo seleccionado y se analizan sus residuos y bondad de ajuste.</p>
+          <div id="f0709e98" class="cell" data-execution_count="122">
+            <div class="cell-output cell-output-display" data-execution_count="122">
+              <style type="text/css">
+              </style>
+
+              <div id="T_ed9f5" class="quarto-float quarto-figure quarto-figure-center anchored"
+                data-quarto-postprocess="true">
+                <figure class="quarto-float quarto-float-tbl figure">
+                  <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl"
+                    id="T_ed9f5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+                    Table&nbsp;2: Comparación de modelos ARMA(p,q) según AIC y BIC
+                  </figcaption>
+                  <div aria-describedby="T_ed9f5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+                    <table id="T_ed9f5" class="caption-top table table-sm table-striped small">
+                      <thead>
+                        <tr class="header">
+                          <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+                          <th id="T_ed9f5_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">
+                            p</th>
+                          <th id="T_ed9f5_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">
+                            q</th>
+                          <th id="T_ed9f5_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">
+                            AIC</th>
+                          <th id="T_ed9f5_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">
+                            BIC</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="odd">
+                          <th id="T_ed9f5_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">
+                            2</th>
+                          <td id="T_ed9f5_row0_col0" class="data row0 col0">0</td>
+                          <td id="T_ed9f5_row0_col1" class="data row0 col1">2</td>
+                          <td id="T_ed9f5_row0_col2" class="data row0 col2">-7324.18</td>
+                          <td id="T_ed9f5_row0_col3" class="data row0 col3">-7303.64</td>
+                        </tr>
+                        <tr class="even">
+                          <th id="T_ed9f5_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">
+                            6</th>
+                          <td id="T_ed9f5_row1_col0" class="data row1 col0">2</td>
+                          <td id="T_ed9f5_row1_col1" class="data row1 col1">0</td>
+                          <td id="T_ed9f5_row1_col2" class="data row1 col2">-7324.16</td>
+                          <td id="T_ed9f5_row1_col3" class="data row1 col3">-7303.62</td>
+                        </tr>
+                        <tr class="odd">
+                          <th id="T_ed9f5_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">
+                            8</th>
+                          <td id="T_ed9f5_row2_col0" class="data row2 col0">2</td>
+                          <td id="T_ed9f5_row2_col1" class="data row2 col1">2</td>
+                          <td id="T_ed9f5_row2_col2" class="data row2 col2">-7323.34</td>
+                          <td id="T_ed9f5_row2_col3" class="data row2 col3">-7292.52</td>
+                        </tr>
+                        <tr class="even">
+                          <th id="T_ed9f5_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">
+                            7</th>
+                          <td id="T_ed9f5_row3_col0" class="data row3 col0">2</td>
+                          <td id="T_ed9f5_row3_col1" class="data row3 col1">1</td>
+                          <td id="T_ed9f5_row3_col2" class="data row3 col2">-7322.13</td>
+                          <td id="T_ed9f5_row3_col3" class="data row3 col3">-7296.45</td>
+                        </tr>
+                        <tr class="odd">
+                          <th id="T_ed9f5_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">
+                            5</th>
+                          <td id="T_ed9f5_row4_col0" class="data row4 col0">1</td>
+                          <td id="T_ed9f5_row4_col1" class="data row4 col1">2</td>
+                          <td id="T_ed9f5_row4_col2" class="data row4 col2">-7320.90</td>
+                          <td id="T_ed9f5_row4_col3" class="data row4 col3">-7295.23</td>
+                        </tr>
+                        <tr class="even">
+                          <th id="T_ed9f5_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">
+                            4</th>
+                          <td id="T_ed9f5_row5_col0" class="data row5 col0">1</td>
+                          <td id="T_ed9f5_row5_col1" class="data row5 col1">1</td>
+                          <td id="T_ed9f5_row5_col2" class="data row5 col2">-7317.69</td>
+                          <td id="T_ed9f5_row5_col3" class="data row5 col3">-7297.15</td>
+                        </tr>
+                        <tr class="odd">
+                          <th id="T_ed9f5_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">
+                            3</th>
+                          <td id="T_ed9f5_row6_col0" class="data row6 col0">1</td>
+                          <td id="T_ed9f5_row6_col1" class="data row6 col1">0</td>
+                          <td id="T_ed9f5_row6_col2" class="data row6 col2">-7315.46</td>
+                          <td id="T_ed9f5_row6_col3" class="data row6 col3">-7300.05</td>
+                        </tr>
+                        <tr class="even">
+                          <th id="T_ed9f5_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">
+                            1</th>
+                          <td id="T_ed9f5_row7_col0" class="data row7 col0">0</td>
+                          <td id="T_ed9f5_row7_col1" class="data row7 col1">1</td>
+                          <td id="T_ed9f5_row7_col2" class="data row7 col2">-7310.14</td>
+                          <td id="T_ed9f5_row7_col3" class="data row7 col3">-7294.73</td>
+                        </tr>
+                        <tr class="odd">
+                          <th id="T_ed9f5_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">
+                            0</th>
+                          <td id="T_ed9f5_row8_col0" class="data row8 col0">0</td>
+                          <td id="T_ed9f5_row8_col1" class="data row8 col1">0</td>
+                          <td id="T_ed9f5_row8_col2" class="data row8 col2">-7287.03</td>
+                          <td id="T_ed9f5_row8_col3" class="data row8 col3">-7276.76</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <section id="modelo-armapq-que-mejor-describe-los-log-retornos" class="level4">
+            <h4 class="anchored" data-anchor-id="modelo-armapq-que-mejor-describe-los-log-retornos">Modelo ARMA(p,q) que
+              mejor describe los log-retornos</h4>
+            <p>Para determinar el orden óptimo de un modelo ARMA(p,q), se suelen utilizar los Criterios de Información
+              de Akaike (AIC) y Bayesiano (BIC). Estos criterios penalizan la complejidad del modelo (mayor número de
+              parámetros) mientras buscan maximizar la bondad de ajuste.</p>
+            <p>Un valor más bajo de AIC o BIC indica un modelo preferido.</p>
+            <p>A partir de los resultados obtenidos:</p>
+            <ul>
+              <li><strong>Mejor modelo según AIC</strong>: <code>ARMA(0, 2)</code> con un AIC de aproximadamente
+                -7324.18</li>
+              <li><strong>Mejor modelo según BIC</strong>: <code>ARMA(0, 2)</code> con un BIC de aproximadamente
+                -7303.64</li>
+            </ul>
+            <p>Ambos criterios coinciden en que el modelo <strong>ARMA(0, 2)</strong>, que es equivalente a un modelo
+              <strong>MA(2)</strong> (media móvil de orden 2), es el que mejor describe los log-retornos de la serie SPY
+              dentro del rango de órdenes evaluado (p,q de 0 a 2).</p>
+            <p>Esto sugiere que la dependencia temporal en los log-retornos es mejor capturada por los errores pasados
+              de hasta dos periodos, más que por los valores pasados de la serie (componente AR).</p>
+          </section>
+        </section>
+      </section>
+      <section id="análisis-de-residuos" class="level2">
+        <h2 class="anchored" data-anchor-id="análisis-de-residuos">5. Análisis de residuos</h2>
+        <div id="303d5355" class="cell" data-execution_count="125">
+          <div class="cell-output cell-output-display">
+            <div>
+              <figure class="figure">
+                <p><img src="reporte_files/figure-html/cell-36-output-1.png" class="img-fluid figure-img"></p>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <p>Los residuos del modelo ajustado se inspeccionan para comprobar ausencia de autocorrelación y comportamiento
+          de ruido blanco. Si se detecta heterocedasticidad, se modela la volatilidad con GARCH para capturar cambios en
+          la varianza condicional.</p>
+        <p>Los residuos no son ruido blanco puro. Aunque el gráfico ACF muestra que no hay correlación lineal (lo cual
+          es positivo), el gráfico temporal revela que la varianza no es constante (hay periodos de mucha volatilidad y
+          otros de calma), un fenómeno llamado heterocedasticidad.</p>
+        <p>Para modelar correctamente esos cambios en la volatilidad, el modelo indicado es de la familia GARCH.</p>
+      </section>
+      <section id="modelo-garch" class="level2">
+        <h2 class="anchored" data-anchor-id="modelo-garch">6. Modelo GARCH</h2>
+        <p>Los modelos GARCH (Generalized Autoregressive Conditional Heteroskedasticity) son una extensión de los
+          modelos ARCH que permiten modelar la volatilidad condicional de series financieras. Son especialmente útiles
+          cuando se detecta heterocedasticidad en los residuos de modelos ARMA/ARIMA.</p>
+        <section id="por-qué-garch" class="level3">
+          <h3 class="anchored" data-anchor-id="por-qué-garch">¿Por qué GARCH?</h3>
+          <p>Como observamos en el análisis de residuos, la varianza de los log-retornos no es constante
+            (heterocedasticidad). Los modelos GARCH capturan este comportamiento permitiendo que la varianza condicional
+            dependa de: - <strong>Errores pasados al cuadrado</strong> (componente ARCH) - <strong>Varianzas
+              condicionales pasadas</strong> (componente GARCH)</p>
+        </section>
+        <section id="elección-del-modelo-garch21" class="level3">
+          <h3 class="anchored" data-anchor-id="elección-del-modelo-garch21">Elección del Modelo GARCH(2,1)</h3>
+          <p>Se eligió un modelo <strong>GARCH(2,1)</strong> donde: - <strong>p=2</strong>: Dos términos ARCH
+            (dependencia de errores pasados al cuadrado) - <strong>q=1</strong>: Un término GARCH (dependencia de
+            varianza condicional pasada)</p>
+          <p>Esta elección es común en la literatura financiera y proporciona un buen balance entre flexibilidad y
+            parsimonia. Alternativamente, podrían evaluarse otros órdenes (GARCH(1,1), GARCH(1,2), etc.) usando
+            criterios de información.</p>
+          <div id="83f81b3c" class="cell"
+            data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:448}}"
+            data-outputid="9db9cafc-6f5e-46bc-b004-77db77871cbf" data-execution_count="126">
+            <div class="cell-output cell-output-display" data-execution_count="126">
+              <table class="simpletable caption-top table table-sm table-striped small">
+                <caption>Mean Model</caption>
+                <tbody>
+                  <tr class="odd">
+                    <td></td>
+                    <th data-quarto-table-cell-role="th">coef</th>
+                    <th data-quarto-table-cell-role="th">std err</th>
+                    <th data-quarto-table-cell-role="th">t</th>
+                    <th data-quarto-table-cell-role="th">P&gt;|t|</th>
+                    <th data-quarto-table-cell-role="th">95.0% Conf. Int.</th>
+                  </tr>
+                  <tr class="even">
+                    <th data-quarto-table-cell-role="th">mu</th>
+                    <td>0.0863</td>
+                    <td>2.603e-02</td>
+                    <td>3.317</td>
+                    <td>9.087e-04</td>
+                    <td>[3.533e-02, 0.137]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="8f60490f" class="cell" data-execution_count="128">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-40-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div id="2d54dbb2" class="cell" data-execution_count="136">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-41-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div id="605a122c" class="cell" data-execution_count="137">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-42-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div id="ec3946b6" class="cell" data-execution_count="141">
+            <div class="cell-output cell-output-display">
+              <div>
+                <figure class="figure">
+                  <p><img src="reporte_files/figure-html/cell-43-output-1.png" class="img-fluid figure-img"></p>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+      <section id="conclusiones-y-resumen-del-análisis" class="level2">
+        <h2 class="anchored" data-anchor-id="conclusiones-y-resumen-del-análisis">7. Conclusiones y Resumen del Análisis
+        </h2>
+        <p>Este análisis ha demostrado la aplicación de técnicas avanzadas de series de tiempo a datos financieros
+          reales. A continuación se resumen los hallazgos principales:</p>
+        <section id="hallazgos-principales" class="level3">
+          <h3 class="anchored" data-anchor-id="hallazgos-principales">Hallazgos Principales</h3>
+          <ol type="1">
+            <li>
+              <p><strong>Modelo Óptimo para Log-Retornos de SPY:</strong></p>
+              <ul>
+                <li>El modelo <strong>ARMA(0,2)</strong> fue seleccionado como el mejor según los criterios AIC y BIC
+                </li>
+                <li>Esto indica que los log-retornos diarios del ETF SPY se modelan mejor como un proceso de media móvil
+                  de orden 2</li>
+                <li>La dependencia temporal se captura principalmente a través de los errores pasados, no de los valores
+                  pasados de la serie</li>
+              </ul>
+            </li>
+            <li>
+              <p><strong>Análisis de Residuos:</strong></p>
+              <ul>
+                <li>Los residuos del modelo ARMA(0,2) muestran ausencia de autocorrelación lineal (confirmado por ACF)
+                </li>
+                <li>Sin embargo, se detectó <strong>heterocedasticidad</strong>: la varianza de los residuos no es
+                  constante</li>
+                <li>Esto es común en series financieras y requiere modelado adicional de la volatilidad</li>
+              </ul>
+            </li>
+            <li>
+              <p><strong>Modelado de Volatilidad con GARCH:</strong></p>
+              <ul>
+                <li>Se implementó un modelo <strong>GARCH(2,1)</strong> para capturar los cambios en la volatilidad
+                  condicional</li>
+                <li>El modelo GARCH permite modelar los períodos de alta y baja volatilidad observados en los datos</li>
+                <li>Los residuos estandarizados muestran mejor comportamiento después del ajuste GARCH</li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+        <section id="limitaciones-y-consideraciones" class="level3">
+          <h3 class="anchored" data-anchor-id="limitaciones-y-consideraciones">Limitaciones y Consideraciones</h3>
+          <ul>
+            <li><strong>Período de análisis:</strong> Los datos analizados cubren el período 2020-2024, que incluye
+              eventos significativos como la pandemia COVID-19</li>
+            <li><strong>Elección de modelo GARCH:</strong> Se utilizó GARCH(2,1) como ejemplo, pero otros órdenes
+              podrían ser evaluados</li>
+            <li><strong>Datos:</strong> El análisis se limitó al ETF SPY; sería interesante comparar con otros activos
+              financieros</li>
+          </ul>
+        </section>
+        <section id="aplicaciones-prácticas" class="level3">
+          <h3 class="anchored" data-anchor-id="aplicaciones-prácticas">Aplicaciones Prácticas</h3>
+          <p>Los modelos desarrollados pueden utilizarse para: - <strong>Pronóstico de volatilidad:</strong> Predecir
+            períodos de alta/baja volatilidad - <strong>Gestión de riesgo:</strong> Evaluar el riesgo de inversión
+            basado en volatilidad condicional - <strong>Trading cuantitativo:</strong> Desarrollar estrategias basadas
+            en patrones de volatilidad</p>
+        </section>
+        <section id="habilidades-demostradas" class="level3">
+          <h3 class="anchored" data-anchor-id="habilidades-demostradas">Habilidades Demostradas</h3>
+          <p>Este proyecto demuestra competencia en: - ✅ Análisis exploratorio de series temporales financieras - ✅
+            Modelado ARMA/ARIMA con selección de modelos - ✅ Diagnóstico de residuos y detección de heterocedasticidad -
+            ✅ Modelado de volatilidad con GARCH - ✅ Visualización efectiva de resultados - ✅ Código reproducible y bien
+            documentado</p>
+          <hr>
+          <p><strong>Nota:</strong> Este análisis es educativo y no constituye asesoramiento financiero. Los modelos de
+            series de tiempo son herramientas útiles pero tienen limitaciones y deben usarse con precaución en
+            decisiones de inversión reales.</p>
+        </section>
+      </section>
+
+    </main>
+    <!-- /main column -->
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const icon = "";
+        const anchorJS = new window.AnchorJS();
+        anchorJS.options = {
+          placement: 'right',
+          icon: icon
+        };
+        anchorJS.add('.anchored');
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function (e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button,
+              {
+                trigger: "manual",
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]
+              });
+            tooltip.show();
+          }
+          setTimeout(function () {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function (trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+        var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i = 0; i < links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function (el) {
+              return el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+          window.tippy(el, config);
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i = 0; i < noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function () {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch { }
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const xrefs = window.document.querySelectorAll('a.quarto-xref');
+        const processXRef = (id, note) => {
+          // Strip column container classes
+          const stripColumnClz = (el) => {
+            el.classList.remove("page-full", "page-columns");
+            if (el.children) {
+              for (const child of el.children) {
+                stripColumnClz(child);
+              }
+            }
+          }
+          stripColumnClz(note)
+          if (id === null || id.startsWith('sec-')) {
+            // Special case sections, only their first couple elements
+            const container = document.createElement("div");
+            if (note.children && note.children.length > 2) {
+              container.appendChild(note.children[0].cloneNode(true));
+              for (let i = 1; i < note.children.length; i++) {
+                const child = note.children[i];
+                if (child.tagName === "P" && child.innerText === "") {
+                  continue;
+                } else {
+                  container.appendChild(child.cloneNode(true));
+                  break;
+                }
+              }
+              if (window.Quarto?.typesetMath) {
+                window.Quarto.typesetMath(container);
+              }
+              return container.innerHTML
+            } else {
+              if (window.Quarto?.typesetMath) {
+                window.Quarto.typesetMath(note);
+              }
+              return note.innerHTML;
+            }
+          } else {
+            // Remove any anchor links if they are present
+            const anchorLink = note.querySelector('a.anchorjs-link');
+            if (anchorLink) {
+              anchorLink.remove();
+            }
+            if (window.Quarto?.typesetMath) {
+              window.Quarto.typesetMath(note);
+            }
+            if (note.classList.contains("callout")) {
+              return note.outerHTML;
+            } else {
+              return note.innerHTML;
+            }
+          }
+        }
+        for (var i = 0; i < xrefs.length; i++) {
+          const xref = xrefs[i];
+          tippyHover(xref, undefined, function (instance) {
+            instance.disable();
+            let url = xref.getAttribute('href');
+            let hash = undefined;
+            if (url.startsWith('#')) {
+              hash = url;
+            } else {
+              try { hash = new URL(url).hash; } catch { }
+            }
+            if (hash) {
+              const id = hash.replace(/^#\/?/, "");
+              const note = window.document.getElementById(id);
+              if (note !== null) {
+                try {
+                  const html = processXRef(id, note.cloneNode(true));
+                  instance.setContent(html);
+                } finally {
+                  instance.enable();
+                  instance.show();
+                }
+              } else {
+                // See if we can fetch this
+                fetch(url.split('#')[0])
+                  .then(res => res.text())
+                  .then(html => {
+                    const parser = new DOMParser();
+                    const htmlDoc = parser.parseFromString(html, "text/html");
+                    const note = htmlDoc.getElementById(id);
+                    if (note !== null) {
+                      const html = processXRef(id, note);
+                      instance.setContent(html);
+                    }
+                  }).finally(() => {
+                    instance.enable();
+                    instance.show();
+                  });
+              }
+            } else {
+              // See if we can fetch a full url (with no hash to target)
+              // This is a special case and we should probably do some content thinning / targeting
+              fetch(url)
+                .then(res => res.text())
+                .then(html => {
+                  const parser = new DOMParser();
+                  const htmlDoc = parser.parseFromString(html, "text/html");
+                  const note = htmlDoc.querySelector('main.content');
+                  if (note !== null) {
+                    // This should only happen for chapter cross references
+                    // (since there is no id in the URL)
+                    // remove the first header
+                    if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                      note.children[0].remove();
+                    }
+                    const html = processXRef(null, note);
+                    instance.setContent(html);
+                  }
+                }).finally(() => {
+                  instance.enable();
+                  instance.show();
+                });
+            }
+          }, function (instance) {
+          });
+        }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = (cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' + annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+        // Handle positioning of the toggle
+        window.addEventListener(
+          "resize",
+          throttle(() => {
+            elRect = undefined;
+            if (selectedAnnoteEl) {
+              selectCodeLines(selectedAnnoteEl);
+            }
+          }, 10)
+        );
+        function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+          return (...args) => {
+            if (!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+            } else { // all the others get throttled
+              if (timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+            }
+          };
+        }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i = 0; i < bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function () {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function (cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+    </script>
+  </div> <!-- /content -->
+
+
+
+
+</body>
+
+</html>
