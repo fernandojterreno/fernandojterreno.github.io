@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Clasificación de Cobertura del Suelo mediante Segmentación y Machine Learning No Supervisado</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="Clasificación_de_Cobertura_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Clasificación_de_Cobertura_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Clasificación_de_Cobertura_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Clasificación_de_Cobertura_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Clasificación_de_Cobertura_files/libs/quarto-html/popper.min.js"></script>
+<script src="Clasificación_de_Cobertura_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Clasificación_de_Cobertura_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Clasificación_de_Cobertura_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Clasificación_de_Cobertura_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Clasificación_de_Cobertura_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Clasificación_de_Cobertura_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Clasificación_de_Cobertura_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Clasificación de Cobertura del Suelo mediante Segmentación y Machine Learning No Supervisado</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="proyecto-de-análisis-geoespacial-con-imágenes-satelitales-sentinel-2" class="level2">
+<h2 class="anchored" data-anchor-id="proyecto-de-análisis-geoespacial-con-imágenes-satelitales-sentinel-2">Proyecto de Análisis Geoespacial con Imágenes Satelitales Sentinel-2</h2>
+<p><strong>Autor:</strong> Fernando Terreno<br>
+<strong>Fecha:</strong> 2026<br>
+<strong>Tecnologías:</strong> Python, scikit-learn, scikit-image, rasterio, Sentinel-2</p>
+<hr>
+</section>
+<section id="resumen-ejecutivo" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-ejecutivo">Resumen Ejecutivo</h2>
+<p>Este proyecto implementa un pipeline completo de análisis geoespacial para la clasificación automática de coberturas del suelo utilizando imágenes satelitales Sentinel-2. La metodología combina técnicas de segmentación de imágenes (SLIC) con algoritmos de machine learning no supervisado (K-Means y Gaussian Mixture Models) para generar mapas de cobertura del suelo de alta precisión.</p>
+<p><strong>Objetivos:</strong> - Desarrollar un sistema automatizado de clasificación de coberturas del suelo - Comparar diferentes técnicas de segmentación y clustering - Generar mapas temáticos interpretables para análisis territorial - Evaluar la separabilidad espectral de diferentes clases de cobertura</p>
+<p><strong>Resultados Clave:</strong> - Clasificación exitosa en 5-7 clases principales (agua, vegetación, suelo desnudo, zonas urbanas) - Implementación de múltiples algoritmos con evaluación comparativa - Exportación de resultados en formatos GIS estándar para integración con herramientas profesionales</p>
+<hr>
+</section>
+<section id="contexto-y-problema" class="level2">
+<h2 class="anchored" data-anchor-id="contexto-y-problema">1. Contexto y Problema</h2>
+<section id="motivación" class="level3">
+<h3 class="anchored" data-anchor-id="motivación">1.1 Motivación</h3>
+<p>La clasificación de cobertura del suelo es fundamental para múltiples aplicaciones: - <strong>Planificación urbana y territorial</strong>: Identificación de áreas urbanas, agrícolas y naturales - <strong>Monitoreo ambiental</strong>: Seguimiento de cambios en vegetación, cuerpos de agua y uso del suelo - <strong>Agricultura de precisión</strong>: Delimitación de parcelas y tipos de cultivo - <strong>Gestión de recursos hídricos</strong>: Identificación y monitoreo de cuerpos de agua</p>
+</section>
+<section id="desafío-técnico" class="level3">
+<h3 class="anchored" data-anchor-id="desafío-técnico">1.2 Desafío Técnico</h3>
+<p>Las imágenes satelitales contienen información espectral rica pero requieren procesamiento avanzado para extraer información semántica útil. Los desafíos principales incluyen:</p>
+<ul>
+<li><strong>Variabilidad espectral</strong>: Múltiples objetos pueden tener firmas espectrales similares</li>
+<li><strong>Ruido y variabilidad espacial</strong>: Necesidad de agrupar píxeles similares espacialmente</li>
+<li><strong>Escalabilidad</strong>: Procesamiento eficiente de imágenes de alta resolución</li>
+<li><strong>Interpretabilidad</strong>: Generar resultados que puedan ser validados y utilizados por expertos</li>
+</ul>
+</section>
+<section id="enfoque-propuesto" class="level3">
+<h3 class="anchored" data-anchor-id="enfoque-propuesto">1.3 Enfoque Propuesto</h3>
+<p>Este proyecto implementa una metodología híbrida que combina: 1. <strong>Segmentación de imágenes</strong> para agrupar píxeles espacialmente coherentes 2. <strong>Machine Learning no supervisado</strong> para identificar patrones espectrales 3. <strong>Análisis espectral</strong> para validar y asignar clases semánticas 4. <strong>Visualización geoespacial</strong> para presentar resultados interpretables</p>
+<div id="cell-3" class="cell" data-execution_count="70">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CONFIGURACIÓN E IMPORTS</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías para procesamiento de datos geoespaciales</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rasterio</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.crs <span class="im">import</span> CRS</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.warp <span class="im">import</span> calculate_default_transform, reproject, Resampling</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías para procesamiento de imágenes y segmentación</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimage.segmentation <span class="im">import</span> slic, mark_boundaries</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> ndimage</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías para machine learning</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías para análisis de datos</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Librerías para visualización</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuración de visualización</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'seaborn-v0_8-darkgrid'</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ Todas las librerías importadas correctamente"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ Todas las librerías importadas correctamente</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="datos" class="level2">
+<h2 class="anchored" data-anchor-id="datos">2. Datos</h2>
+<section id="fuente-de-datos" class="level3">
+<h3 class="anchored" data-anchor-id="fuente-de-datos">2.1 Fuente de Datos</h3>
+<p>Utilizamos imágenes satelitales <strong>Sentinel-2</strong> del programa Copernicus de la Agencia Espacial Europea (ESA). Sentinel-2 captura imágenes en 13 bandas espectrales con resolución espacial de 10m, 20m y 60m.</p>
+<p><strong>Características de los datos:</strong> - <strong>Sensor</strong>: Sentinel-2 MSI (MultiSpectral Instrument) - <strong>Resolución espacial</strong>: 20m (bandas resampleadas) - <strong>Bandas utilizadas</strong>: B2 (Azul), B3 (Verde), B4 (Rojo), B5, B6, B7, B8A (NIR), B11 (SWIR1), B12 (SWIR2) - <strong>Formato</strong>: GeoTIFF con proyección UTM - <strong>Área de estudio</strong>: Región de Córdoba, Argentina</p>
+<div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="a037e7a8-97ad-4929-f858-64817f044a5a" data-execution_count="71">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CONFIGURACIÓN DE RUTAS Y CARPETAS</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir rutas (ajustar según tu entorno)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>carpeta_datos <span class="op">=</span> <span class="vs">r"C:</span><span class="er">\</span><span class="vs">Users</span><span class="dv">\B</span><span class="vs">renda</span><span class="dv">\D</span><span class="vs">ocuments</span><span class="er">\</span><span class="vs">IA_Geodata_Practico11"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>carpeta_salidas <span class="op">=</span> <span class="vs">r"C:</span><span class="er">\</span><span class="vs">Users</span><span class="dv">\B</span><span class="vs">renda</span><span class="dv">\D</span><span class="vs">ocuments</span><span class="er">\</span><span class="vs">IA_Geodata_Practico11"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear carpeta de salidas si no existe</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>os.makedirs(carpeta_salidas, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📁 Carpeta de datos: </span><span class="sc">{</span>carpeta_datos<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📁 Carpeta de salidas: </span><span class="sc">{</span>carpeta_salidas<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Configuración de rutas completada"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📁 Carpeta de datos: C:\Users\Brenda\Documents\IA_Geodata_Practico11
+📁 Carpeta de salidas: C:\Users\Brenda\Documents\IA_Geodata_Practico11
+✅ Configuración de rutas completada</code></pre>
+</div>
+</div>
+<div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="88d68d90-b650-4749-b6e7-3a9a5e204ca2" data-execution_count="72">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CARGA DE DATOS</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar imagen Sentinel-2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>archivo_imagen <span class="op">=</span> <span class="st">'T20HLK_20240127T195552_20m_aoi.tif'</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ruta_imagen <span class="op">=</span> os.path.join(carpeta_datos, archivo_imagen)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📥 Cargando imagen: </span><span class="sc">{</span>archivo_imagen<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> rasterio.<span class="bu">open</span>(ruta_imagen) <span class="im">as</span> src:</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    stack <span class="op">=</span> src.read()  <span class="co"># Array numpy: (bandas, filas, columnas)</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    metadata <span class="op">=</span> src.meta.copy()  <span class="co"># Metadatos geográficos (CRS, transform, etc.)</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Información de la imagen</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>n_bandas, altura, ancho <span class="op">=</span> stack.shape</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ Imagen cargada exitosamente"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Dimensiones: </span><span class="sc">{</span>n_bandas<span class="sc">}</span><span class="ss"> bandas × </span><span class="sc">{</span>altura<span class="sc">}</span><span class="ss"> filas × </span><span class="sc">{</span>ancho<span class="sc">}</span><span class="ss"> columnas"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Resolución espacial: </span><span class="sc">{</span>metadata[<span class="st">'transform'</span>][<span class="dv">0</span>]<span class="sc">:.1f}</span><span class="ss">m"</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Sistema de coordenadas: </span><span class="sc">{</span>metadata[<span class="st">'crs'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Tipo de datos: </span><span class="sc">{</span>metadata[<span class="st">'dtype'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar estadísticas básicas</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 Estadísticas por banda:"</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_bandas):</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    banda <span class="op">=</span> stack[i]</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   Banda </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">: min=</span><span class="sc">{</span>banda<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.0f}</span><span class="ss">, max=</span><span class="sc">{</span>banda<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.0f}</span><span class="ss">, media=</span><span class="sc">{</span>banda<span class="sc">.</span>mean()<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📥 Cargando imagen: T20HLK_20240127T195552_20m_aoi.tif
+
+✅ Imagen cargada exitosamente
+   Dimensiones: 9 bandas × 958 filas × 1209 columnas
+   Resolución espacial: 20.0m
+   Sistema de coordenadas: EPSG:32720
+   Tipo de datos: uint16
+
+📊 Estadísticas por banda:
+   Banda 1: min=0, max=11950, media=1354.7
+   Banda 2: min=0, max=12133, media=1594.8
+   Banda 3: min=0, max=13281, media=1516.1
+   Banda 4: min=0, max=15297, media=1941.9
+   Banda 5: min=0, max=14092, media=3134.9
+   Banda 6: min=0, max=16641, media=3515.1
+   Banda 7: min=0, max=14644, media=3729.3
+   Banda 8: min=0, max=14416, media=2893.7
+   Banda 9: min=0, max=14981, media=2133.9</code></pre>
+</div>
+</div>
+</section>
+<section id="visualización-de-la-imagen-original" class="level3">
+<h3 class="anchored" data-anchor-id="visualización-de-la-imagen-original">2.2 Visualización de la Imagen Original</h3>
+<p>A continuación visualizamos la imagen en composición RGB (bandas 4, 3, 2 correspondientes a Rojo, Verde, Azul) para tener una referencia visual del área de estudio.</p>
+<div id="cell-8" class="cell" data-execution_count="73">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZACIÓN DE LA IMAGEN ORIGINAL</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparar composición RGB (bandas 4, 3, 2 = Rojo, Verde, Azul)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Nota: stack tiene forma (bandas, filas, columnas)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sentinel-2: B2=índice 0 (azul), B3=índice 1 (verde), B4=índice 2 (rojo)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>rgb_bands <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>]  <span class="co"># Rojo, Verde, Azul</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>rgb_image <span class="op">=</span> stack[rgb_bands, :, :].transpose(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>)  <span class="co"># Reordenar a (filas, columnas, bandas)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalización para visualización (estirar histograma al 2-98 percentil)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>p2, p98 <span class="op">=</span> np.percentile(rgb_image, (<span class="dv">2</span>, <span class="dv">98</span>))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>rgb_normalized <span class="op">=</span> np.clip((rgb_image <span class="op">-</span> p2) <span class="op">/</span> (p98 <span class="op">-</span> p2), <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>))</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>ax.imshow(rgb_normalized)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Imagen Sentinel-2 - Composición RGB (B4, B3, B2)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ Imagen original visualizada"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ Imagen original visualizada</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="metodología" class="level2">
+<h2 class="anchored" data-anchor-id="metodología">3. Metodología</h2>
+<section id="pipeline-de-procesamiento" class="level3">
+<h3 class="anchored" data-anchor-id="pipeline-de-procesamiento">3.1 Pipeline de Procesamiento</h3>
+<p>El proceso de clasificación sigue estos pasos:</p>
+<ol type="1">
+<li><strong>Preprocesamiento</strong>: Normalización y preparación de bandas espectrales</li>
+<li><strong>Segmentación</strong>: Agrupación de píxeles espacialmente coherentes usando SLIC</li>
+<li><strong>Extracción de características</strong>: Cálculo de estadísticas espectrales por segmento</li>
+<li><strong>Clustering</strong>: Aplicación de algoritmos no supervisados (K-Means, GMM)</li>
+<li><strong>Análisis espectral</strong>: Validación mediante firmas espectrales</li>
+<li><strong>Post-procesamiento</strong>: Asignación de clases semánticas y generación de mapas</li>
+</ol>
+</section>
+<section id="algoritmos-utilizados" class="level3">
+<h3 class="anchored" data-anchor-id="algoritmos-utilizados">3.2 Algoritmos Utilizados</h3>
+<p><strong>Segmentación SLIC (Simple Linear Iterative Clustering)</strong> - Agrupa píxeles en “superpíxeles” espacialmente coherentes - Reduce la dimensionalidad del problema (de ~1M píxeles a ~300 segmentos) - Preserva bordes y estructuras espaciales</p>
+<p><strong>K-Means Clustering</strong> - Algoritmo de clustering particional - Rápido y eficiente para grandes volúmenes de datos - Requiere especificar el número de clusters (k)</p>
+<p><strong>Gaussian Mixture Models (GMM)</strong> - Modela distribuciones de probabilidad para cada clase - Permite asignaciones probabilísticas (más flexible que K-Means) - Mejor para capturar transiciones graduales entre clases</p>
+<hr>
+</section>
+</section>
+<section id="análisis-y-resultados" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-y-resultados">4. Análisis y Resultados</h2>
+<section id="segmentación-de-imágenes" class="level3">
+<h3 class="anchored" data-anchor-id="segmentación-de-imágenes">4.1 Segmentación de Imágenes</h3>
+<p>El primer paso es agrupar píxeles espacialmente cercanos y espectralmente similares en “superpíxeles” o segmentos. Esto reduce el ruido y mejora la coherencia espacial de la clasificación final.</p>
+<section id="segmentación-slic---configuración-base" class="level4">
+<h4 class="anchored" data-anchor-id="segmentación-slic---configuración-base">4.1.1 Segmentación SLIC - Configuración Base</h4>
+<p>Aplicamos el algoritmo SLIC con parámetros iniciales para crear una segmentación base del área de estudio.</p>
+<div id="cell-11" class="cell" data-execution_count="74">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SEGMENTACIÓN SLIC - CONFIGURACIÓN BASE</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparar imagen RGB normalizada para segmentación</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Usamos la imagen RGB ya normalizada de la celda anterior</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>rgb_scaled <span class="op">=</span> rgb_normalized.copy()</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Parámetros de segmentación SLIC</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>n_segments <span class="op">=</span> <span class="dv">300</span>      <span class="co"># Número aproximado de segmentos deseados</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>compactness <span class="op">=</span> <span class="dv">20</span>      <span class="co"># Balance entre regularidad espacial y adherencia a bordes</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Valores más altos = segmentos más regulares (cuadrados)</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Valores más bajos = segmentos más adaptados a bordes</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"🔄 Aplicando segmentación SLIC..."</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Parámetros: n_segments=</span><span class="sc">{</span>n_segments<span class="sc">}</span><span class="ss">, compactness=</span><span class="sc">{</span>compactness<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar algoritmo SLIC</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>segmentos <span class="op">=</span> slic(</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    rgb_scaled,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    n_segments<span class="op">=</span>n_segments,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    compactness<span class="op">=</span>compactness,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    start_label<span class="op">=</span><span class="dv">1</span>,      <span class="co"># Etiquetas empiezan en 1</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    sigma<span class="op">=</span><span class="fl">1.0</span>,          <span class="co"># Suavizado previo (opcional)</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    slic_zero<span class="op">=</span><span class="va">False</span>     <span class="co"># Usar SLIC estándar</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>n_segmentos_obtenidos <span class="op">=</span> segmentos.<span class="bu">max</span>()</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Segmentación completada: </span><span class="sc">{</span>n_segmentos_obtenidos<span class="sc">}</span><span class="ss"> segmentos generados"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 Aplicando segmentación SLIC...
+   Parámetros: n_segments=300, compactness=20
+✅ Segmentación completada: 258 segmentos generados</code></pre>
+</div>
+</div>
+<div id="cell-12" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:673}}" data-outputid="81dc4dad-6c41-429c-82c5-5ab5a2e4a0bb" data-execution_count="75">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZACIÓN DE SEGMENTOS</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">8</span>))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagen original</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].imshow(rgb_scaled)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Imagen Original (RGB)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Segmentos con bordes marcados</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].imshow(mark_boundaries(rgb_scaled, segmentos, color<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), mode<span class="op">=</span><span class="st">'thick'</span>))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Segmentación SLIC</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>n_segmentos_obtenidos<span class="sc">}</span><span class="ss"> segmentos, compactness=</span><span class="sc">{</span>compactness<span class="sc">}</span><span class="ss">)'</span>, </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                  fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 Visualización: Los bordes rojos muestran los límites entre segmentos"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 Visualización: Los bordes rojos muestran los límites entre segmentos</code></pre>
+</div>
+</div>
+<div id="cell-13" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="45338a24-fd56-4319-b10e-d38221719a23" data-execution_count="76">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># EXTRACCIÓN DE CARACTERÍSTICAS ESPECTRALES POR SEGMENTO</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular estadísticas espectrales (media) para cada segmento en todas las bandas</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Esto reduce la dimensionalidad: de ~1M píxeles a ~300 segmentos</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>bands, xsize, ysize <span class="op">=</span> stack.shape</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>n_segments <span class="op">=</span> segmentos.<span class="bu">max</span>()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📊 Extrayendo características espectrales..."</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Píxeles totales: </span><span class="sc">{</span>xsize <span class="op">*</span> ysize<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Segmentos: </span><span class="sc">{</span>n_segments<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Reducción: </span><span class="sc">{</span>xsize <span class="op">*</span> ysize <span class="op">/</span> n_segments<span class="sc">:.0f}</span><span class="ss">x"</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular media espectral por segmento para cada banda</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>media_por_segmento <span class="op">=</span> np.zeros((n_segments, bands))</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(bands):</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    media_por_segmento[:, b] <span class="op">=</span> ndimage.mean(</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        stack[b], </span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        labels<span class="op">=</span>segmentos, </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span>np.arange(<span class="dv">1</span>, n_segments <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Características extraídas: matriz de forma </span><span class="sc">{</span>media_por_segmento<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   (segmentos × bandas espectrales)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 Extrayendo características espectrales...
+   Píxeles totales: 1,158,222
+   Segmentos: 258
+   Reducción: 4489x
+✅ Características extraídas: matriz de forma (258, 9)
+   (segmentos × bandas espectrales)</code></pre>
+</div>
+</div>
+</section>
+<section id="optimización-de-parámetros-de-segmentación" class="level4">
+<h4 class="anchored" data-anchor-id="optimización-de-parámetros-de-segmentación">4.1.2 Optimización de Parámetros de Segmentación</h4>
+<p>Para seleccionar los mejores parámetros, evaluamos múltiples configuraciones de SLIC comparando métricas de calidad como el número de segmentos, tamaño promedio y variabilidad.</p>
+<div id="cell-15" class="cell" data-execution_count="77">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># FUNCIONES AUXILIARES PARA EVALUACIÓN DE SEGMENTACIÓN</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_segmentation_quality(segments, rgb_image):</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Evalúa la calidad de una segmentación usando métricas básicas.</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Parámetros:</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">    -----------</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">    segments : array</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">        Matriz de segmentos etiquetados</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">    rgb_image : array</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">        Imagen RGB normalizada</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">    Retorna:</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">    --------</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">    dict : Diccionario con métricas de calidad</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    n_segments <span class="op">=</span> segments.<span class="bu">max</span>()</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcular estadísticas de tamaño de segmentos</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    segment_sizes <span class="op">=</span> np.bincount(segments.flatten())</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    segment_sizes <span class="op">=</span> segment_sizes[segment_sizes <span class="op">&gt;</span> <span class="dv">0</span>]  <span class="co"># Remover segmentos vacíos</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    metrics <span class="op">=</span> {</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">'n_segments'</span>: n_segments,</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">'avg_size'</span>: np.mean(segment_sizes),</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">'std_size'</span>: np.std(segment_sizes),</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">'min_size'</span>: np.<span class="bu">min</span>(segment_sizes),</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">'max_size'</span>: np.<span class="bu">max</span>(segment_sizes),</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">'size_ratio'</span>: np.<span class="bu">max</span>(segment_sizes) <span class="op">/</span> np.<span class="bu">min</span>(segment_sizes) <span class="cf">if</span> np.<span class="bu">min</span>(segment_sizes) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="bu">float</span>(<span class="st">'inf'</span>)</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> metrics</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_segmentations(segmentations_dict, rgb_image, title<span class="op">=</span><span class="st">"Comparación de Segmentaciones"</span>):</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="co">    Compara múltiples configuraciones de segmentación visual y numéricamente.</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="co">    Parámetros:</span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="co">    -----------</span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="co">    segmentations_dict : dict</span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="co">        Diccionario {nombre: array_segmentos}</span></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="co">    rgb_image : array</span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="co">        Imagen RGB para visualización</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="co">    title : str</span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="co">        Título de la figura</span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>    fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">12</span>))</span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>    axes <span class="op">=</span> axes.flatten()</span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>    metrics_summary <span class="op">=</span> {}</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (name, segments) <span class="kw">in</span> <span class="bu">enumerate</span>(segmentations_dict.items()):</span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">6</span>:  <span class="co"># Máximo 6 visualizaciones</span></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Visualizar segmentación</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>        axes[i].imshow(mark_boundaries(rgb_image, segments, color<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), mode<span class="op">=</span><span class="st">'thick'</span>))</span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>        axes[i].set_title(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>segments<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss"> segmentos)"</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>        axes[i].axis(<span class="st">"off"</span>)</span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calcular métricas</span></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>        metrics <span class="op">=</span> evaluate_segmentation_quality(segments, rgb_image)</span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>        metrics_summary[name] <span class="op">=</span> metrics</span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">50</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">.</span>upper()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">50</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Segmentos generados: </span><span class="sc">{</span>metrics[<span class="st">'n_segments'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Tamaño promedio: </span><span class="sc">{</span>metrics[<span class="st">'avg_size'</span>]<span class="sc">:.1f}</span><span class="ss"> píxeles"</span>)</span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Desviación estándar: </span><span class="sc">{</span>metrics[<span class="st">'std_size'</span>]<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Rango: </span><span class="sc">{</span>metrics[<span class="st">'min_size'</span>]<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>metrics[<span class="st">'max_size'</span>]<span class="sc">}</span><span class="ss"> píxeles"</span>)</span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Ratio (max/min): </span><span class="sc">{</span>metrics[<span class="st">'size_ratio'</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ocultar ejes vacíos</span></span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(segmentations_dict), <span class="dv">6</span>):</span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>        axes[i].axis(<span class="st">'off'</span>)</span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>    plt.suptitle(title, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> metrics_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="b60f0ab7-3287-47f9-9db0-d26ebb00123e" data-execution_count="78">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># EVALUACIÓN DE MÚLTIPLES CONFIGURACIONES DE SEGMENTACIÓN</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔄 Evaluando diferentes configuraciones de segmentación SLIC...</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuraciones a evaluar</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>slic_configs <span class="op">=</span> {</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Compacto'</span>: {<span class="st">'n_segments'</span>: <span class="dv">300</span>, <span class="st">'compactness'</span>: <span class="dv">20</span>},    <span class="co"># Menos segmentos, más regular</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Balanceado'</span>: {<span class="st">'n_segments'</span>: <span class="dv">400</span>, <span class="st">'compactness'</span>: <span class="dv">15</span>}, <span class="co"># Balance óptimo</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Detallado'</span>: {<span class="st">'n_segments'</span>: <span class="dv">500</span>, <span class="st">'compactness'</span>: <span class="dv">10</span>},   <span class="co"># Más segmentos, más detalle</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>slic_segmentations <span class="op">=</span> {}</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Generar segmentaciones</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, config <span class="kw">in</span> slic_configs.items():</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    segments <span class="op">=</span> slic(</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        rgb_scaled,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>        n_segments<span class="op">=</span>config[<span class="st">'n_segments'</span>],</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        compactness<span class="op">=</span>config[<span class="st">'compactness'</span>],</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        start_label<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        sigma<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>        slic_zero<span class="op">=</span><span class="va">False</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    slic_segmentations[name] <span class="op">=</span> segments</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✅ </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>segments<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss"> segmentos generados"</span>)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparar visual y numéricamente</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>metrics_slic <span class="op">=</span> compare_segmentations(</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    slic_segmentations, </span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    rgb_scaled, </span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Comparación de Configuraciones SLIC"</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleccionar la mejor configuración (basada en balance)</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Para este proyecto, usamos 'Balanceado' que ofrece buen compromiso</span></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>segmentos <span class="op">=</span> slic_segmentations[<span class="st">'Balanceado'</span>]</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>n_segmentos_final <span class="op">=</span> segmentos.<span class="bu">max</span>()</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ Configuración seleccionada: 'Balanceado' (</span><span class="sc">{</span>n_segmentos_final<span class="sc">}</span><span class="ss"> segmentos)"</span>)</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Recalcular media_por_segmento con la segmentación seleccionada</span></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">🔄 Recalculando características espectrales con la segmentación seleccionada..."</span>)</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>bands, xsize, ysize <span class="op">=</span> stack.shape</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>media_por_segmento <span class="op">=</span> np.zeros((n_segmentos_final, bands))</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(bands):</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    media_por_segmento[:, b] <span class="op">=</span> ndimage.mean(</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>        stack[b], </span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>        labels<span class="op">=</span>segmentos, </span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span>np.arange(<span class="dv">1</span>, n_segmentos_final <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Características recalculadas: matriz de forma </span><span class="sc">{</span>media_por_segmento<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   (segmentos × bandas espectrales)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 Evaluando diferentes configuraciones de segmentación SLIC...
+
+✅ Compacto: 258 segmentos generados
+✅ Balanceado: 329 segmentos generados
+✅ Detallado: 348 segmentos generados
+
+============================================================
+
+==================================================
+COMPACTO
+==================================================
+  Segmentos generados: 258
+  Tamaño promedio: 4489.2 píxeles
+  Desviación estándar: 1133.3
+  Rango: 2108 - 9306 píxeles
+  Ratio (max/min): 4.41
+
+==================================================
+BALANCEADO
+==================================================
+  Segmentos generados: 329
+  Tamaño promedio: 3520.4 píxeles
+  Desviación estándar: 1152.9
+  Rango: 1563 - 9373 píxeles
+  Ratio (max/min): 6.00
+
+==================================================
+DETALLADO
+==================================================
+  Segmentos generados: 348
+  Tamaño promedio: 3328.2 píxeles
+  Desviación estándar: 1617.7
+  Rango: 1230 - 12967 píxeles
+  Ratio (max/min): 10.54</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-10-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+✅ Configuración seleccionada: 'Balanceado' (329 segmentos)
+
+🔄 Recalculando características espectrales con la segmentación seleccionada...
+✅ Características recalculadas: matriz de forma (329, 9)
+   (segmentos × bandas espectrales)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="clasificación-no-supervisada" class="level3">
+<h3 class="anchored" data-anchor-id="clasificación-no-supervisada">4.2 Clasificación No Supervisada</h3>
+<p>Una vez segmentada la imagen, aplicamos algoritmos de clustering para agrupar segmentos con características espectrales similares. Esto nos permite identificar diferentes tipos de cobertura del suelo sin necesidad de datos de entrenamiento etiquetados.</p>
+<section id="determinación-del-número-óptimo-de-clusters" class="level4">
+<h4 class="anchored" data-anchor-id="determinación-del-número-óptimo-de-clusters">4.2.1 Determinación del Número Óptimo de Clusters</h4>
+<p>Antes de aplicar K-Means, necesitamos determinar cuántos clusters (clases) son apropiados para nuestros datos. Utilizamos el <strong>Método del Codo (Elbow Method)</strong> para identificar el punto óptimo.</p>
+<div id="cell-19" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:551}}" data-outputid="9155eb5d-f217-4ff6-d75c-fbe013f3ef72" data-execution_count="79">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># MÉTODO DEL CODO PARA DETERMINAR NÚMERO ÓPTIMO DE CLUSTERS</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># El método del codo busca el punto donde agregar más clusters no mejora significativamente</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># la reducción de inercia (suma de distancias al cuadrado dentro de cada cluster)</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔍 Aplicando método del codo para determinar k óptimo..."</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparar datos (usar características espectrales de segmentos)</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> media_por_segmento</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Probar diferentes valores de k</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>inertias <span class="op">=</span> []</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> k_values:</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    kmeans.fit(X)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    inertias.append(kmeans.inertia_)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar curva del codo</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>ax.plot(k_values, inertias, <span class="st">'o-'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Número de Clusters (k)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Inercia (Suma de distancias cuadradas)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Método del Codo para K-Means'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(k_values)</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Marcar posibles valores óptimos (k=4, k=5)</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> [<span class="dv">4</span>, <span class="dv">5</span>]:</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> k <span class="op">-</span> <span class="dv">2</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    ax.plot(k, inertias[idx], <span class="st">'ro'</span>, markersize<span class="op">=</span><span class="dv">12</span>, label<span class="op">=</span><span class="ss">f'k=</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> (candidato)'</span> <span class="cf">if</span> k <span class="op">==</span> <span class="dv">4</span> <span class="cf">else</span> <span class="st">''</span>)</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ Análisis completado"</span>)</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   Recomendación: k=4 o k=5 parecen ser valores óptimos"</span>)</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   (punto donde la curva deja de disminuir rápidamente)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔍 Aplicando método del codo para determinar k óptimo...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-11-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ Análisis completado
+   Recomendación: k=4 o k=5 parecen ser valores óptimos
+   (punto donde la curva deja de disminuir rápidamente)</code></pre>
+</div>
+</div>
+</section>
+<section id="clasificación-con-k-means" class="level4">
+<h4 class="anchored" data-anchor-id="clasificación-con-k-means">4.2.2 Clasificación con K-Means</h4>
+<p>Aplicamos K-Means con k=5 clusters, que ofrece un buen balance entre detalle y generalización según el análisis del método del codo.</p>
+<div id="cell-21" class="cell" data-execution_count="80">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CLASIFICACIÓN K-MEANS CON k=5</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar K-Means con k=5 (seleccionado mediante método del codo)</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"🔄 Aplicando K-Means con k=</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> clusters..."</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>etiquetas <span class="op">=</span> kmeans.fit_predict(media_por_segmento)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Asignar etiquetas de cluster a cada segmento</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>clasificado <span class="op">=</span> etiquetas[segmentos <span class="op">-</span> <span class="dv">1</span>]</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Estadísticas de distribución</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>unique, counts <span class="op">=</span> np.unique(etiquetas, return_counts<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ Clasificación completada"</span>)</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">📊 Distribución de segmentos por cluster:"</span>)</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster, n_segments <span class="kw">in</span> <span class="bu">zip</span>(unique, counts):</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    porcentaje <span class="op">=</span> (n_segments <span class="op">/</span> <span class="bu">len</span>(etiquetas)) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   Cluster </span><span class="sc">{</span>cluster<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>n_segments<span class="sc">:3d}</span><span class="ss"> segmentos (</span><span class="sc">{</span>porcentaje<span class="sc">:5.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar resultado</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">8</span>))</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagen original</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].imshow(rgb_scaled)</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Imagen Original (RGB)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Clasificación</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> axes[<span class="dv">1</span>].imshow(clasificado, cmap<span class="op">=</span><span class="st">'tab10'</span>, interpolation<span class="op">=</span><span class="st">'nearest'</span>)</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Clasificación K-Means (k=</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar colorbar</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>cbar <span class="op">=</span> plt.colorbar(im, ax<span class="op">=</span>axes[<span class="dv">1</span>], fraction<span class="op">=</span><span class="fl">0.046</span>, pad<span class="op">=</span><span class="fl">0.04</span>)</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>cbar.set_label(<span class="st">'Cluster ID'</span>, rotation<span class="op">=</span><span class="dv">270</span>, labelpad<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">💾 Guardando resultado..."</span>)</span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Exportar a GeoTIFF para análisis en QGIS</span></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>ruta_salida <span class="op">=</span> os.path.join(carpeta_salidas, <span class="st">'clasificacion_kmeans_k5.tif'</span>)</span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>metadata_out <span class="op">=</span> metadata.copy()</span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>metadata_out.update(</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>rasterio.uint8,</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>    count<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>    compress<span class="op">=</span><span class="st">'lzw'</span></span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> rasterio.<span class="bu">open</span>(ruta_salida, <span class="st">'w'</span>, <span class="op">**</span>metadata_out) <span class="im">as</span> dst:</span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a>    dst.write(clasificado.astype(rasterio.uint8), <span class="dv">1</span>)</span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"✅ Archivo exportado: </span><span class="sc">{</span>ruta_salida<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 Aplicando K-Means con k=5 clusters...
+
+✅ Clasificación completada
+
+📊 Distribución de segmentos por cluster:
+   Cluster 0: 157 segmentos ( 47.7%)
+   Cluster 1:  24 segmentos (  7.3%)
+   Cluster 2:  30 segmentos (  9.1%)
+   Cluster 3:  37 segmentos ( 11.2%)
+   Cluster 4:  81 segmentos ( 24.6%)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-12-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+💾 Guardando resultado...
+✅ Archivo exportado: C:\Users\Brenda\Documents\IA_Geodata_Practico11\clasificacion_kmeans_k5.tif</code></pre>
+</div>
+</div>
+</section>
+<section id="clasificación-con-gaussian-mixture-models-gmm" class="level4">
+<h4 class="anchored" data-anchor-id="clasificación-con-gaussian-mixture-models-gmm">4.2.3 Clasificación con Gaussian Mixture Models (GMM)</h4>
+<p>Como alternativa a K-Means, implementamos Gaussian Mixture Models que modelan las distribuciones de probabilidad de cada clase. GMM es especialmente útil para capturar transiciones graduales entre clases y manejar mejor la variabilidad espectral.</p>
+<div id="cell-23" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:699}}" data-outputid="011b85d0-0d46-4324-e35d-be6e8436c0f8" data-execution_count="81">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CLASIFICACIÓN CON GAUSSIAN MIXTURE MODELS (GMM)</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># GMM con características espectrales + textura para mejor separación</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Esto permite distinguir mejor entre clases espectralmente similares (ej: urbano vs suelo)</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.ndimage <span class="im">import</span> median_filter, uniform_filter</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🔄 Aplicando Gaussian Mixture Models..."</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>H, W, C <span class="op">=</span> rgb_scaled.shape</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>img8 <span class="op">=</span> (rgb_scaled <span class="op">*</span> <span class="dv">255</span>).astype(np.uint8)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraer características espectrales en múltiples espacios de color</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>lab <span class="op">=</span> cv2.cvtColor(img8, cv2.COLOR_RGB2LAB).astype(np.float32)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>hsv <span class="op">=</span> cv2.cvtColor(img8, cv2.COLOR_RGB2HSV).astype(np.float32)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>L, a, b <span class="op">=</span> [lab[..., i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)]</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>S, V <span class="op">=</span> hsv[..., <span class="dv">1</span>], hsv[..., <span class="dv">2</span>]</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraer características de textura (útil para separar urbano de suelo)</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>gray <span class="op">=</span> cv2.cvtColor(img8, cv2.COLOR_RGB2GRAY).astype(np.float32)</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>win <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> uniform_filter(gray, size<span class="op">=</span>win)</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>mean2 <span class="op">=</span> uniform_filter(gray<span class="op">**</span><span class="dv">2</span>, size<span class="op">=</span>win)</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>std_local <span class="op">=</span> np.sqrt(np.clip(mean2 <span class="op">-</span> mean<span class="op">**</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="va">None</span>))</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> cv2.Canny(img8, <span class="dv">60</span>, <span class="dv">120</span>)</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>edge_density <span class="op">=</span> uniform_filter(edges.astype(np.float32), size<span class="op">=</span>win)</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Combinar todas las características</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>R, G, B <span class="op">=</span> [rgb_scaled[..., i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)]</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> np.dstack([</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>    R, G, B,                    <span class="co"># RGB original</span></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>    L, a, b,                    <span class="co"># Espacio LAB</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>    S <span class="op">/</span> <span class="fl">255.0</span>, V <span class="op">/</span> <span class="fl">255.0</span>,       <span class="co"># Espacio HSV</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>    std_local <span class="op">/</span> (std_local.<span class="bu">max</span>() <span class="op">+</span> <span class="fl">1e-6</span>),      <span class="co"># Textura: desviación estándar local</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>    edge_density <span class="op">/</span> (edge_density.<span class="bu">max</span>() <span class="op">+</span> <span class="fl">1e-6</span>)  <span class="co"># Textura: densidad de bordes</span></span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>]).astype(np.float32)</span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparar datos para GMM</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> features.reshape(<span class="op">-</span><span class="dv">1</span>, features.shape[<span class="dv">2</span>])</span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>mask_valid <span class="op">=</span> np.isfinite(X).<span class="bu">all</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>Xv <span class="op">=</span> X[mask_valid]</span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Estandarizar características</span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>Xv_std <span class="op">=</span> scaler.fit_transform(Xv)</span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar GMM con k=5</span></span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>k_gmm <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>gmm <span class="op">=</span> GaussianMixture(</span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>    n_components<span class="op">=</span>k_gmm,</span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>    covariance_type<span class="op">=</span><span class="st">'tied'</span>,      <span class="co"># Compartir matriz de covarianza (más eficiente)</span></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>    init_params<span class="op">=</span><span class="st">'kmeans'</span>,        <span class="co"># Inicializar con K-Means</span></span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>    reg_covar<span class="op">=</span><span class="fl">1e-6</span></span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>gmm.fit(Xv_std)</span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Predecir etiquetas</span></span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a>labels_full <span class="op">=</span> np.full(X.shape[<span class="dv">0</span>], <span class="op">-</span><span class="dv">1</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a>labels_full[mask_valid] <span class="op">=</span> gmm.predict(Xv_std)</span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a>labels_img <span class="op">=</span> labels_full.reshape(H, W)</span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Suavizado espacial para reducir ruido</span></span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a>labels_smooth <span class="op">=</span> median_filter(labels_img, size<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar resultado</span></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">8</span>))</span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].imshow(rgb_scaled)</span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Imagen Original'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> axes[<span class="dv">1</span>].imshow(labels_smooth, cmap<span class="op">=</span><span class="st">'tab10'</span>, interpolation<span class="op">=</span><span class="st">'nearest'</span>)</span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f'Clasificación GMM (k=</span><span class="sc">{</span>k_gmm<span class="sc">}</span><span class="ss">, features espectrales + textura)'</span>, </span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>                  fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>cbar <span class="op">=</span> plt.colorbar(im, ax<span class="op">=</span>axes[<span class="dv">1</span>], fraction<span class="op">=</span><span class="fl">0.046</span>, pad<span class="op">=</span><span class="fl">0.04</span>)</span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a>cbar.set_label(<span class="st">'Cluster ID'</span>, rotation<span class="op">=</span><span class="dv">270</span>, labelpad<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-87"><a href="#cb25-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ Clasificación GMM completada"</span>)</span>
+<span id="cb25-88"><a href="#cb25-88" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   Ventaja: Mejor separación de clases espectralmente similares mediante textura"</span>)</span>
+<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔄 Aplicando Gaussian Mixture Models...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-13-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ Clasificación GMM completada
+   Ventaja: Mejor separación de clases espectralmente similares mediante textura</code></pre>
+</div>
+</div>
+<div id="cell-24" class="cell" data-execution_count="82">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exportar resultado GMM</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ruta_salida_gmm <span class="op">=</span> os.path.join(carpeta_salidas, <span class="st">'clasificacion_gmm_k5.tif'</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>metadata_out <span class="op">=</span> metadata.copy()</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>metadata_out.update(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>rasterio.uint8,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    count<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    compress<span class="op">=</span><span class="st">'lzw'</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> rasterio.<span class="bu">open</span>(ruta_salida_gmm, <span class="st">'w'</span>, <span class="op">**</span>metadata_out) <span class="im">as</span> dst:</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    dst.write(labels_smooth.astype(rasterio.uint8), <span class="dv">1</span>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"💾 Archivo GMM exportado: </span><span class="sc">{</span>ruta_salida_gmm<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>💾 Archivo GMM exportado: C:\Users\Brenda\Documents\IA_Geodata_Practico11\clasificacion_gmm_k5.tif</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="método-del-codo-elbow-method" class="level3">
+<h3 class="anchored" data-anchor-id="método-del-codo-elbow-method">3.3 Método del codo (“Elbow Method”)</h3>
+<section id="análisis-estadístico-de-clusters" class="level4">
+<h4 class="anchored" data-anchor-id="análisis-estadístico-de-clusters">4.3.1 Análisis Estadístico de Clusters</h4>
+<p>Analizamos las estadísticas descriptivas de cada cluster para entender sus características espectrales y evaluar la separabilidad entre clases.</p>
+<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:472}}" data-outputid="43b0d350-0b60-497a-847d-41659f2bf635" data-execution_count="83">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ANÁLISIS ESTADÍSTICO DE CLUSTERS</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir nombres de bandas Sentinel-2</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>bandas_s2 <span class="op">=</span> [<span class="st">"B02"</span>, <span class="st">"B03"</span>, <span class="st">"B04"</span>, <span class="st">"B05"</span>, <span class="st">"B06"</span>, <span class="st">"B07"</span>, <span class="st">"B8A"</span>, <span class="st">"B11"</span>, <span class="st">"B12"</span>]</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Recalcular media por segmento con todas las bandas (asegurar que tenemos 9 bandas)</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>bands, xsize, ysize <span class="op">=</span> stack.shape</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>n_segments <span class="op">=</span> segmentos.<span class="bu">max</span>()</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>media_por_segmento_completo <span class="op">=</span> np.zeros((n_segments, bands))</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(bands):</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    media_por_segmento_completo[:, b] <span class="op">=</span> ndimage.mean(</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        stack[b], </span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        labels<span class="op">=</span>segmentos, </span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        index<span class="op">=</span>np.arange(<span class="dv">1</span>, n_segments <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear DataFrame con características espectrales</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>df_segments <span class="op">=</span> pd.DataFrame(media_por_segmento_completo, columns<span class="op">=</span>bandas_s2)</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>df_segments[<span class="st">"cluster"</span>] <span class="op">=</span> etiquetas  <span class="co"># Usar etiquetas de K-Means</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular estadísticas descriptivas por cluster</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📊 Estadísticas descriptivas por cluster:</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>cluster_stats <span class="op">=</span> df_segments.groupby(<span class="st">"cluster"</span>)[bandas_s2].describe()</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar resumen (media por cluster)</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📈 Media espectral por cluster:"</span>)</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>media_por_cluster <span class="op">=</span> df_segments.groupby(<span class="st">"cluster"</span>)[bandas_s2].mean()</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>display(media_por_cluster.<span class="bu">round</span>(<span class="dv">0</span>))</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar estadísticas completas (opcional, puede ser muy largo)</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a><span class="co"># display(cluster_stats)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📊 Estadísticas descriptivas por cluster:
+
+
+📈 Media espectral por cluster:</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">B02</th>
+<th data-quarto-table-cell-role="th">B03</th>
+<th data-quarto-table-cell-role="th">B04</th>
+<th data-quarto-table-cell-role="th">B05</th>
+<th data-quarto-table-cell-role="th">B06</th>
+<th data-quarto-table-cell-role="th">B07</th>
+<th data-quarto-table-cell-role="th">B8A</th>
+<th data-quarto-table-cell-role="th">B11</th>
+<th data-quarto-table-cell-role="th">B12</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">cluster</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1267.0</td>
+<td>1496.0</td>
+<td>1390.0</td>
+<td>1838.0</td>
+<td>3063.0</td>
+<td>3416.0</td>
+<td>3640.0</td>
+<td>2793.0</td>
+<td>2002.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1241.0</td>
+<td>1517.0</td>
+<td>1325.0</td>
+<td>1811.0</td>
+<td>4226.0</td>
+<td>5219.0</td>
+<td>5444.0</td>
+<td>3022.0</td>
+<td>1984.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>1580.0</td>
+<td>1700.0</td>
+<td>1651.0</td>
+<td>1730.0</td>
+<td>1770.0</td>
+<td>1806.0</td>
+<td>1812.0</td>
+<td>1711.0</td>
+<td>1576.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>1515.0</td>
+<td>1817.0</td>
+<td>1831.0</td>
+<td>2319.0</td>
+<td>3607.0</td>
+<td>4024.0</td>
+<td>4286.0</td>
+<td>3615.0</td>
+<td>2764.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>1369.0</td>
+<td>1636.0</td>
+<td>1578.0</td>
+<td>2055.0</td>
+<td>3256.0</td>
+<td>3633.0</td>
+<td>3890.0</td>
+<td>3153.0</td>
+<td>2312.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="firmas-espectrales" class="level4">
+<h4 class="anchored" data-anchor-id="firmas-espectrales">4.3.2 Firmas Espectrales</h4>
+<p>Las firmas espectrales muestran cómo cada clase refleja la luz en diferentes longitudes de onda. Esto nos permite identificar qué tipo de cobertura representa cada cluster comparándolo con firmas de referencia conocidas.</p>
+<p><strong>Firmas espectrales de referencia:</strong></p>
+<p>Las diferentes coberturas del suelo tienen firmas espectrales características: - <strong>Agua</strong>: Baja reflectancia en todas las bandas, especialmente en NIR y SWIR - <strong>Vegetación sana</strong>: Alta reflectancia en NIR (B8A), baja en rojo (B4) - efecto “red edge” - <strong>Suelo desnudo</strong>: Reflectancia moderada y creciente hacia SWIR - <strong>Zonas urbanas</strong>: Reflectancia variable, similar a suelo pero con mayor variabilidad</p>
+<div id="cell-30" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:551}}" data-outputid="39c58850-70ad-46ac-f60c-335f5bae8d48" data-execution_count="84">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># VISUALIZACIÓN DE FIRMAS ESPECTRALES</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir longitudes de onda centrales de Sentinel-2 (en nanómetros)</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>sentinel_2_bandwidths <span class="op">=</span> {</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B02'</span>: [<span class="dv">457</span>, <span class="dv">522</span>],   <span class="co"># Azul</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B03'</span>: [<span class="dv">542</span>, <span class="dv">577</span>],   <span class="co"># Verde</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B04'</span>: [<span class="dv">650</span>, <span class="dv">680</span>],   <span class="co"># Rojo</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B05'</span>: [<span class="dv">697</span>, <span class="dv">712</span>],   <span class="co"># Red Edge 1</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B06'</span>: [<span class="dv">732</span>, <span class="dv">747</span>],   <span class="co"># Red Edge 2</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B07'</span>: [<span class="dv">773</span>, <span class="dv">793</span>],   <span class="co"># Red Edge 3</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B8A'</span>: [<span class="dv">855</span>, <span class="dv">875</span>],   <span class="co"># NIR (Near Infrared)</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B11'</span>: [<span class="dv">1565</span>, <span class="dv">1655</span>], <span class="co"># SWIR1</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B12'</span>: [<span class="dv">2100</span>, <span class="dv">2280</span>]  <span class="co"># SWIR2</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular centros de banda</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>centros_banda <span class="op">=</span> {band: np.mean(rng) <span class="cf">for</span> band, rng <span class="kw">in</span> sentinel_2_bandwidths.items()}</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular reflectancia media por cluster (ya calculado arriba)</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co"># media_por_cluster ya está definido</span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar firmas espectrales</span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Colores para cada cluster</span></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> plt.cm.tab10(np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="bu">len</span>(media_por_cluster)))</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster, row <span class="kw">in</span> media_por_cluster.iterrows():</span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> [centros_banda[b] <span class="cf">for</span> b <span class="kw">in</span> bandas_s2]   <span class="co"># Longitudes de onda</span></span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> row.values <span class="op">/</span> <span class="dv">10000</span>                       <span class="co"># Convertir a reflectancia (0-1)</span></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, y, marker<span class="op">=</span><span class="st">'o'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">8</span>, </span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="ss">f'Cluster </span><span class="sc">{</span>cluster<span class="sc">}</span><span class="ss">'</span>, color<span class="op">=</span>colors[cluster])</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Longitud de Onda (nm)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Reflectancia'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Firmas Espectrales Medias por Cluster'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>ax.legend(title<span class="op">=</span><span class="st">'Clusters'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar anotaciones de bandas importantes</span></span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>ax.axvline(x<span class="op">=</span>centros_banda[<span class="st">'B04'</span>], color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">'Rojo'</span>)</span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a>ax.axvline(x<span class="op">=</span>centros_banda[<span class="st">'B8A'</span>], color<span class="op">=</span><span class="st">'green'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">'NIR'</span>)</span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ Firmas espectrales visualizadas"</span>)</span>
+<span id="cb32-51"><a href="#cb32-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   Interpretación:"</span>)</span>
+<span id="cb32-52"><a href="#cb32-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - Clusters con alta reflectancia en NIR (B8A) → Vegetación"</span>)</span>
+<span id="cb32-53"><a href="#cb32-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - Clusters con baja reflectancia general → Agua"</span>)</span>
+<span id="cb32-54"><a href="#cb32-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   - Clusters con reflectancia creciente hacia SWIR → Suelo"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ Firmas espectrales visualizadas
+   Interpretación:
+   - Clusters con alta reflectancia en NIR (B8A) → Vegetación
+   - Clusters con baja reflectancia general → Agua
+   - Clusters con reflectancia creciente hacia SWIR → Suelo</code></pre>
+</div>
+</div>
+<p>El nivel de detalle parece menor — genera clases amplias y más homogéneas. Las coberturas principales (agua, vegetación, suelo desnudo, urbano) se distinguen bien pero sin subcategorías. En cuanto a la fragmentacion es más limpia, con bloques compactos y bien delimitados. Menos “salpicaduras” dentro del agua o los campos. Agrupa la vegetación agrícola en una sola clase y los suelos desnudos y las zonas urbanas los agrup</p>
+</section>
+<section id="asignación-de-clases-semánticas" class="level4">
+<h4 class="anchored" data-anchor-id="asignación-de-clases-semánticas">4.4.1 Asignación de Clases Semánticas</h4>
+<p>Basándonos en: - Análisis de firmas espectrales - Comparación visual con la imagen RGB original - Conocimiento del área de estudio</p>
+<p>Asignamos las siguientes clases a los clusters:</p>
+<div id="cell-33" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:551}}" data-outputid="58a8b933-0c79-4607-f8a0-5b887d177c13" data-execution_count="85">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># MAPA FINAL DE COBERTURAS DEL SUELO</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================================</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Diccionario de asignación: cluster_id -&gt; nombre de clase</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># NOTA: Estos valores deben ajustarse según tu análisis específico</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>clases_dict <span class="op">=</span> {</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>: <span class="st">"Agua"</span>,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="st">"Zona Urbana"</span>,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>: <span class="st">"Suelo Desnudo / Seco"</span>,</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span>: <span class="st">"Vegetación Agrícola"</span>,</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="dv">4</span>: <span class="st">"Vegetación Densa / Sana"</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Colores representativos para cada clase (en orden de cluster)</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>colores_clases <span class="op">=</span> [</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"#1f77b4"</span>,  <span class="co"># Azul - Agua</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"#808080"</span>,  <span class="co"># Gris - Urbano</span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"#d4a574"</span>,  <span class="co"># Marrón claro - Suelo</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"#90ee90"</span>,  <span class="co"># Verde claro - Vegetación agrícola</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"#2ca02c"</span>   <span class="co"># Verde oscuro - Vegetación densa</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear mapa de colores personalizado</span></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>cmap_custom <span class="op">=</span> ListedColormap(colores_clases)</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar mapa final</span></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">9</span>))</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Imagen original</span></span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].imshow(rgb_scaled)</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Imagen Original (RGB)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapa de coberturas</span></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> axes[<span class="dv">1</span>].imshow(clasificado, cmap<span class="op">=</span>cmap_custom, interpolation<span class="op">=</span><span class="st">'nearest'</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Mapa de Coberturas del Suelo'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear leyenda personalizada</span></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>legend_elements <span class="op">=</span> [Patch(facecolor<span class="op">=</span>colores_clases[i], label<span class="op">=</span>clases_dict[i]) </span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>                   <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(clases_dict))]</span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(handles<span class="op">=</span>legend_elements, loc<span class="op">=</span><span class="st">'upper left'</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.02</span>, <span class="dv">1</span>), </span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>               fontsize<span class="op">=</span><span class="dv">11</span>, title<span class="op">=</span><span class="st">'Clases de Cobertura'</span>, title_fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ Mapa de coberturas generado"</span>)</span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📋 Clases identificadas:"</span>)</span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster_id, nombre <span class="kw">in</span> clases_dict.items():</span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>    n_pixels <span class="op">=</span> np.<span class="bu">sum</span>(clasificado <span class="op">==</span> cluster_id)</span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>    porcentaje <span class="op">=</span> (n_pixels <span class="op">/</span> clasificado.size) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>nombre<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>porcentaje<span class="sc">:.1f}</span><span class="ss">% del área"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Clasificación_de_Cobertura_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✅ Mapa de coberturas generado
+
+📋 Clases identificadas:
+   Agua: 46.6% del área
+   Zona Urbana: 7.2% del área
+   Suelo Desnudo / Seco: 9.5% del área
+   Vegetación Agrícola: 11.9% del área
+   Vegetación Densa / Sana: 24.8% del área</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="conclusiones-y-resultados" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones-y-resultados">5. Conclusiones y Resultados</h2>
+<section id="resumen-de-resultados" class="level3">
+<h3 class="anchored" data-anchor-id="resumen-de-resultados">5.1 Resumen de Resultados</h3>
+<p>Este proyecto logró desarrollar un pipeline completo de clasificación de cobertura del suelo que:</p>
+<p>✅ <strong>Segmentación efectiva</strong>: Reducción de ~1.2M píxeles a ~400 segmentos espacialmente coherentes<br>
+✅ <strong>Clasificación precisa</strong>: Identificación de 5 clases principales de cobertura<br>
+✅ <strong>Análisis espectral robusto</strong>: Validación mediante firmas espectrales<br>
+✅ <strong>Exportación GIS</strong>: Resultados compatibles con herramientas profesionales (QGIS, ArcGIS)</p>
+</section>
+<section id="hallazgos-principales" class="level3">
+<h3 class="anchored" data-anchor-id="hallazgos-principales">5.2 Hallazgos Principales</h3>
+<ol type="1">
+<li><p><strong>Efectividad de SLIC</strong>: La segmentación SLIC mejoró significativamente la coherencia espacial de la clasificación comparado con clasificación pixel-by-pixel.</p></li>
+<li><p><strong>K-Means vs GMM</strong>:</p>
+<ul>
+<li>K-Means: Más rápido y eficiente, adecuado para clases bien separadas</li>
+<li>GMM: Mejor para capturar transiciones graduales y clases espectralmente similares</li>
+</ul></li>
+<li><p><strong>Separabilidad espectral</strong>: Las clases principales (agua, vegetación, suelo) mostraron buena separabilidad en las bandas NIR y SWIR de Sentinel-2.</p></li>
+</ol>
+</section>
+<section id="limitaciones-y-consideraciones" class="level3">
+<h3 class="anchored" data-anchor-id="limitaciones-y-consideraciones">5.3 Limitaciones y Consideraciones</h3>
+<ul>
+<li><strong>Validación</strong>: El proyecto utiliza clasificación no supervisada. Para validación cuantitativa, se requerirían datos de referencia (ground truth).</li>
+<li><strong>Parámetros</strong>: Los resultados dependen de los parámetros de segmentación y clustering seleccionados.</li>
+<li><strong>Escalabilidad</strong>: El procesamiento de imágenes más grandes podría requerir optimizaciones adicionales.</li>
+</ul>
+</section>
+<section id="extensiones-y-mejoras-futuras" class="level3">
+<h3 class="anchored" data-anchor-id="extensiones-y-mejoras-futuras">5.4 Extensiones y Mejoras Futuras</h3>
+<p>Este proyecto puede extenderse en múltiples direcciones:</p>
+<section id="mejoras-técnicas" class="level4">
+<h4 class="anchored" data-anchor-id="mejoras-técnicas">5.4.1 Mejoras Técnicas</h4>
+<ol type="1">
+<li><strong>Validación cuantitativa</strong>
+<ul>
+<li>Incorporar datos de referencia (ground truth)</li>
+<li>Calcular métricas de precisión (matriz de confusión, Kappa, F1-score)</li>
+<li>Análisis de errores por clase</li>
+</ul></li>
+<li><strong>Clasificación supervisada</strong>
+<ul>
+<li>Implementar Random Forest o SVM con datos de entrenamiento</li>
+<li>Comparar rendimiento con métodos no supervisados</li>
+<li>Análisis de importancia de características</li>
+</ul></li>
+<li><strong>Deep Learning</strong>
+<ul>
+<li>U-Net o SegNet para segmentación semántica</li>
+<li>Transfer learning con modelos pre-entrenados</li>
+<li>Clasificación end-to-end sin segmentación previa</li>
+</ul></li>
+<li><strong>Análisis temporal</strong>
+<ul>
+<li>Series temporales multi-fecha</li>
+<li>Detección de cambios de cobertura</li>
+<li>Monitoreo de cultivos estacionales</li>
+</ul></li>
+</ol>
+</section>
+<section id="aplicaciones-prácticas" class="level4">
+<h4 class="anchored" data-anchor-id="aplicaciones-prácticas">5.4.2 Aplicaciones Prácticas</h4>
+<ol type="1">
+<li><strong>Agricultura de precisión</strong>
+<ul>
+<li>Delimitación automática de parcelas</li>
+<li>Monitoreo de salud de cultivos (NDVI, EVI)</li>
+<li>Estimación de rendimiento</li>
+</ul></li>
+<li><strong>Planificación urbana</strong>
+<ul>
+<li>Expansión urbana y crecimiento</li>
+<li>Índices de vegetación urbana</li>
+<li>Análisis de impermeabilización del suelo</li>
+</ul></li>
+<li><strong>Monitoreo ambiental</strong>
+<ul>
+<li>Cambios en cuerpos de agua</li>
+<li>Degradación de vegetación</li>
+<li>Impacto de actividades humanas</li>
+</ul></li>
+</ol>
+</section>
+<section id="optimizaciones" class="level4">
+<h4 class="anchored" data-anchor-id="optimizaciones">5.4.3 Optimizaciones</h4>
+<ol type="1">
+<li><strong>Procesamiento eficiente</strong>
+<ul>
+<li>Paralelización con Dask o multiprocessing</li>
+<li>Procesamiento por tiles para imágenes grandes</li>
+<li>Optimización de memoria</li>
+</ul></li>
+<li><strong>Automatización</strong>
+<ul>
+<li>Pipeline end-to-end automatizado</li>
+<li>Integración con APIs de Sentinel Hub</li>
+<li>Procesamiento en la nube (Google Earth Engine, AWS)</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+</section>
+<section id="referencias-y-recursos" class="level2">
+<h2 class="anchored" data-anchor-id="referencias-y-recursos">6. Referencias y Recursos</h2>
+<section id="datos-1" class="level3">
+<h3 class="anchored" data-anchor-id="datos-1">Datos</h3>
+<ul>
+<li><strong>Sentinel-2</strong>: Programa Copernicus de la ESA</li>
+<li><strong>Descarga</strong>: <a href="https://scihub.copernicus.eu/">Copernicus Open Access Hub</a></li>
+</ul>
+</section>
+<section id="librerías-utilizadas" class="level3">
+<h3 class="anchored" data-anchor-id="librerías-utilizadas">Librerías Utilizadas</h3>
+<ul>
+<li><code>rasterio</code>: Procesamiento de datos geoespaciales</li>
+<li><code>scikit-image</code>: Segmentación de imágenes</li>
+<li><code>scikit-learn</code>: Machine learning</li>
+<li><code>pandas</code>, <code>numpy</code>: Análisis de datos</li>
+<li><code>matplotlib</code>: Visualización</li>
+</ul>
+</section>
+<section id="documentación-técnica" class="level3">
+<h3 class="anchored" data-anchor-id="documentación-técnica">Documentación Técnica</h3>
+<ul>
+<li>SLIC: Achanta et al.&nbsp;(2012) “SLIC Superpixels Compared to State-of-the-art”</li>
+<li>Sentinel-2: <a href="https://sentinel.esa.int/web/sentinel/user-guides/sentinel-2-msi">Documentación ESA</a></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="información-del-proyecto" class="level2">
+<h2 class="anchored" data-anchor-id="información-del-proyecto">7. Información del Proyecto</h2>
+<p><strong>Autor</strong>: Fernando Terreno<br>
+<strong>Fecha</strong>: 2026<br>
+<strong>Licencia</strong>: Este proyecto es de uso educativo y profesional<br>
+<strong>Repositorio</strong>: [Enlace a GitHub si aplica]</p>
+<hr>
+<p><em>Este notebook demuestra habilidades en análisis geoespacial, machine learning no supervisado, procesamiento de imágenes satelitales y visualización de datos. Para más información o colaboraciones, contactar al autor.</em></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
