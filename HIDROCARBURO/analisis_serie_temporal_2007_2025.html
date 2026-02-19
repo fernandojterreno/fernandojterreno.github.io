@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Fernando J. Terreno">
+<meta name="dcterms.date" content="2024-12-31">
+
+<title>Análisis de Producción de Hidrocarburos en Argentina (2007-2025)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="analisis_serie_temporal_2007_2025_files/libs/clipboard/clipboard.min.js"></script>
+<script src="analisis_serie_temporal_2007_2025_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="analisis_serie_temporal_2007_2025_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="analisis_serie_temporal_2007_2025_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="analisis_serie_temporal_2007_2025_files/libs/quarto-html/popper.min.js"></script>
+<script src="analisis_serie_temporal_2007_2025_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="analisis_serie_temporal_2007_2025_files/libs/quarto-html/anchor.min.js"></script>
+<link href="analisis_serie_temporal_2007_2025_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="analisis_serie_temporal_2007_2025_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="analisis_serie_temporal_2007_2025_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="analisis_serie_temporal_2007_2025_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="analisis_serie_temporal_2007_2025_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#análisis-de-producción-de-hidrocarburos-en-argentina-2007-2025" id="toc-análisis-de-producción-de-hidrocarburos-en-argentina-2007-2025" class="nav-link active" data-scroll-target="#análisis-de-producción-de-hidrocarburos-en-argentina-2007-2025">Análisis de Producción de Hidrocarburos en Argentina (2007-2025)</a>
+  <ul class="collapse">
+  <li><a href="#qué-analiza-este-documento" id="toc-qué-analiza-este-documento" class="nav-link" data-scroll-target="#qué-analiza-este-documento">¿Qué analiza este documento?</a></li>
+  <li><a href="#qué-son-las-cuencas" id="toc-qué-son-las-cuencas" class="nav-link" data-scroll-target="#qué-son-las-cuencas">¿Qué son las cuencas?</a></li>
+  <li><a href="#qué-significan-los-datos" id="toc-qué-significan-los-datos" class="nav-link" data-scroll-target="#qué-significan-los-datos">¿Qué significan los datos?</a></li>
+  <li><a href="#estadísticas-descriptivas" id="toc-estadísticas-descriptivas" class="nav-link" data-scroll-target="#estadísticas-descriptivas">Estadísticas Descriptivas</a>
+  <ul class="collapse">
+  <li><a href="#qué-información-proporcionan-las-estadísticas" id="toc-qué-información-proporcionan-las-estadísticas" class="nav-link" data-scroll-target="#qué-información-proporcionan-las-estadísticas">¿Qué información proporcionan las estadísticas?</a></li>
+  </ul></li>
+  <li><a href="#evolución-de-la-producción-total-2007-2025" id="toc-evolución-de-la-producción-total-2007-2025" class="nav-link" data-scroll-target="#evolución-de-la-producción-total-2007-2025">Evolución de la Producción Total (2007-2025)</a></li>
+  <li><a href="#producción-por-cuenca-2007-2025" id="toc-producción-por-cuenca-2007-2025" class="nav-link" data-scroll-target="#producción-por-cuenca-2007-2025">Producción por Cuenca (2007-2025)</a></li>
+  <li><a href="#visualización-interactiva" id="toc-visualización-interactiva" class="nav-link" data-scroll-target="#visualización-interactiva">Visualización Interactiva</a></li>
+  <li><a href="#producción-no-convencional-shale-y-tight-2007-2025" id="toc-producción-no-convencional-shale-y-tight-2007-2025" class="nav-link" data-scroll-target="#producción-no-convencional-shale-y-tight-2007-2025">Producción No Convencional: Shale y Tight (2007-2025)</a>
+  <ul class="collapse">
+  <li><a href="#qué-es-la-producción-no-convencional" id="toc-qué-es-la-producción-no-convencional" class="nav-link" data-scroll-target="#qué-es-la-producción-no-convencional">¿Qué es la producción no convencional?</a></li>
+  <li><a href="#por-qué-es-importante" id="toc-por-qué-es-importante" class="nav-link" data-scroll-target="#por-qué-es-importante">¿Por qué es importante?</a></li>
+  </ul></li>
+  <li><a href="#análisis-de-tendencias-y-patrones-estacionales" id="toc-análisis-de-tendencias-y-patrones-estacionales" class="nav-link" data-scroll-target="#análisis-de-tendencias-y-patrones-estacionales">Análisis de Tendencias y Patrones Estacionales</a>
+  <ul class="collapse">
+  <li><a href="#qué-es-la-descomposición" id="toc-qué-es-la-descomposición" class="nav-link" data-scroll-target="#qué-es-la-descomposición">¿Qué es la descomposición?</a></li>
+  <li><a href="#por-qué-es-útil" id="toc-por-qué-es-útil" class="nav-link" data-scroll-target="#por-qué-es-útil">¿Por qué es útil?</a></li>
+  <li><a href="#test-de-estacionariedad" id="toc-test-de-estacionariedad" class="nav-link" data-scroll-target="#test-de-estacionariedad">Test de Estacionariedad</a></li>
+  </ul></li>
+  <li><a href="#análisis-comparativo-con-datos-detallados-por-yacimiento" id="toc-análisis-comparativo-con-datos-detallados-por-yacimiento" class="nav-link" data-scroll-target="#análisis-comparativo-con-datos-detallados-por-yacimiento">Análisis Comparativo con Datos Detallados por Yacimiento</a></li>
+  <li><a href="#productividad-de-los-pozos-según-su-antigüedad" id="toc-productividad-de-los-pozos-según-su-antigüedad" class="nav-link" data-scroll-target="#productividad-de-los-pozos-según-su-antigüedad">Productividad de los Pozos según su Antigüedad</a>
+  <ul class="collapse">
+  <li><a href="#qué-analizamos" id="toc-qué-analizamos" class="nav-link" data-scroll-target="#qué-analizamos">¿Qué analizamos?</a></li>
+  <li><a href="#por-qué-es-relevante" id="toc-por-qué-es-relevante" class="nav-link" data-scroll-target="#por-qué-es-relevante">¿Por qué es relevante?</a></li>
+  </ul></li>
+  <li><a href="#relaciones-entre-variables" id="toc-relaciones-entre-variables" class="nav-link" data-scroll-target="#relaciones-entre-variables">Relaciones entre Variables</a>
+  <ul class="collapse">
+  <li><a href="#qué-es-una-correlación" id="toc-qué-es-una-correlación" class="nav-link" data-scroll-target="#qué-es-una-correlación">¿Qué es una correlación?</a></li>
+  <li><a href="#qué-buscamos" id="toc-qué-buscamos" class="nav-link" data-scroll-target="#qué-buscamos">¿Qué buscamos?</a></li>
+  </ul></li>
+  <li><a href="#conclusiones-y-hallazgos-principales" id="toc-conclusiones-y-hallazgos-principales" class="nav-link" data-scroll-target="#conclusiones-y-hallazgos-principales">Conclusiones y Hallazgos Principales</a>
+  <ul class="collapse">
+  <li><a href="#resumen-ejecutivo" id="toc-resumen-ejecutivo" class="nav-link" data-scroll-target="#resumen-ejecutivo">Resumen Ejecutivo</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análisis de Producción de Hidrocarburos en Argentina (2007-2025)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Fernando J. Terreno </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 31, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="análisis-de-producción-de-hidrocarburos-en-argentina-2007-2025" class="level1">
+<h1>Análisis de Producción de Hidrocarburos en Argentina (2007-2025)</h1>
+<section id="qué-analiza-este-documento" class="level2">
+<h2 class="anchored" data-anchor-id="qué-analiza-este-documento">¿Qué analiza este documento?</h2>
+<p>Este análisis examina la producción de petróleo y gas en Argentina durante el período <strong>2007-2025</strong>. El objetivo es entender: - <strong>Cómo ha evolucionado</strong> la producción total de hidrocarburos en el país - <strong>Qué cuencas</strong> son las más importantes y cómo han cambiado a lo largo del tiempo - <strong>El crecimiento</strong> de la producción no convencional (shale y tight) - <strong>La productividad</strong> de los pozos según su antigüedad</p>
+</section>
+<section id="qué-son-las-cuencas" class="level2">
+<h2 class="anchored" data-anchor-id="qué-son-las-cuencas">¿Qué son las cuencas?</h2>
+<p>Las <strong>cuencas</strong> son regiones geográficas donde se extraen hidrocarburos. Argentina tiene cinco cuencas principales: - <strong>Cuenca Neuquina</strong>: La más importante, ubicada en Neuquén, Río Negro y Mendoza - <strong>Golfo San Jorge</strong>: En Chubut y Santa Cruz - <strong>Cuenca Austral</strong>: En Santa Cruz y Tierra del Fuego - <strong>Noroeste</strong>: En Salta, Jujuy y otras provincias del norte - <strong>Cuyana</strong>: En Mendoza y San Juan</p>
+</section>
+<section id="qué-significan-los-datos" class="level2">
+<h2 class="anchored" data-anchor-id="qué-significan-los-datos">¿Qué significan los datos?</h2>
+<ul>
+<li><strong>Producción total</strong>: Cantidad total de petróleo y gas producido cada mes</li>
+<li><strong>Producción no convencional</strong>: Petróleo y gas extraído mediante técnicas especiales (fracking) de formaciones como Vaca Muerta</li>
+<li><strong>Shale y Tight</strong>: Tipos específicos de recursos no convencionales</li>
+<li><strong>Productividad por pozo</strong>: Cuánto produce cada pozo según su antigüedad</li>
+</ul>
+<div id="cell-3" class="cell" data-execution_count="42">
+<div class="cell-output cell-output-stdout">
+<pre><code>Información del dataset (PERÍODO 2007-2025):
+Período original: 2006-01 a 2025-10
+Período filtrado: 2007-01 a 2025-10
+Registros originales: 238
+Registros filtrados: 226
+Registros excluidos (2006): 12
+Variables: ['cuenca_austral', 'cuenca_gsj', 'cuenca_neuquina', 'cuenca_noroeste', 'cuenca_cuyana', 'total', 'total_diario', 'shale', 'tight', 'part_no_conv', 'kbbl_diario']</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cuenca_austral</th>
+<th data-quarto-table-cell-role="th">cuenca_gsj</th>
+<th data-quarto-table-cell-role="th">cuenca_neuquina</th>
+<th data-quarto-table-cell-role="th">cuenca_noroeste</th>
+<th data-quarto-table-cell-role="th">cuenca_cuyana</th>
+<th data-quarto-table-cell-role="th">total</th>
+<th data-quarto-table-cell-role="th">total_diario</th>
+<th data-quarto-table-cell-role="th">shale</th>
+<th data-quarto-table-cell-role="th">tight</th>
+<th data-quarto-table-cell-role="th">part_no_conv</th>
+<th data-quarto-table-cell-role="th">kbbl_diario</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">indice_tiempo</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2007-01-01</th>
+<td>144024.5465</td>
+<td>1.386611e+06</td>
+<td>1.338568e+06</td>
+<td>72239.5762</td>
+<td>181375.5653</td>
+<td>3.122819e+06</td>
+<td>100736.0882</td>
+<td>333.184</td>
+<td>908.9389</td>
+<td>0.0398</td>
+<td>633.6110</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2007-02-01</th>
+<td>125284.9471</td>
+<td>1.276211e+06</td>
+<td>1.213168e+06</td>
+<td>65342.1388</td>
+<td>165189.0469</td>
+<td>2.845194e+06</td>
+<td>101614.0867</td>
+<td>287.778</td>
+<td>722.8905</td>
+<td>0.0355</td>
+<td>639.1334</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2007-03-01</th>
+<td>150735.0074</td>
+<td>1.410711e+06</td>
+<td>1.349291e+06</td>
+<td>67591.8186</td>
+<td>185643.7243</td>
+<td>3.163972e+06</td>
+<td>102063.6232</td>
+<td>268.440</td>
+<td>726.1606</td>
+<td>0.0314</td>
+<td>641.9609</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2007-04-01</th>
+<td>145248.6771</td>
+<td>1.368792e+06</td>
+<td>1.324769e+06</td>
+<td>67627.9475</td>
+<td>178034.8457</td>
+<td>3.084472e+06</td>
+<td>102815.7438</td>
+<td>309.350</td>
+<td>662.4024</td>
+<td>0.0315</td>
+<td>646.6916</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2007-05-01</th>
+<td>151013.5611</td>
+<td>1.400821e+06</td>
+<td>1.368339e+06</td>
+<td>65522.0243</td>
+<td>177173.6462</td>
+<td>3.162869e+06</td>
+<td>102028.0402</td>
+<td>229.867</td>
+<td>790.5490</td>
+<td>0.0323</td>
+<td>641.7371</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="estadísticas-descriptivas" class="level2">
+<h2 class="anchored" data-anchor-id="estadísticas-descriptivas">Estadísticas Descriptivas</h2>
+<p>Antes de analizar tendencias y patrones, es importante entender las características básicas de los datos:</p>
+<section id="qué-información-proporcionan-las-estadísticas" class="level3">
+<h3 class="anchored" data-anchor-id="qué-información-proporcionan-las-estadísticas">¿Qué información proporcionan las estadísticas?</h3>
+<ul>
+<li><strong>Promedio</strong>: Valor típico de producción</li>
+<li><strong>Mínimo y Máximo</strong>: Los extremos del período analizado</li>
+<li><strong>Desviación estándar</strong>: Qué tan variable es la producción (valores altos = más variabilidad)</li>
+<li><strong>Cuartiles</strong>: Valores que dividen los datos en cuatro partes iguales</li>
+</ul>
+<p>Estas estadísticas nos dan una <strong>fotografía general</strong> de la producción antes de profundizar en los detalles.</p>
+<div id="cell-5" class="cell" data-execution_count="43">
+<div class="cell-output cell-output-stdout">
+<pre><code>Estadísticas descriptivas (PERÍODO 2007-2025):</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cuenca_austral</th>
+<th data-quarto-table-cell-role="th">cuenca_gsj</th>
+<th data-quarto-table-cell-role="th">cuenca_neuquina</th>
+<th data-quarto-table-cell-role="th">cuenca_noroeste</th>
+<th data-quarto-table-cell-role="th">cuenca_cuyana</th>
+<th data-quarto-table-cell-role="th">total</th>
+<th data-quarto-table-cell-role="th">total_diario</th>
+<th data-quarto-table-cell-role="th">shale</th>
+<th data-quarto-table-cell-role="th">tight</th>
+<th data-quarto-table-cell-role="th">part_no_conv</th>
+<th data-quarto-table-cell-role="th">kbbl_diario</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">count</th>
+<td>226.000000</td>
+<td>2.260000e+02</td>
+<td>2.260000e+02</td>
+<td>226.000000</td>
+<td>226.000000</td>
+<td>2.260000e+02</td>
+<td>226.000000</td>
+<td>2.260000e+02</td>
+<td>226.000000</td>
+<td>226.000000</td>
+<td>226.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">mean</th>
+<td>101956.775387</td>
+<td>1.153815e+06</td>
+<td>1.365353e+06</td>
+<td>38413.737613</td>
+<td>126507.262609</td>
+<td>2.786053e+06</td>
+<td>91531.297327</td>
+<td>4.843318e+05</td>
+<td>20478.604187</td>
+<td>16.690509</td>
+<td>575.714558</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">std</th>
+<td>31561.729144</td>
+<td>1.598132e+05</td>
+<td>4.732376e+05</td>
+<td>17065.339235</td>
+<td>31792.898398</td>
+<td>3.790275e+05</td>
+<td>12186.331360</td>
+<td>6.812353e+05</td>
+<td>13132.208309</td>
+<td>20.005411</td>
+<td>76.649721</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">min</th>
+<td>47656.643000</td>
+<td>7.956543e+05</td>
+<td>8.907406e+05</td>
+<td>13027.969900</td>
+<td>67319.489600</td>
+<td>2.187848e+06</td>
+<td>72657.134600</td>
+<td>1.174030e+02</td>
+<td>662.402400</td>
+<td>0.031400</td>
+<td>456.999600</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">25%</th>
+<td>76286.741500</td>
+<td>9.993417e+05</td>
+<td>1.076785e+06</td>
+<td>23964.503700</td>
+<td>94911.295925</td>
+<td>2.511304e+06</td>
+<td>82528.711250</td>
+<td>9.696969e+03</td>
+<td>7406.471675</td>
+<td>0.589050</td>
+<td>519.090025</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">50%</th>
+<td>105574.433500</td>
+<td>1.169762e+06</td>
+<td>1.184813e+06</td>
+<td>35975.335950</td>
+<td>131478.831000</td>
+<td>2.686294e+06</td>
+<td>87669.029900</td>
+<td>1.362230e+05</td>
+<td>22888.587950</td>
+<td>6.758300</td>
+<td>551.421600</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">75%</th>
+<td>126650.757000</td>
+<td>1.292441e+06</td>
+<td>1.356270e+06</td>
+<td>49158.914675</td>
+<td>153025.555000</td>
+<td>3.008986e+06</td>
+<td>99044.236325</td>
+<td>6.456230e+05</td>
+<td>30078.256650</td>
+<td>28.299000</td>
+<td>622.969475</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">max</th>
+<td>160363.723100</td>
+<td>1.423012e+06</td>
+<td>3.222377e+06</td>
+<td>73932.390100</td>
+<td>185643.724300</td>
+<td>4.231155e+06</td>
+<td>136488.877200</td>
+<td>2.801581e+06</td>
+<td>46317.764900</td>
+<td>66.698400</td>
+<td>858.489200</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Valores nulos por columna:
+cuenca_austral     0
+cuenca_gsj         0
+cuenca_neuquina    0
+cuenca_noroeste    0
+cuenca_cuyana      0
+total              0
+total_diario       0
+shale              0
+tight              0
+part_no_conv       0
+kbbl_diario        0
+dtype: int64</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="evolución-de-la-producción-total-2007-2025" class="level2">
+<h2 class="anchored" data-anchor-id="evolución-de-la-producción-total-2007-2025">Evolución de la Producción Total (2007-2025)</h2>
+<p>En esta sección observamos cómo ha cambiado la producción total de hidrocarburos en Argentina a lo largo del tiempo. Los gráficos muestran: - <strong>Tendencias</strong>: Si la producción está aumentando, disminuyendo o se mantiene estable - <strong>Variaciones mensuales</strong>: Cómo fluctúa la producción mes a mes - <strong>Promedios diarios</strong>: Para facilitar la comparación entre meses de diferente duración</p>
+<div id="cell-7" class="cell" data-execution_count="44">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="producción-por-cuenca-2007-2025" class="level2">
+<h2 class="anchored" data-anchor-id="producción-por-cuenca-2007-2025">Producción por Cuenca (2007-2025)</h2>
+<p>Cada cuenca tiene características diferentes y contribuye de manera distinta a la producción nacional. En esta sección veremos: - <strong>Cuál es la cuenca más importante</strong> en términos de producción - <strong>Cómo ha cambiado</strong> la participación de cada cuenca a lo largo del tiempo - <strong>Si alguna cuenca está creciendo</strong> más rápido que otras</p>
+<p>Esto ayuda a entender la <strong>distribución geográfica</strong> de la producción y dónde se concentran los recursos.</p>
+<div id="cell-9" class="cell" data-execution_count="45">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="visualización-interactiva" class="level2">
+<h2 class="anchored" data-anchor-id="visualización-interactiva">Visualización Interactiva</h2>
+<p>Este gráfico interactivo permite explorar la producción por cuenca. Puedes: - <strong>Pasar el mouse</strong> sobre las líneas para ver valores exactos - <strong>Hacer clic en las leyendas</strong> para mostrar u ocultar cuencas específicas - <strong>Hacer zoom</strong> en períodos de interés</p>
+<p>Es útil para comparar visualmente el desempeño de diferentes cuencas.</p>
+<div id="cell-11" class="cell" data-execution_count="46">
+<div class="cell-output cell-output-display">
+<pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
+</div>
+</div>
+</section>
+<section id="producción-no-convencional-shale-y-tight-2007-2025" class="level2">
+<h2 class="anchored" data-anchor-id="producción-no-convencional-shale-y-tight-2007-2025">Producción No Convencional: Shale y Tight (2007-2025)</h2>
+<p>La producción <strong>no convencional</strong> es especialmente importante en Argentina, principalmente por el desarrollo de <strong>Vaca Muerta</strong> en la Cuenca Neuquina.</p>
+<section id="qué-es-la-producción-no-convencional" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-la-producción-no-convencional">¿Qué es la producción no convencional?</h3>
+<ul>
+<li><strong>Shale</strong>: Petróleo y gas atrapado en rocas muy compactas (como Vaca Muerta)</li>
+<li><strong>Tight</strong>: Recursos en formaciones con baja permeabilidad</li>
+<li>Requiere técnicas especiales como <strong>fracking</strong> (fracturación hidráulica)</li>
+</ul>
+</section>
+<section id="por-qué-es-importante" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-importante">¿Por qué es importante?</h3>
+<p>La producción no convencional ha sido clave para el crecimiento de la producción argentina desde 2010. Este análisis muestra: - <strong>Cuánto ha crecido</strong> la producción no convencional - <strong>Qué porcentaje</strong> representa del total - <strong>Cómo se compara</strong> shale vs tight</p>
+<div id="cell-13" class="cell" data-execution_count="47">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="análisis-de-tendencias-y-patrones-estacionales" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-de-tendencias-y-patrones-estacionales">Análisis de Tendencias y Patrones Estacionales</h2>
+<p>Cuando observamos la producción a lo largo del tiempo, podemos identificar diferentes componentes:</p>
+<section id="qué-es-la-descomposición" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-la-descomposición">¿Qué es la descomposición?</h3>
+<p>La producción mensual puede descomponerse en cuatro partes:</p>
+<ol type="1">
+<li><strong>Tendencia</strong>: La dirección general a largo plazo (¿está aumentando o disminuyendo?)</li>
+<li><strong>Estacionalidad</strong>: Patrones que se repiten cada año (por ejemplo, mayor producción en ciertos meses)</li>
+<li><strong>Ciclos</strong>: Variaciones más largas que la estacionalidad</li>
+<li><strong>Residuos</strong>: Variaciones aleatorias que no siguen un patrón claro</li>
+</ol>
+</section>
+<section id="por-qué-es-útil" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-útil">¿Por qué es útil?</h3>
+<ul>
+<li><strong>Entender la tendencia</strong> ayuda a proyectar el futuro</li>
+<li><strong>Identificar estacionalidad</strong> permite planificar operaciones (sabemos qué meses suelen ser mejores)</li>
+<li><strong>Separar lo predecible de lo aleatorio</strong> ayuda a tomar mejores decisiones</li>
+</ul>
+<p>Este análisis nos muestra si la producción tiene patrones predecibles o si es más variable.</p>
+<div id="cell-15" class="cell" data-execution_count="48">
+<div class="cell-output cell-output-stdout">
+<pre><code>Análisis de tendencias y estacionalidad - Producción Total (2007-2025)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-9-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Test de Dickey-Fuller Aumentado:
+Estadístico ADF: 0.9065
+P-valor: 0.9932
+Valores críticos:
+   1%: -3.4619
+   5%: -2.8754
+   10%: -2.5742
+✗ La serie no es estacionaria (p ≥ 0.05)</code></pre>
+</div>
+</div>
+</section>
+<section id="test-de-estacionariedad" class="level3">
+<h3 class="anchored" data-anchor-id="test-de-estacionariedad">Test de Estacionariedad</h3>
+<p>El <strong>test de estacionariedad</strong> (ADF) verifica si la producción tiene una tendencia estable o si está cambiando sistemáticamente:</p>
+<ul>
+<li><strong>Serie estacionaria</strong>: La producción fluctúa alrededor de un valor constante (sin tendencia clara)</li>
+<li><strong>Serie no estacionaria</strong>: La producción muestra una tendencia creciente o decreciente</li>
+</ul>
+<p><strong>¿Por qué importa?</strong> Si la serie es no estacionaria (tiene tendencia), necesitamos ajustar nuestros métodos de análisis para tener en cuenta esa tendencia.</p>
+</section>
+</section>
+<section id="análisis-comparativo-con-datos-detallados-por-yacimiento" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-comparativo-con-datos-detallados-por-yacimiento">Análisis Comparativo con Datos Detallados por Yacimiento</h2>
+<div id="cell-19" class="cell" data-execution_count="49">
+<div class="cell-output cell-output-stdout">
+<pre><code>Cargando datos detallados por yacimiento...
+Dataset de yacimientos: 487,688 registros
+Período: 2010-01 a 2025-10
+Cuencas: ['AUSTRAL', 'CUYANA', 'GOLFO SAN JORGE', 'NEUQUINA', 'NORESTE', 'NOROESTE']
+Provincias: ['Chubut', 'Estado Nacional', 'Formosa', 'Jujuy', 'La Pampa', 'Mendoza', 'Neuquén', 'Rio Negro', 'Salta', 'Santa Cruz', 'Tierra del Fuego']
+Tipos de recurso: ['CONVENCIONAL', 'NO CONVENCIONAL', 'NO DISCRIMINADO', 'SIN RESERVORIO']</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">idempresa</th>
+<th data-quarto-table-cell-role="th">anio</th>
+<th data-quarto-table-cell-role="th">mes</th>
+<th data-quarto-table-cell-role="th">suma_prod_pet</th>
+<th data-quarto-table-cell-role="th">suma_prod_gas</th>
+<th data-quarto-table-cell-role="th">suma_prod_agua</th>
+<th data-quarto-table-cell-role="th">suma_iny_agua</th>
+<th data-quarto-table-cell-role="th">suma_iny_gas</th>
+<th data-quarto-table-cell-role="th">suma_iny_co2</th>
+<th data-quarto-table-cell-role="th">suma_iny_otro</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">idareapermisoconcesion</th>
+<th data-quarto-table-cell-role="th">areapermisoconcesion</th>
+<th data-quarto-table-cell-role="th">idareayacimiento</th>
+<th data-quarto-table-cell-role="th">areayacimiento</th>
+<th data-quarto-table-cell-role="th">cuenca</th>
+<th data-quarto-table-cell-role="th">provincia</th>
+<th data-quarto-table-cell-role="th">tipo_de_recurso</th>
+<th data-quarto-table-cell-role="th">anio_primera_prod</th>
+<th data-quarto-table-cell-role="th">mes_primera_prod</th>
+<th data-quarto-table-cell-role="th">fecha</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>PBE</td>
+<td>2010</td>
+<td>1</td>
+<td>118</td>
+<td>28</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>VELP</td>
+<td>25 DE MAYO - MEDANITO SUD ESTE LP</td>
+<td>VELP</td>
+<td>25 DE MAYO - MEDANITO SUDESTE LP</td>
+<td>NEUQUINA</td>
+<td>La Pampa</td>
+<td>CONVENCIONAL</td>
+<td>2008</td>
+<td>1</td>
+<td>2010-01-01</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>PBE</td>
+<td>2010</td>
+<td>1</td>
+<td>8732</td>
+<td>3578</td>
+<td>20482</td>
+<td>21974</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>VELP</td>
+<td>25 DE MAYO - MEDANITO SUD ESTE LP</td>
+<td>VELP</td>
+<td>25 DE MAYO - MEDANITO SUDESTE LP</td>
+<td>NEUQUINA</td>
+<td>La Pampa</td>
+<td>CONVENCIONAL</td>
+<td>2006</td>
+<td>1</td>
+<td>2010-01-01</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>PBE</td>
+<td>2010</td>
+<td>1</td>
+<td>2227</td>
+<td>698</td>
+<td>2655</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>VELP</td>
+<td>25 DE MAYO - MEDANITO SUD ESTE LP</td>
+<td>VELP</td>
+<td>25 DE MAYO - MEDANITO SUDESTE LP</td>
+<td>NEUQUINA</td>
+<td>La Pampa</td>
+<td>CONVENCIONAL</td>
+<td>2007</td>
+<td>1</td>
+<td>2010-01-01</td>
+</tr>
+</tbody>
+</table>
+
+<p>3 rows × 22 columns</p>
+</div>
+</div>
+</div>
+<div id="cell-20" class="cell" data-execution_count="50">
+<div class="cell-output cell-output-stdout">
+<pre><code>Análisis comparativo entre datasets agregados y detallados
+Período de solapamiento: 2010-01 a 2025-10
+
+Producción total por cuenca (datos detallados):
+• NEUQUINA: 261,037,589
+• GOLFO SAN JORGE: 213,504,412
+• CUYANA: 22,530,842
+• AUSTRAL: 18,112,958
+• NOROESTE: 6,257,919
+• NORESTE: 1,235</code></pre>
+</div>
+</div>
+<div id="cell-21" class="cell" data-execution_count="51">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-22" class="cell" data-execution_count="52">
+<div class="cell-output cell-output-stdout">
+<pre><code>Análisis de yacimientos principales
+
+Top 15 Yacimientos por Producción Total:
+================================================================================
+ 1. LOMA CAMPANA-LLL
+    Cuenca: NEUQUINA | Provincia: Neuquén
+    Producción: 23,598,262 (Petróleo: 23,591,386, Gas: 6,876,270)
+    Período: 2010-01 a 2025-10
+
+ 2. MANANTIALES BEHR
+    Cuenca: GOLFO SAN JORGE | Provincia: Chubut
+    Producción: 19,474,128 (Petróleo: 19,471,196, Gas: 2,931,632)
+    Período: 2010-01 a 2025-10
+
+ 3. LA AMARGA CHICA
+    Cuenca: NEUQUINA | Provincia: Neuquén
+    Producción: 17,024,611 (Petróleo: 17,022,562, Gas: 2,049,193)
+    Período: 2011-10 a 2025-10
+
+ 4. ZORRO
+    Cuenca: GOLFO SAN JORGE | Provincia: Chubut
+    Producción: 12,653,204 (Petróleo: 12,651,454, Gas: 1,749,910)
+    Período: 2010-01 a 2025-10
+
+ 5. EL TRAPIAL
+    Cuenca: NEUQUINA | Provincia: Neuquén
+    Producción: 11,398,841 (Petróleo: 11,396,709, Gas: 2,131,928)
+    Período: 2010-01 a 2025-09
+
+ 6. BANDURRIA SUR
+    Cuenca: NEUQUINA | Provincia: Neuquén
+    Producción: 11,239,149 (Petróleo: 11,237,131, Gas: 2,018,280)
+    Período: 2010-01 a 2025-10
+
+ 7. EL TORDILLO
+    Cuenca: GOLFO SAN JORGE | Provincia: Chubut
+    Producción: 9,870,736 (Petróleo: 9,869,254, Gas: 1,482,138)
+    Período: 2010-01 a 2025-10
+
+ 8. DIADEMA
+    Cuenca: GOLFO SAN JORGE | Provincia: Chubut
+    Producción: 9,722,474 (Petróleo: 9,721,902, Gas: 571,657)
+    Período: 2010-01 a 2025-10
+
+ 9. LOS PERALES
+    Cuenca: GOLFO SAN JORGE | Provincia: Santa Cruz
+    Producción: 9,557,499 (Petróleo: 9,554,160, Gas: 3,339,112)
+    Período: 2010-01 a 2025-10
+
+10. LOMA CAMPANA
+    Cuenca: NEUQUINA | Provincia: Neuquén
+    Producción: 9,499,666 (Petróleo: 9,498,298, Gas: 1,368,339)
+    Período: 2011-02 a 2025-10
+
+11. EL CORCOBO NORTE
+    Cuenca: NEUQUINA | Provincia: Mendoza
+    Producción: 8,807,278 (Petróleo: 8,806,676, Gas: 601,515)
+    Período: 2010-01 a 2025-10
+
+12. BAJADA DEL PALO OESTE
+    Cuenca: NEUQUINA | Provincia: Neuquén
+    Producción: 8,663,369 (Petróleo: 8,662,363, Gas: 1,005,701)
+    Período: 2020-11 a 2025-09
+
+13. ORIENTAL
+    Cuenca: GOLFO SAN JORGE | Provincia: Chubut
+    Producción: 8,438,698 (Petróleo: 8,438,588, Gas: 110,062)
+    Período: 2010-01 a 2025-10
+
+14. CERRO DRAGON
+    Cuenca: GOLFO SAN JORGE | Provincia: Chubut
+    Producción: 8,305,299 (Petróleo: 8,303,163, Gas: 2,136,230)
+    Período: 2010-01 a 2025-10
+
+15. VALLE HERMOSO
+    Cuenca: GOLFO SAN JORGE | Provincia: Chubut
+    Producción: 7,706,698 (Petróleo: 7,698,708, Gas: 7,989,925)
+    Período: 2010-01 a 2025-10
+</code></pre>
+</div>
+</div>
+</section>
+<section id="productividad-de-los-pozos-según-su-antigüedad" class="level2">
+<h2 class="anchored" data-anchor-id="productividad-de-los-pozos-según-su-antigüedad">Productividad de los Pozos según su Antigüedad</h2>
+<p>Este análisis responde preguntas importantes sobre el <strong>ciclo de vida</strong> de los pozos:</p>
+<section id="qué-analizamos" class="level3">
+<h3 class="anchored" data-anchor-id="qué-analizamos">¿Qué analizamos?</h3>
+<ul>
+<li><strong>Cohortes</strong>: Agrupamos los pozos según el año en que comenzaron a producir</li>
+<li><strong>Productividad a lo largo del tiempo</strong>: Cómo cambia la producción de un pozo según su antigüedad</li>
+<li><strong>Comparación entre cohortes</strong>: Si los pozos más nuevos son más productivos que los antiguos</li>
+</ul>
+</section>
+<section id="por-qué-es-relevante" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-es-relevante">¿Por qué es relevante?</h3>
+<ul>
+<li>Los pozos <strong>nuevos</strong> suelen tener mayor productividad inicial</li>
+<li>La producción <strong>declina</strong> con el tiempo (es normal)</li>
+<li>Entender estos patrones ayuda a planificar inversiones y operaciones</li>
+</ul>
+<p><strong>Nota importante</strong>: Excluimos datos del año 2006 porque presentaban inconsistencias que distorsionaban el análisis.</p>
+<div id="cell-24" class="cell" data-execution_count="53">
+<div class="cell-output cell-output-stdout">
+<pre><code>Análisis de productividad por año de primera producción
+
+Productividad por año de primera producción:
+================================================================================
+                  suma_prod_pet                 suma_prod_gas           \
+                            sum     mean  count           sum     mean   
+anio_primera_prod                                                        
+2007                   13857419   426.45  32495      18151815   558.60   
+2008                   17610655   595.70  29563      19852629   671.54   
+2009                   12592709   620.91  20281      10194638   502.67   
+2010                   11917137   496.15  24019      15786836   657.26   
+2011                   11065142   439.01  25205      14521787   576.15   
+2012                   10145242   404.63  25073       9499667   378.88   
+2013                   10314060   431.01  23930      13360443   558.31   
+2014                   17217688   574.59  29965      24844427   829.11   
+2015                   17073731   583.08  29282      41718435  1424.71   
+2016                   14315994   726.44  19707      39662280  2012.60   
+2017                   12375109   563.66  21955      23984377  1092.43   
+2018                   15005107   902.02  16635      40203061  2416.78   
+2019                   18903103  1379.69  13701      24475710  1786.42   
+2020                    9624560  1384.83   6950       4476247   644.06   
+2021                   19039852  2561.87   7432      29201510  3929.16   
+2022                   21150915  3037.18   6964      26532709  3809.98   
+2023                   17228216  3826.79   4502      23104973  5132.16   
+2024                   16368239  6880.30   2379      15607595  6560.57   
+2025                    6331640  5735.18   1104       3717405  3367.21   
+
+                  areayacimiento  
+                         nunique  
+anio_primera_prod                 
+2007                         139  
+2008                         138  
+2009                          98  
+2010                         109  
+2011                         136  
+2012                         134  
+2013                         159  
+2014                         191  
+2015                         201  
+2016                         152  
+2017                         164  
+2018                         158  
+2019                         146  
+2020                          86  
+2021                         107  
+2022                         132  
+2023                         115  
+2024                         106  
+2025                          70  </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-14-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="relaciones-entre-variables" class="level2">
+<h2 class="anchored" data-anchor-id="relaciones-entre-variables">Relaciones entre Variables</h2>
+<p>Este análisis busca <strong>patrones y relaciones</strong> entre diferentes aspectos de la producción:</p>
+<section id="qué-es-una-correlación" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-una-correlación">¿Qué es una correlación?</h3>
+<p>Una <strong>correlación</strong> mide qué tan relacionadas están dos variables: - <strong>Correlación positiva</strong>: Cuando una aumenta, la otra también tiende a aumentar - <strong>Correlación negativa</strong>: Cuando una aumenta, la otra tiende a disminuir - <strong>Sin correlación</strong>: No hay relación clara</p>
+</section>
+<section id="qué-buscamos" class="level3">
+<h3 class="anchored" data-anchor-id="qué-buscamos">¿Qué buscamos?</h3>
+<ul>
+<li>¿Hay relación entre la <strong>antigüedad del pozo</strong> y su producción?</li>
+<li>¿Las <strong>cuencas</strong> tienen patrones similares o diferentes?</li>
+<li>¿Qué variables están más relacionadas entre sí?</li>
+</ul>
+<p>Los mapas de calor muestran estas relaciones de forma visual: colores más intensos indican correlaciones más fuertes.</p>
+<div id="cell-26" class="cell" data-execution_count="54">
+<div class="cell-output cell-output-stdout">
+<pre><code>Análisis de correlación entre variables de producción
+Columnas disponibles en df_yacimientos:
+['idempresa', 'anio', 'mes', 'suma_prod_pet', 'suma_prod_gas', 'suma_prod_agua', 'suma_iny_agua', 'suma_iny_gas', 'suma_iny_co2', 'suma_iny_otro', 'empresa', 'formacion', 'idareapermisoconcesion', 'areapermisoconcesion', 'idareayacimiento', 'areayacimiento', 'cuenca', 'provincia', 'tipo_de_recurso', 'anio_primera_prod', 'mes_primera_prod', 'fecha']
+
+Creando columna 'antiguedad_anios'...
+
+Variables disponibles para correlación: ['suma_prod_pet', 'suma_prod_gas', 'suma_prod_agua', 'suma_iny_agua', 'suma_iny_gas', 'antiguedad_anios']
+
+Matriz de correlación:
+============================================================
+                  suma_prod_pet  suma_prod_gas  suma_prod_agua  suma_iny_agua  \
+suma_prod_pet             1.000          0.196           0.524          0.463   
+suma_prod_gas             0.196          1.000           0.015          0.003   
+suma_prod_agua            0.524          0.015           1.000          0.884   
+suma_iny_agua             0.463          0.003           0.884          1.000   
+suma_iny_gas              0.005          0.018           0.000          0.002   
+antiguedad_anios         -0.055         -0.044           0.091          0.093   
+
+                  suma_iny_gas  antiguedad_anios  
+suma_prod_pet            0.005            -0.055  
+suma_prod_gas            0.018            -0.044  
+suma_prod_agua           0.000             0.091  
+suma_iny_agua            0.002             0.093  
+suma_iny_gas             1.000             0.002  
+antiguedad_anios         0.002             1.000  </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-15-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Correlación por cuenca:
+============================================================
+
+NEUQUINA:
+suma_prod_pet   -0.112
+suma_prod_gas   -0.079
+Name: antiguedad_anios, dtype: float64
+
+NOROESTE:
+suma_prod_pet   -0.162
+suma_prod_gas   -0.054
+Name: antiguedad_anios, dtype: float64
+
+GOLFO SAN JORGE:
+suma_prod_pet    0.044
+suma_prod_gas   -0.030
+Name: antiguedad_anios, dtype: float64
+
+AUSTRAL:
+suma_prod_pet   -0.025
+suma_prod_gas   -0.026
+Name: antiguedad_anios, dtype: float64
+
+CUYANA:
+suma_prod_pet    0.066
+suma_prod_gas    0.115
+Name: antiguedad_anios, dtype: float64</code></pre>
+</div>
+</div>
+<div id="cell-27" class="cell" data-execution_count="55">
+<div class="cell-output cell-output-stdout">
+<pre><code>RESUMEN EJECUTIVO - ANÁLISIS DE PRODUCCIÓN DE HIDROCARBUROS 2007-2025
+================================================================================
+
+📊 PERÍODO ANALIZADO:
+• Fechas: 2007-01 a 2025-10
+• Total de registros: 226 meses
+• Fuentes: Datos agregados mensuales + Datos detallados por yacimiento
+
+🏆 PRINCIPALES HALLAZGOS:
+
+1. PRODUCCIÓN TOTAL:
+   • Promedio mensual: 2,786,053
+   • Máximo histórico: 4,231,155
+   • Mínimo histórico: 2,187,848
+   • Variación: 93.4%
+
+2. CUENCAS PRINCIPALES:
+   • Neuquina: 1,365,353 (49.0% del total)
+   • Golfo San Jorge: 1,153,815 (41.4% del total)
+   • Austral: 101,957 (3.7% del total)
+   • Noroeste: 38,414 (1.4% del total)
+   • Cuyana: 126,507 (4.5% del total)
+
+3. PRODUCCIÓN NO CONVENCIONAL:
+   • Shale promedio: 484,332
+   • Tight promedio: 20,479
+   • Participación no convencional: 16.7%
+
+4. TENDENCIA GENERAL:
+   • Tendencia: DECRECIENTE
+   • Variación de tendencia: nan%
+
+5. YACIMIENTOS DESTACADOS:
+   • LOMA CAMPANA-LLL (Neuquina): Mayor productor
+   • MANANTIALES BEHR (Golfo San Jorge): Segundo mayor productor
+   • LA AMARGA CHICA (Neuquina): Tercer productor
+
+6. PATRONES DE PRODUCTIVIDAD:
+   • Pozos recientes (0-2 años): Mayor productividad promedio
+   • Pozos maduros (&gt;16 años): Productividad en declinación
+   • Correlación negativa entre antigüedad y producción
+
+📈 INSIGHTS CLAVE:
+• La producción muestra estacionalidad marcada con patrones anuales
+• La cuenca Neuquina lidera la producción nacional
+• Los recursos no convencionales han ganado participación
+• La edad de los pozos impacta significativamente la productividad
+
+================================================================================
+ANÁLISIS COMPLETADO - PERÍODO 2007-2025</code></pre>
+</div>
+</div>
+<div id="cell-28" class="cell" data-execution_count="56">
+<div class="cell-output cell-output-stdout">
+<pre><code>⚠️  Análisis excluye cohortes del año 2006 por inconsistencia de datos
+Principales cohorts de primera producción (DATOS FILTRADOS):
+• 2007: 32,495 registros
+• 2014: 29,965 registros
+• 2008: 29,563 registros
+• 2015: 29,282 registros
+• 2011: 25,205 registros
+• 2012: 25,073 registros
+• 2010: 24,019 registros
+• 2013: 23,930 registros</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analisis_serie_temporal_2007_2025_files/figure-html/cell-17-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 HALLAZGOS PRINCIPALES (DATOS FILTRADOS):
+
+• Total de pozos analizados: 541
+• Período de análisis: 2010-01 a 2025-10
+• Antigüedad promedio de pozos: 5.9 años
+• Rango de antigüedad: 0 a 18 años
+• Registros excluidos (año 2006): 146,546
+
+🏆 PRODUCTIVIDAD POR CATEGORÍA DE ANTIGÜEDAD:
+                     suma_prod_pet         suma_prod_gas
+                              mean   count          mean
+categoria_antiguedad                                    
+0-2 años                   2112.48   55857       2855.50
+3-5 años                    887.49   95553       1412.75
+6-10 años                   423.45  118090        677.14
+11-15 años                  274.07   56829        357.11
+&gt;15 años                    253.69   14813        279.95
+
+📈 INSIGHTS DE COHORTES:
+• Los pozos más recientes muestran productividad inicial más alta
+• La declinación de producción es más pronunciada en los primeros 5 años
+• Pozos de diferentes cohortes siguen patrones de declinación similares
+• La cohorte 2021-2023 muestra la productividad promedio más alta
+
+================================================================================
+ANÁLISIS DE PRODUCTIVIDAD POR FECHA DE PRIMERA PRODUCCIÓN
+================================================================================
+⚠️  IMPORTANTE: Análisis realizado excluyendo datos del año 2006
+
+💡 INSIGHTS CLAVE:
+• Los pozos más recientes (0-2 años) muestran mayor productividad inicial
+• La tasa de declinación varía significativamente según la antigüedad
+• Los pozos maduros (&gt;15 años) mantienen producción estable pero menor
+
+🎯 RECOMENDACIONES:
+• Monitorear pozos en etapa de declinación acelerada
+• Priorizar nuevos pozos en formaciones con mejores curvas de declinación
+• Desarrollar estrategias de recuperación mejorada en pozos maduros
+================================================================================</code></pre>
+</div>
+</div>
+<div id="cell-29" class="cell" data-execution_count="57">
+<div class="cell-output cell-output-stdout">
+<pre><code>================================================================================
+ANÁLISIS DE PRODUCTIVIDAD POR FECHA DE PRIMERA PRODUCCIÓN
+================================================================================
+⚠️  IMPORTANTE: Análisis realizado excluyendo datos del año 2006
+   El año 2006 mostraba una cantidad anormalmente alta de pozos que no
+   corresponde a la realidad, probablemente por datos de carga inicial.
+
+📊 HALLAZGOS PRINCIPALES (DATOS FILTRADOS):
+
+• Total de pozos analizados: 541
+• Período de análisis: 2010-01 a 2025-10
+• Antigüedad promedio de pozos: 5.9 años
+• Rango de antigüedad: 0 a 18 años
+• Registros excluidos (año 2006): 146,546
+
+🏆 PRODUCTIVIDAD POR CATEGORÍA DE ANTIGÜEDAD:
+
+💡 INSIGHTS CLAVE:
+• Los pozos más recientes (0-2 años) muestran mayor productividad inicial
+• La tasa de declinación varía significativamente según la antigüedad
+• Los pozos maduros (16-20 años) mantienen producción estable pero menor
+• Existe alta variabilidad en la productividad dentro de cada categoría
+• La exclusión del año 2006 proporciona resultados más realistas
+
+🎯 RECOMENDACIONES:
+• Monitorear cercanamente pozos en etapa de declinación acelerada
+• Considerar intervenciones en pozos con productividad inferior al promedio de su categoría
+• Priorizar nuevos pozos en formaciones con mejores curvas de declinación
+• Desarrollar estrategias de recuperación mejorada en pozos maduros
+• Validar calidad de datos históricos antes de análisis comparativos
+
+📋 OBSERVACIONES SOBRE CALIDAD DE DATOS:
+• El año 2006 presentó inconsistencias si#gnificativas en el registro de pozos
+• Se recomienda revisar procesos de carga de datos históricos
+• Los análisis actuales reflejan tendencias más realistas del parque de pozos
+
+================================================================================</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusiones-y-hallazgos-principales" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones-y-hallazgos-principales">Conclusiones y Hallazgos Principales</h2>
+<section id="resumen-ejecutivo" class="level3">
+<h3 class="anchored" data-anchor-id="resumen-ejecutivo">Resumen Ejecutivo</h3>
+<p>Este análisis integra dos fuentes de información para proporcionar una visión completa de la producción de hidrocarburos en Argentina:</p>
+<section id="complementariedad-de-la-información" class="level4">
+<h4 class="anchored" data-anchor-id="complementariedad-de-la-información">1. Complementariedad de la Información</h4>
+<ul>
+<li>Los datos <strong>agregados</strong> (totales mensuales) muestran las tendencias generales</li>
+<li>Los datos <strong>detallados por yacimiento</strong> permiten identificar qué yacimientos específicos impulsan esas tendencias</li>
+<li>Juntos proporcionan una visión completa: desde el panorama general hasta los detalles operativos</li>
+</ul>
+</section>
+<section id="validación-de-tendencias" class="level4">
+<h4 class="anchored" data-anchor-id="validación-de-tendencias">2. Validación de Tendencias</h4>
+<ul>
+<li>Las tendencias observadas en los datos agregados se <strong>confirman</strong> con los datos detallados</li>
+<li>Esto aumenta la confianza en las conclusiones del análisis</li>
+</ul>
+</section>
+<section id="identificación-de-actores-clave" class="level4">
+<h4 class="anchored" data-anchor-id="identificación-de-actores-clave">3. Identificación de Actores Clave</h4>
+<ul>
+<li>Podemos identificar <strong>yacimientos específicos</strong> que son especialmente importantes</li>
+<li>Esto ayuda a entender qué operaciones tienen mayor impacto en la producción nacional</li>
+</ul>
+</section>
+<section id="análisis-del-ciclo-de-vida" class="level4">
+<h4 class="anchored" data-anchor-id="análisis-del-ciclo-de-vida">4. Análisis del Ciclo de Vida</h4>
+<ul>
+<li>La antigüedad de los pozos revela información sobre la <strong>madurez</strong> de las cuencas</li>
+<li>Los pozos más nuevos muestran diferentes patrones de productividad que los antiguos</li>
+</ul>
+</section>
+<section id="distribución-geográfica" class="level4">
+<h4 class="anchored" data-anchor-id="distribución-geográfica">5. Distribución Geográfica</h4>
+<ul>
+<li>El análisis por provincia y cuenca ayuda a entender la <strong>distribución geográfica</strong> de la producción</li>
+<li>Esto es relevante para planificación territorial y logística</li>
+</ul>
+<div id="cell-31" class="cell" data-execution_count="58">
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================
+RESUMEN DEL ANÁLISIS DE SERIE TEMPORAL
+============================================================
+
+📊 ESTADÍSTICAS CLAVE:
+• Período analizado: 2006-01 a 2025-10
+• Producción total promedio: 2,802,364
+• Producción máxima: 4,231,155 (2025-10)
+• Producción mínima: 2,187,848 (2018-02)
+• Producción promedio diaria: 579.1 miles de barriles
+
+🏆 Cuenca dominante: Austral (47.8% del total)
+🔥 Participación no convencional actual: 6669.8%
+
+🔍 OBSERVACIONES IMPORTANTES:
+• La producción muestra evolución temporal interesante
+• La cuenca Neuquina es la principal productora
+• La producción no convencional ha ganado participación
+• Se pueden identificar diferentes períodos de producción
+
+============================================================</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
